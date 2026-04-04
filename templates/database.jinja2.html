@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Database — Silver HealthCare</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #e0f8f7;
+      --surface:   #f0fdfc;
+      --card:      #ffffff;
+      --border:    #7dddd8;
+      --cyan:      #06b6d4;
+      --cyan-dark: #0891b2;
+      --cyan-light:#cffafe;
+      --cyan-btn:  #22d3ee;
+      --gold:      #d97706;
+      --rose:      #e11d48;
+      --text:      #0c2d3a;
+      --muted:     #4a9baa;
+      --mono:      'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── subtle dot grid ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: radial-gradient(circle, rgba(10,191,176,.18) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+    }
+
+    /* ── glowing orbs ── */
+    .orb {
+      position: fixed; border-radius: 50%;
+      filter: blur(100px); pointer-events: none; z-index: 0;
+    }
+    .orb-1 { width: 520px; height: 520px; top: -180px; left: -120px; background: rgba(10,191,176,.18); }
+    .orb-2 { width: 420px; height: 420px; bottom: -120px; right: -100px; background: rgba(10,191,176,.13); }
+
+    /* ── nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(232,247,246,.92);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 1rem; letter-spacing: .02em; color: var(--cyan-dark);
+      text-decoration: none;
+    }
+    .nav-brand span { color: var(--text); }
+    .nav-badge {
+      font-family: var(--mono); font-size: .65rem;
+      background: var(--cyan-light); color: var(--cyan-dark);
+      border: 1px solid var(--border);
+      padding: 2px 8px; border-radius: 4px; letter-spacing: .1em;
+    }
+    .nav-back {
+      font-family: var(--mono); font-size: .8rem; color: var(--muted);
+      text-decoration: none; display: flex; align-items: center; gap: 6px;
+      transition: color .2s;
+    }
+    .nav-back:hover { color: var(--cyan-dark); }
+
+    /* ── hero ── */
+    .hero {
+      position: relative; z-index: 1;
+      padding: 72px 48px 48px;
+      max-width: 1400px; margin: 0 auto;
+    }
+    .hero-label {
+      font-family: var(--mono); font-size: .72rem;
+      color: var(--cyan-dark); letter-spacing: .18em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 8px; margin-bottom: 18px;
+    }
+    .hero-label::before {
+      content: ''; display: block;
+      width: 28px; height: 1px; background: var(--cyan);
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      line-height: 1.08;
+      background: linear-gradient(135deg, var(--text) 30%, var(--cyan) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      margin-top: 14px; color: var(--muted); font-size: 1rem; font-weight: 300;
+      max-width: 480px;
+    }
+
+    /* ── stats bar ── */
+    .stats-bar {
+      position: relative; z-index: 1;
+      max-width: 1400px; margin: 0 auto;
+      padding: 0 48px 56px;
+      display: flex; gap: 16px; flex-wrap: wrap;
+    }
+    .stat-pill {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 22px;
+      display: flex; align-items: center; gap: 12px;
+      animation: fadeUp .5s ease both;
+      box-shadow: 0 2px 12px rgba(10,191,176,.08);
+    }
+    .stat-pill:nth-child(1) { animation-delay: .05s; }
+    .stat-pill:nth-child(2) { animation-delay: .1s; }
+    .stat-pill:nth-child(3) { animation-delay: .15s; }
+    .stat-pill:nth-child(4) { animation-delay: .2s; }
+    .stat-pill:nth-child(5) { animation-delay: .25s; }
+    .stat-pill:nth-child(6) { animation-delay: .3s; }
+    .stat-pill:nth-child(7) { animation-delay: .35s; }
+    .stat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .stat-info { display: flex; flex-direction: column; }
+    .stat-name { font-family: var(--mono); font-size: .68rem; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+    .stat-count { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.3rem; color: var(--text); }
+
+    /* ── section ── */
+    .section {
+      position: relative; z-index: 1;
+      max-width: 1400px; margin: 0 auto;
+      padding: 0 48px 72px;
+    }
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem;
+      color: var(--text);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-title .icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .section-count {
+      font-family: var(--mono); font-size: .72rem; color: var(--cyan-dark);
+      background: var(--cyan-light); border: 1px solid var(--border);
+      padding: 4px 10px; border-radius: 20px;
+    }
+
+    /* ── table card ── */
+    .table-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      animation: fadeUp .5s ease both;
+      box-shadow: 0 4px 24px rgba(10,191,176,.07);
+    }
+    .table-card:hover { border-color: var(--cyan); box-shadow: 0 6px 32px rgba(10,191,176,.14); }
+    .table-card + .table-card { margin-top: 28px; }
+
+    .tc-scroll { overflow-x: auto; }
+
+    table {
+      width: 100%; border-collapse: collapse;
+      font-size: .85rem;
+    }
+    thead tr {
+      background: var(--cyan-light);
+      border-bottom: 1px solid var(--border);
+    }
+    thead th {
+      font-family: var(--mono); font-size: .65rem; font-weight: 600;
+      letter-spacing: .1em; text-transform: uppercase; color: var(--cyan-dark);
+      padding: 14px 20px; text-align: left; white-space: nowrap;
+    }
+    tbody tr {
+      border-bottom: 1px solid rgba(10,191,176,.08);
+      transition: background .15s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(10,191,176,.06); }
+    tbody td {
+      padding: 13px 20px; color: var(--text); vertical-align: middle;
+      font-size: .84rem;
+    }
+    tbody td:first-child {
+      font-family: var(--mono); font-size: .78rem; color: var(--muted);
+    }
+
+    /* boolean badges */
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px; border-radius: 20px;
+      font-family: var(--mono); font-size: .68rem; font-weight: 500;
+      letter-spacing: .05em;
+    }
+    .badge-true  { background: rgba(6,182,212,.12); color: #0891b2; border: 1px solid rgba(6,182,212,.35); }
+    .badge-false { background: rgba(6,182,212,.05); color: #94a3b8; border: 1px solid rgba(6,182,212,.15); }
+    .badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+    /* empty state */
+    .empty-state {
+      text-align: center; padding: 60px 20px;
+      font-family: var(--mono); font-size: .8rem; color: var(--muted);
+      letter-spacing: .06em;
+    }
+    .empty-state .e-icon { font-size: 2rem; margin-bottom: 12px; opacity: .4; }
+
+    /* ── footer ── */
+    footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 28px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-family: var(--mono); font-size: .7rem; color: var(--muted);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* color accents per table — all cyan family */
+    .c-users    { background: rgba(6,182,212,.13);  color: #0891b2; }
+    .c-doctor   { background: rgba(6,182,212,.18);  color: #0e7490; }
+    .c-patients { background: rgba(6,182,212,.13);  color: #0891b2; }
+    .c-history  { background: rgba(6,182,212,.18);  color: #0e7490; }
+    .c-presc    { background: rgba(6,182,212,.13);  color: #0891b2; }
+    .c-meds     { background: rgba(6,182,212,.18);  color: #0e7490; }
+    .c-costs    { background: rgba(6,182,212,.13);  color: #0891b2; }
+
+    .dot-users    { background: #22d3ee; }
+    .dot-doctor   { background: #06b6d4; }
+    .dot-patients { background: #0891b2; }
+    .dot-history  { background: #0e7490; }
+    .dot-presc    { background: #22d3ee; }
+    .dot-meds     { background: #06b6d4; }
+    .dot-costs    { background: #0891b2; }
+
+    @media (max-width: 768px) {
+      nav, .hero, .stats-bar, .section, footer { padding-left: 20px; padding-right: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="/">
+    ✦ <span>Silver</span>HealthCare
+  </a>
+  <a class="nav-back" href="/">← Back to Portal</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <p class="hero-label">Live Database View</p>
+  <h1>System Records</h1>
+  <p class="hero-sub">Real-time snapshot of all tables in the hospital management database.</p>
+</header>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  {% set configs = [
+    ('users',         'Users',           'dot-users'),
+    ('doctor',        'Doctors',         'dot-doctor'),
+    ('patients',      'Patients',        'dot-patients'),
+    ('patienthistory','Visit History',   'dot-history'),
+    ('prescription',  'Prescriptions',   'dot-presc'),
+    ('medication',    'Medications',     'dot-meds'),
+    ('costs',         'Cost Records',    'dot-costs'),
+  ] %}
+  {% for key, label, dot in configs %}
+  <div class="stat-pill">
+    <span class="stat-dot {{ dot }}"></span>
+    <div class="stat-info">
+      <span class="stat-name">{{ label }}</span>
+      <span class="stat-count">{{ tables[key]|length if tables[key] else 0 }}</span>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+
+<!-- ════════════════════════════════ USERS ═══════════════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">
+      <span class="icon c-users">👤</span> Users
+    </div>
+    <span class="section-count">{{ tables.users|length if tables.users else 0 }} records</span>
+  </div>
+  <div class="table-card">
+    {% if tables.users %}
+    <div class="tc-scroll">
+    <table>
+      <thead><tr>
+        <th>#</th><th>ID</th><th>Username</th><th>Password</th>
+      </tr></thead>
+      <tbody>
+        {% for row in tables.users %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ row[0] }}</td>
+          <td>{{ row[1] }}</td>
+          <td>{{ row[2] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>
+    {% else %}
+    <div class="empty-state"><div class="e-icon">🗄️</div>No user records yet</div>
+    {% endif %}
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════ DOCTORS ═════════════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">
+      <span class="icon c-doctor">🩺</span> Doctors
+    </div>
+    <span class="section-count">{{ tables.doctor|length if tables.doctor else 0 }} records</span>
+  </div>
+  <div class="table-card">
+    {% if tables.doctor %}
+    <div class="tc-scroll">
+    <table>
+      <thead><tr>
+        <th>#</th><th>ID</th><th>Username</th><th>Qualification</th>
+        <th>Phone</th><th>Email</th><th>Time</th><th>Age</th>
+        <th>Specialization</th><th>Active</th>
+      </tr></thead>
+      <tbody>
+        {% for row in tables.doctor %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ row[0] }}</td><td>{{ row[1] }}</td><td>{{ row[2] }}</td>
+          <td>{{ row[3] }}</td><td>{{ row[4] }}</td><td>{{ row[5] }}</td>
+          <td>{{ row[6] }}</td><td>{{ row[7] }}</td>
+          <td>
+            {% if row[8] %}
+              <span class="badge badge-true">Active</span>
+            {% else %}
+              <span class="badge badge-false">Inactive</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>
+    {% else %}
+    <div class="empty-state"><div class="e-icon">🩺</div>No doctor records yet</div>
+    {% endif %}
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════ PATIENTS ════════════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">
+      <span class="icon c-patients">🏥</span> Patients
+    </div>
+    <span class="section-count">{{ tables.patients|length if tables.patients else 0 }} records</span>
+  </div>
+  <div class="table-card">
+    {% if tables.patients %}
+    <div class="tc-scroll">
+    <table>
+      <thead><tr>
+        <th>#</th><th>ID</th><th>Username</th><th>Phone</th>
+        <th>Email</th><th>Address</th><th>Age</th><th>Register Date</th>
+      </tr></thead>
+      <tbody>
+        {% for row in tables.patients %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ row[0] }}</td><td>{{ row[1] }}</td><td>{{ row[2] }}</td>
+          <td>{{ row[3] }}</td><td>{{ row[4] }}</td><td>{{ row[5] }}</td>
+          <td>{{ row[6] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>
+    {% else %}
+    <div class="empty-state"><div class="e-icon">🏥</div>No patient records yet</div>
+    {% endif %}
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════ PATIENT HISTORY ═════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">
+      <span class="icon c-history">📋</span> Patient Visit History
+    </div>
+    <span class="section-count">{{ tables.patienthistory|length if tables.patienthistory else 0 }} records</span>
+  </div>
+  <div class="table-card">
+    {% if tables.patienthistory %}
+    <div class="tc-scroll">
+    <table>
+      <thead><tr>
+        <th>#</th><th>ID</th><th>Patient</th><th>Doctor</th>
+        <th>Visit Date</th><th>Treatment</th><th>Description</th><th>Bill Amount</th>
+      </tr></thead>
+      <tbody>
+        {% for row in tables.patienthistory %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ row[0] }}</td><td>{{ row[1] }}</td><td>{{ row[2] }}</td>
+          <td>{{ row[3] }}</td><td>{{ row[4] }}</td><td>{{ row[5] }}</td>
+          <td style="color: var(--cyan-dark); font-family: var(--mono);">₹ {{ row[6] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>
+    {% else %}
+    <div class="empty-state"><div class="e-icon">📋</div>No visit history yet</div>
+    {% endif %}
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════ PRESCRIPTIONS ═══════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">
+      <span class="icon c-presc">💊</span> Prescriptions
+    </div>
+    <span class="section-count">{{ tables.prescription|length if tables.prescription else 0 }} records</span>
+  </div>
+  <div class="table-card">
+    {% if tables.prescription %}
+    <div class="tc-scroll">
+    <table>
+      <thead><tr>
+        <th>#</th><th>ID</th><th>Prescription No.</th><th>Physical ID</th>
+        <th>Patient</th><th>Doctor</th><th>Visit Date</th>
+      </tr></thead>
+      <tbody>
+        {% for row in tables.prescription %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ row[0] }}</td>
+          <td style="font-family:var(--mono); color:#0891b2;">{{ row[1] }}</td>
+          <td>{{ row[2] }}</td><td>{{ row[3] }}</td>
+          <td>{{ row[4] }}</td><td>{{ row[5] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>
+    {% else %}
+    <div class="empty-state"><div class="e-icon">💊</div>No prescription records yet</div>
+    {% endif %}
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════ MEDICATIONS ═════════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">
+      <span class="icon c-meds">🧪</span> Medications
+    </div>
+    <span class="section-count">{{ tables.medication|length if tables.medication else 0 }} records</span>
+  </div>
+  <div class="table-card">
+    {% if tables.medication %}
+    <div class="tc-scroll">
+    <table>
+      <thead><tr>
+        <th>#</th><th>ID</th><th>Prescription No.</th>
+        <th>Medication</th><th>Dosage</th>
+      </tr></thead>
+      <tbody>
+        {% for row in tables.medication %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ row[0] }}</td>
+          <td style="font-family:var(--mono); color:#0891b2;">{{ row[1] }}</td>
+          <td>{{ row[2] }}</td>
+          <td style="font-family:var(--mono); color:#0e7490;">{{ row[3] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>
+    {% else %}
+    <div class="empty-state"><div class="e-icon">🧪</div>No medication records yet</div>
+    {% endif %}
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════ COSTS ═══════════════════════════ -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">
+      <span class="icon c-costs">💰</span> Cost Records
+    </div>
+    <span class="section-count">{{ tables.costs|length if tables.costs else 0 }} records</span>
+  </div>
+  <div class="table-card">
+    {% if tables.costs %}
+    <div class="tc-scroll">
+    <table>
+      <thead><tr>
+        <th>#</th><th>ID</th><th>Patient</th><th>Admitted</th>
+        <th>Admission Cost</th><th>Medicine Cost</th><th>Doctor Fee</th><th>Total</th>
+      </tr></thead>
+      <tbody>
+        {% for row in tables.costs %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ row[0] }}</td><td>{{ row[1] }}</td>
+          <td>
+            {% if row[2] %}
+              <span class="badge badge-true">Admitted</span>
+            {% else %}
+              <span class="badge badge-false">Outpatient</span>
+            {% endif %}
+          </td>
+          <td style="font-family:var(--mono);">₹ {{ row[3] }}</td>
+          <td style="font-family:var(--mono);">₹ {{ row[4] }}</td>
+          <td style="font-family:var(--mono);">₹ {{ row[5] }}</td>
+          <td style="font-family:var(--mono); color:var(--cyan-dark); font-weight:700;">
+            ₹ {{ (row[3] or 0) + (row[4] or 0) + (row[5] or 0) }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>
+    {% else %}
+    <div class="empty-state"><div class="e-icon">💰</div>No cost records yet</div>
+    {% endif %}
+  </div>
+</section>
+
+
+<footer>
+  <span>Silver HealthCare — Database Console</span>
+  <span>{{ tables.users|length + tables.doctor|length + tables.patients|length + tables.patienthistory|length + tables.prescription|length + tables.medication|length + tables.costs|length }} total records across 7 tables</span>
+</footer>
+
+</body>
+</html>

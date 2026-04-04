@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>C1 — Patient Billing Analytics · Silver Care</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--g:#43c9a0;--g2:#7eddd4;--deep:#0d1f18;--card:rgba(67,201,160,0.06);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#0a1a14 0%,#0f2018 50%,#0a1a14 100%);min-height:100vh;color:#d0f0e4;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 40%,rgba(67,201,160,0.1) 0%,transparent 55%),radial-gradient(ellipse at 85% 60%,rgba(126,221,212,0.07) 0%,transparent 50%);pointer-events:none;z-index:0;}
+    .hex-bg{position:fixed;inset:0;opacity:0.03;background-image:url("data:image/svg+xml,%3Csvg width='60' height='52' viewBox='0 0 60 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 17.3v17.4L30 52 0 34.7V17.3z' fill='none' stroke='%2343c9a0' stroke-width='1'/%3E%3C/svg%3E");background-size:60px 52px;pointer-events:none;z-index:0;}
+    nav{position:sticky;top:0;z-index:100;background:rgba(10,26,20,0.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(67,201,160,0.15);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+    .brand{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:white;text-decoration:none;}
+    .back{display:inline-flex;align-items:center;gap:8px;color:rgba(67,201,160,0.7);text-decoration:none;font-size:0.85rem;font-weight:600;padding:8px 16px;border-radius:10px;border:1px solid rgba(67,201,160,0.2);transition:all 0.2s;}
+    .back:hover{background:rgba(67,201,160,0.1);color:var(--g);border-color:rgba(67,201,160,0.4);}
+
+    main{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:60px 40px 80px;}
+
+    .page-hero{margin-bottom:48px;animation:fadeUp 0.7s ease both;}
+    .chip{display:inline-flex;align-items:center;gap:8px;background:rgba(67,201,160,0.1);border:1px solid rgba(67,201,160,0.3);border-radius:30px;padding:6px 16px;font-size:0.7rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--g);margin-bottom:20px;}
+    .chip-dot{width:6px;height:6px;background:var(--g);border-radius:50%;animation:blink 1.5s ease-in-out infinite;}
+    @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+    h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:white;line-height:1.1;margin-bottom:14px;}
+    h1 span{background:linear-gradient(120deg,var(--g),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .desc{color:rgba(208,240,228,0.5);font-size:1rem;line-height:1.75;max-width:580px;}
+
+    .sql-box{background:rgba(67,201,160,0.04);border:1px solid rgba(67,201,160,0.15);border-radius:20px;padding:28px 32px;margin-bottom:40px;position:relative;overflow:hidden;animation:fadeUp 0.7s 0.1s ease both;}
+    .sql-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--g),var(--g2));}
+    .sql-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+    .sql-lbl{font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(67,201,160,0.45);}
+    .sql-tag{background:rgba(67,201,160,0.1);border:1px solid rgba(67,201,160,0.2);border-radius:8px;padding:3px 10px;font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--g);}
+    pre{font-family:'JetBrains Mono',monospace;font-size:0.86rem;line-height:1.9;color:#88d4b0;}
+    .kw{color:#43c9a0;} .tbl{color:#7eddd4;} .fn{color:#f0d080;} .cmt{color:rgba(136,212,176,0.3);}
+
+    /* Summary stats */
+    .summary-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:40px;animation:fadeUp 0.7s 0.2s ease both;}
+    .scard{background:rgba(67,201,160,0.06);border:1px solid rgba(67,201,160,0.15);border-radius:18px;padding:24px 20px;text-align:center;transition:all 0.3s ease;}
+    .scard:hover{background:rgba(67,201,160,0.1);border-color:rgba(67,201,160,0.3);transform:translateY(-3px);}
+    .scard-icon{font-size:1.6rem;margin-bottom:10px;display:block;}
+    .scard-num{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;background:linear-gradient(120deg,var(--g),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+    .scard-lbl{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(208,240,228,0.4);margin-top:6px;}
+
+    /* Leaderboard table */
+    .results-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;animation:fadeUp 0.7s 0.25s ease both;}
+    .results-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:white;}
+    .results-badge{background:rgba(67,201,160,0.1);border:1px solid rgba(67,201,160,0.2);border-radius:20px;padding:5px 14px;font-size:0.78rem;font-weight:700;color:var(--g);}
+
+    .table-wrap{border-radius:20px;overflow:hidden;border:1px solid rgba(67,201,160,0.12);animation:fadeUp 0.7s 0.3s ease both;}
+    table{width:100%;border-collapse:collapse;}
+    thead tr{background:rgba(67,201,160,0.1);border-bottom:1px solid rgba(67,201,160,0.15);}
+    thead th{padding:16px 20px;text-align:left;font-size:0.68rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(67,201,160,0.6);}
+    tbody tr{border-bottom:1px solid rgba(67,201,160,0.06);transition:background 0.2s;}
+    tbody tr:hover{background:rgba(67,201,160,0.05);}
+    tbody tr:last-child{border-bottom:none;}
+    td{padding:16px 20px;font-size:0.9rem;color:#c0e8d0;}
+    .td-rank{font-family:'Playfair Display',serif;font-size:1rem;font-weight:900;color:rgba(67,201,160,0.4);}
+    .td-rank.gold{color:#f0d060;} .td-rank.silver{color:#c0ccd8;} .td-rank.bronze{color:#d08040;}
+    .td-name{font-weight:700;color:white;}
+    .td-id{font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:rgba(67,201,160,0.5);}
+    .td-visits{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--g);}
+    .td-amount{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--g2);}
+    .progress-bar{height:4px;background:rgba(67,201,160,0.1);border-radius:4px;margin-top:4px;overflow:hidden;}
+    .progress-fill{height:100%;background:linear-gradient(90deg,var(--g),var(--g2));border-radius:4px;transition:width 1s ease;}
+
+    .empty{text-align:center;padding:80px 40px;color:rgba(208,240,228,0.35);}
+    .err{background:rgba(224,92,110,0.08);border:1px solid rgba(224,92,110,0.2);border-radius:14px;padding:18px 22px;color:#f08090;font-family:'JetBrains Mono',monospace;font-size:0.84rem;margin-bottom:32px;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+    @media(max-width:768px){nav{padding:0 20px;}main{padding:40px 20px;}.summary-row{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+<div class="hex-bg"></div>
+<nav>
+  <a href="/" class="brand">Silver Care Hospital</a>
+  <a href="/" class="back">← Back to Portal</a>
+</nav>
+<main>
+  <div class="page-hero">
+    <div class="chip"><div class="chip-dot"></div>Complex Query · Task C1</div>
+    <h1>Patients — <span>Visits &amp; Total</span><br/>Amount Billed</h1>
+    <p class="desc">Aggregates every patient's total hospital visits and cumulative billing amount across all history records, using JOIN, GROUP BY and HAVING to surface only patients with at least one visit.</p>
+  </div>
+
+  <div class="sql-box">
+    <div class="sql-top"><span class="sql-lbl">SQL Query</span><span class="sql-tag">JOIN · GROUP BY · HAVING</span></div>
+    <pre><span class="kw">SELECT</span>   p.id, p.username,
+         <span class="fn">COUNT</span>(ph.id)        <span class="kw">AS</span> total_visits,
+         <span class="fn">SUM</span>(ph.BillAmount)  <span class="kw">AS</span> total_spent
+<span class="kw">FROM</span>     <span class="tbl">patients</span> p
+<span class="kw">JOIN</span>     <span class="tbl">patienthistory</span> ph <span class="kw">ON</span> p.username = ph.patient_name
+<span class="kw">GROUP BY</span> p.id, p.username
+<span class="kw">HAVING</span>   <span class="fn">COUNT</span>(ph.id) &gt; 0
+<span class="kw">ORDER BY</span> total_spent <span class="kw">DESC</span>;
+<span class="cmt">-- Ranks patients by total spend · only patients with visits included</span></pre>
+  </div>
+
+  {% if error %}
+  <div class="err">⚠ {{ error }}</div>
+  {% endif %}
+
+  {% set total_visits = data | sum(attribute=2) if data else 0 %}
+  {% set total_spent  = data | sum(attribute=3) if data else 0 %}
+  {% set max_spent    = data[0][3] if data else 1 %}
+
+  <div class="summary-row">
+    <div class="scard"><span class="scard-icon">👥</span><div class="scard-num">{{ data|length }}</div><div class="scard-lbl">Patients with Visits</div></div>
+    <div class="scard"><span class="scard-icon">🗓️</span><div class="scard-num">{{ total_visits }}</div><div class="scard-lbl">Total Visits</div></div>
+    <div class="scard"><span class="scard-icon">💰</span><div class="scard-num">₹{{ "{:,}".format(total_spent) }}</div><div class="scard-lbl">Total Revenue</div></div>
+  </div>
+
+  <div class="results-hdr">
+    <div class="results-title">Patient Leaderboard</div>
+    <div class="results-badge">Sorted by Spend ↓</div>
+  </div>
+
+  {% if data %}
+  <div class="table-wrap">
+    <table>
+      <thead><tr>
+        <th>Rank</th><th>Patient ID</th><th>Username</th>
+        <th>Total Visits</th><th>Total Billed</th><th>Billing Share</th>
+      </tr></thead>
+      <tbody>
+        {% for row in data %}
+        {% set pct = (row[3] / max_spent * 100) | round(1) if max_spent else 0 %}
+        <tr>
+          <td><span class="td-rank {% if loop.index == 1 %}gold{% elif loop.index == 2 %}silver{% elif loop.index == 3 %}bronze{% endif %}">#{{ loop.index }}</span></td>
+          <td class="td-id">#{{ row[0] }}</td>
+          <td class="td-name">{{ row[1] }}</td>
+          <td class="td-visits">{{ row[2] }}</td>
+          <td class="td-amount">₹{{ "{:,}".format(row[3]) }}</td>
+          <td><div style="font-size:0.72rem;color:rgba(67,201,160,0.5);margin-bottom:4px;">{{ pct }}%</div><div class="progress-bar"><div class="progress-fill" style="width:{{ pct }}%"></div></div></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty">No patient billing records found. Add patient history records first.</div>
+  {% endif %}
+</main>
+</body>
+</html>

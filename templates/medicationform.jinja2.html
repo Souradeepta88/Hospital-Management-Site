@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<!-- Medication Details Form -->
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<title>Medication Details Form</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--bg:#e0f8f7;
+--card:#ffffff;
+--border:#7dddd8;
+--cyan:#06b6d4;
+--cyan-dark:#0891b2;
+--text:#0c2d3a;
+--muted:#4a9baa;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Outfit',sans-serif;
+background:var(--bg);
+min-height:100vh;
+}
+
+/* dotted background */
+
+body::before{
+content:'';
+position:fixed;
+inset:0;
+background-image:radial-gradient(circle,rgba(10,191,176,.2) 1px,transparent 1px);
+background-size:32px 32px;
+pointer-events:none;
+}
+
+/* NAVBAR */
+
+nav{
+height:70px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 40px;
+border-bottom:1px solid var(--border);
+background:rgba(255,255,255,.7);
+backdrop-filter:blur(10px);
+}
+
+.brand{
+font-family:'Space Grotesk',sans-serif;
+font-size:1.3rem;
+font-weight:700;
+color:var(--cyan-dark);
+text-decoration:none;
+}
+
+.back{
+font-family:'JetBrains Mono',monospace;
+font-size:.8rem;
+padding:8px 16px;
+border-radius:8px;
+border:1px solid var(--border);
+text-decoration:none;
+color:var(--text);
+background:white;
+transition:.2s;
+}
+
+.back:hover{
+background:var(--cyan);
+color:white;
+}
+
+/* FORM AREA */
+
+.container{
+display:flex;
+justify-content:center;
+padding:60px 20px;
+}
+
+/* CARD */
+
+.form-card{
+background:var(--card);
+border:1px solid var(--border);
+border-radius:18px;
+padding:50px;
+width:600px;
+box-shadow:0 10px 40px rgba(6,182,212,.18);
+}
+
+/* HEADING */
+
+h1{
+font-family:'Space Grotesk',sans-serif;
+font-size:2.4rem;
+margin-bottom:30px;
+
+background:linear-gradient(135deg,var(--text),var(--cyan));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+/* GRID */
+
+.form-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+.full{
+grid-column:span 2;
+}
+
+/* LABEL */
+
+label{
+font-family:'JetBrains Mono',monospace;
+font-size:.7rem;
+letter-spacing:.06em;
+color:var(--muted);
+text-transform:uppercase;
+}
+
+/* INPUT */
+
+input{
+margin-top:6px;
+padding:12px 14px;
+border-radius:10px;
+border:1px solid var(--border);
+background:#f8ffff;
+font-size:.9rem;
+transition:.25s;
+width:100%;
+}
+
+/* focus glow */
+
+input:focus{
+outline:none;
+border-color:var(--cyan);
+box-shadow:0 0 0 3px rgba(6,182,212,.2);
+}
+
+/* BUTTON */
+
+button{
+margin-top:30px;
+padding:14px 30px;
+border:none;
+border-radius:12px;
+font-family:'Space Grotesk',sans-serif;
+font-weight:600;
+background:var(--cyan);
+color:white;
+cursor:pointer;
+transition:.25s;
+}
+
+button:hover{
+background:var(--cyan-dark);
+transform:translateY(-2px);
+box-shadow:0 10px 25px rgba(6,182,212,.35);
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<nav>
+
+<a class="brand" href="/">✦ Silver HealthCare</a>
+
+<a class="back" href="/">← Back to Menu</a>
+
+</nav>
+
+
+<div class="container">
+
+<div class="form-card">
+
+<h1>💊 Insert Medication Details</h1>
+
+<form method="post" action="/medicationform">
+
+<div class="form-grid">
+
+<div>
+<label>Prescription Number</label>
+<input type="text" id="prescription_number" name="prescription_number" placeholder="Enter prescription number">
+</div>
+
+<div>
+<label>Medication</label>
+<input type="text" id="medication" name="medication" placeholder="Medicine name">
+</div>
+
+<div>
+<label>Dosage</label>
+<input type="text" id="dosage" name="dosage" placeholder="e.g. 500mg">
+</div>
+
+<div>
+<label>Frequency</label>
+<input type="text" id="frequency" name="frequency" placeholder="e.g. Twice daily">
+</div>
+
+<div class="full">
+<label>Notes (optional)</label>
+<input type="text" placeholder="Additional medication instructions">
+</div>
+
+</div>
+
+<button type="submit">Submit Medication</button>
+
+</form>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

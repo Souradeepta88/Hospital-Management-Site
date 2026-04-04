@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<!--ATHUL JOHN ASISH Reg. No. 240905474 SOURADEEPTA PAUL Reg. No. 240905484 RAGHAV RAMPRASATH Reg. No. 240905544 -->
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us — Silver HealthCare</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--bg:#e0f8f7;
+--card:#ffffff;
+--border:#7dddd8;
+--cyan:#06b6d4;
+--cyan-light:#cffafe;
+--cyan-dark:#0891b2;
+--text:#0c2d3a;
+--muted:#4a9baa;
+--heading:'Space Grotesk',sans-serif;
+--body:'Outfit',sans-serif;
+--mono:'JetBrains Mono',monospace;
+}
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:var(--body);
+background:var(--bg);
+color:var(--text);
+min-height:100vh;
+}
+
+/* dotted background */
+
+body::before{
+content:'';
+position:fixed;
+inset:0;
+background-image:radial-gradient(circle,rgba(10,191,176,.18) 1px,transparent 1px);
+background-size:32px 32px;
+pointer-events:none;
+}
+
+/* NAVBAR */
+
+nav{
+height:64px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 40px;
+border-bottom:1px solid var(--border);
+background:rgba(232,247,246,.9);
+backdrop-filter:blur(12px);
+}
+
+.nav-brand{
+font-family:var(--heading);
+font-weight:700;
+color:var(--cyan-dark);
+text-decoration:none;
+}
+
+.nav-back{
+font-family:var(--mono);
+font-size:.8rem;
+color:var(--muted);
+text-decoration:none;
+}
+
+/* HERO */
+
+.hero{
+max-width:1100px;
+margin:auto;
+padding:70px 40px 40px;
+}
+
+.hero-label{
+font-family:var(--mono);
+font-size:.7rem;
+letter-spacing:.18em;
+color:var(--cyan-dark);
+text-transform:uppercase;
+margin-bottom:18px;
+}
+
+.hero h1{
+font-family:var(--heading);
+font-size:clamp(2.5rem,5vw,3.5rem);
+font-weight:800;
+background:linear-gradient(135deg,var(--text),var(--cyan));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+margin-bottom:20px;
+}
+
+.hero p{
+color:var(--muted);
+max-width:650px;
+line-height:1.6;
+}
+
+/* TEAM SECTION */
+
+.team{
+max-width:1100px;
+margin:auto;
+padding:20px 40px 80px;
+}
+
+.team-title{
+font-family:var(--heading);
+font-weight:700;
+font-size:1.4rem;
+margin-bottom:30px;
+}
+
+.team-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:24px;
+}
+
+/* TEAM CARD */
+
+.member-card{
+background:var(--card);
+border:1px solid var(--border);
+border-radius:14px;
+padding:26px;
+box-shadow:0 4px 18px rgba(10,191,176,.08);
+transition:all .25s ease;
+}
+
+.member-card:hover{
+transform:translateY(-5px);
+box-shadow:0 10px 28px rgba(10,191,176,.18);
+}
+
+.member-name{
+font-family:var(--heading);
+font-weight:700;
+font-size:1.1rem;
+margin-bottom:8px;
+}
+
+.member-id{
+font-family:var(--mono);
+font-size:.8rem;
+color:var(--cyan-dark);
+background:var(--cyan-light);
+padding:4px 10px;
+border-radius:20px;
+display:inline-block;
+}
+
+footer{
+border-top:1px solid var(--border);
+padding:25px 40px;
+text-align:center;
+font-family:var(--mono);
+font-size:.75rem;
+color:var(--muted);
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+<a class="nav-brand" href="/">✦ Silver HealthCare</a>
+<a class="nav-back" href="/">← Back to Portal</a>
+</nav>
+
+<header class="hero">
+
+<p class="hero-label">About Our Team</p>
+
+<h1>Who We Are</h1>
+
+<p>
+Welcome to our website! We are a team of passionate individuals dedicated to providing the best healthcare management platform experience. Our mission is to create a system that connects patients, doctors, and administrators in one seamless environment.
+</p>
+
+<br>
+
+<p>
+Our team consists of members specializing in technology, system design, and user experience. Together we developed the Silver HealthCare platform to demonstrate a modern and efficient hospital management system.
+</p>
+
+</header>
+
+<section class="team">
+
+<div class="team-title">Our Team Members</div>
+
+<div class="team-grid">
+
+<div class="member-card">
+<div class="member-name">Athul John Asish</div>
+<div class="member-id">Reg. No. 240905474</div>
+</div>
+
+<div class="member-card">
+<div class="member-name">Souradeepta Paul</div>
+<div class="member-id">Reg. No. 240905484</div>
+</div>
+
+<div class="member-card">
+<div class="member-name">Raghav Ramprasath</div>
+<div class="member-id">Reg. No. 240905544</div>
+</div>
+
+</div>
+
+</section>
+
+<footer>
+Silver HealthCare — Hospital Management System
+</footer>
+
+</body>
+</html>
+

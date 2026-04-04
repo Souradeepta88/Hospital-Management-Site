@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>T1 — PatientHistory Trigger · Silver Care</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--a:#f0a050;--a2:#f8c87a;--a3:#fde4a8;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#1a0f00 0%,#251500 60%,#1a0f00 100%);min-height:100vh;color:#f0e0c0;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 25% 35%,rgba(240,160,80,0.1) 0%,transparent 55%),radial-gradient(ellipse at 75% 65%,rgba(248,200,122,0.06) 0%,transparent 50%);pointer-events:none;z-index:0;}
+    /* Lightning bolt pattern */
+    body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(240,160,80,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(240,160,80,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+
+    nav{position:sticky;top:0;z-index:100;background:rgba(26,15,0,0.93);backdrop-filter:blur(20px);border-bottom:1px solid rgba(240,160,80,0.15);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+    .brand{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:white;text-decoration:none;}
+    .back{display:inline-flex;align-items:center;gap:8px;color:rgba(240,160,80,0.7);text-decoration:none;font-size:0.85rem;font-weight:600;padding:8px 16px;border-radius:10px;border:1px solid rgba(240,160,80,0.2);transition:all 0.2s;}
+    .back:hover{background:rgba(240,160,80,0.1);color:var(--a2);border-color:rgba(240,160,80,0.4);}
+
+    main{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:60px 40px 80px;}
+
+    .page-hero{margin-bottom:48px;animation:fadeUp 0.7s ease both;}
+    .chip{display:inline-flex;align-items:center;gap:8px;background:rgba(240,160,80,0.1);border:1px solid rgba(240,160,80,0.3);border-radius:30px;padding:6px 16px;font-size:0.7rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--a);margin-bottom:20px;}
+    .chip-bolt{font-size:0.9rem;}
+    h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:white;line-height:1.1;margin-bottom:14px;}
+    h1 span{background:linear-gradient(120deg,var(--a),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .desc{color:rgba(240,224,192,0.5);font-size:1rem;line-height:1.75;max-width:600px;}
+
+    /* How it works */
+    .rules-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px;animation:fadeUp 0.7s 0.05s ease both;}
+    .rule-card{background:rgba(240,160,80,0.05);border:1px solid rgba(240,160,80,0.15);border-radius:18px;padding:24px 22px;transition:all 0.3s ease;}
+    .rule-card:hover{background:rgba(240,160,80,0.09);border-color:rgba(240,160,80,0.3);}
+    .rule-icon{font-size:1.8rem;margin-bottom:12px;display:block;}
+    .rule-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:white;margin-bottom:6px;}
+    .rule-desc{font-size:0.84rem;color:rgba(240,224,192,0.5);line-height:1.6;}
+    .rule-tag{display:inline-block;margin-top:10px;background:rgba(240,160,80,0.12);border:1px solid rgba(240,160,80,0.2);border-radius:8px;padding:3px 10px;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--a);}
+
+    .sql-box{background:rgba(240,160,80,0.04);border:1px solid rgba(240,160,80,0.15);border-radius:20px;padding:28px 32px;margin-bottom:40px;position:relative;overflow:hidden;animation:fadeUp 0.7s 0.1s ease both;}
+    .sql-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--a),var(--a2));}
+    .sql-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+    .sql-lbl{font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(240,160,80,0.45);}
+    .sql-tag{background:rgba(240,160,80,0.1);border:1px solid rgba(240,160,80,0.2);border-radius:8px;padding:3px 10px;font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--a);}
+    pre{font-family:'JetBrains Mono',monospace;font-size:0.82rem;line-height:1.9;color:#d4b080;overflow-x:auto;}
+    .kw{color:#f0a050;} .fn{color:#f8c87a;} .tbl{color:#fde4a8;} .str{color:#a0d8a0;} .cmt{color:rgba(212,176,128,0.3);}
+
+    /* Deploy section */
+    .deploy-section{background:linear-gradient(135deg,rgba(240,160,80,0.08),rgba(248,200,122,0.04));border:1px solid rgba(240,160,80,0.2);border-radius:24px;padding:40px 40px;animation:fadeUp 0.7s 0.2s ease both;position:relative;overflow:hidden;}
+    .deploy-section::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--a),var(--a2));}
+    .deploy-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:white;margin-bottom:8px;}
+    .deploy-sub{font-size:0.88rem;color:rgba(240,224,192,0.45);margin-bottom:28px;line-height:1.6;}
+
+    /* Status messages */
+    .msg-success{background:rgba(67,201,160,0.1);border:1px solid rgba(67,201,160,0.3);border-radius:16px;padding:18px 24px;color:#7eddd4;display:flex;align-items:center;gap:12px;margin-bottom:24px;font-weight:600;}
+    .msg-error{background:rgba(224,92,110,0.08);border:1px solid rgba(224,92,110,0.25);border-radius:16px;padding:18px 24px;color:#f08090;display:flex;align-items:center;gap:12px;margin-bottom:24px;font-size:0.88rem;}
+
+    .deploy-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--a),var(--a2));color:#1a0f00;padding:16px 40px;border-radius:50px;font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;border:none;cursor:pointer;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 8px 32px rgba(240,160,80,0.3);}
+    .deploy-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 16px 48px rgba(240,160,80,0.45);}
+    .deploy-btn:active{transform:translateY(0) scale(0.98);}
+    .warning-note{display:flex;align-items:flex-start;gap:10px;margin-top:20px;padding:14px 18px;background:rgba(240,160,80,0.06);border-radius:12px;border:1px solid rgba(240,160,80,0.12);font-size:0.82rem;color:rgba(240,224,192,0.45);line-height:1.6;}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+    @media(max-width:768px){nav{padding:0 20px;}main{padding:40px 20px;}.rules-row{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="brand">Silver Care Hospital</a>
+  <a href="/" class="back">← Back to Portal</a>
+</nav>
+<main>
+  <div class="page-hero">
+    <div class="chip"><span class="chip-bolt">⚡</span>Trigger · Task T1</div>
+    <h1>Auto-Validate<br/><span>Patient History</span><br/>on Insert</h1>
+    <p class="desc">A PostgreSQL BEFORE INSERT trigger that automatically defaults the visit date to today when omitted, and raises an exception if the bill amount is negative — enforcing data integrity at the database level.</p>
+  </div>
+
+  <div class="rules-row">
+    <div class="rule-card">
+      <span class="rule-icon">📅</span>
+      <div class="rule-title">Auto Date Default</div>
+      <div class="rule-desc">When a new PatientHistory record is inserted without a visit_date, the trigger automatically sets it to CURRENT_DATE.</div>
+      <span class="rule-tag">IF NEW.visit_date IS NULL</span>
+    </div>
+    <div class="rule-card">
+      <span class="rule-icon">🚫</span>
+      <div class="rule-title">Negative Bill Guard</div>
+      <div class="rule-desc">If the BillAmount supplied is negative, the trigger raises a PostgreSQL exception and blocks the insert entirely.</div>
+      <span class="rule-tag">IF NEW.BillAmount &lt; 0</span>
+    </div>
+  </div>
+
+  <div class="sql-box">
+    <div class="sql-top"><span class="sql-lbl">Trigger SQL — PostgreSQL</span><span class="sql-tag">BEFORE INSERT</span></div>
+    <pre>{{ sql_shown }}</pre>
+  </div>
+
+  <div class="deploy-section">
+    <div class="deploy-title">⚡ Install Trigger on Database</div>
+    <div class="deploy-sub">Click the button below to install this trigger directly on your PostgreSQL database. It will create the trigger function and bind it to the patienthistory table.</div>
+
+    {% if message %}
+    <div class="msg-success">✅ {{ message }}</div>
+    {% endif %}
+    {% if error %}
+    <div class="msg-error">⚠️ {{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="/t1">
+      <button type="submit" class="deploy-btn">⚡ Deploy Trigger Now</button>
+    </form>
+
+    <div class="warning-note">
+      ⚠️ <span>This will create or replace the trigger function <code>fn_patienthistory_defaults</code> and bind it to the <code>patienthistory</code> table. Safe to run multiple times — uses <code>CREATE OR REPLACE</code>.</span>
+    </div>
+  </div>
+</main>
+</body>
+</html>

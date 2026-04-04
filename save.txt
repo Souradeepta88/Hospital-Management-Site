@@ -1,0 +1,17 @@
+#@app.route("/StartWithE")
+   #def start_with_e():
+    #data = DB().select("""
+       # SELECT *
+        FROM librarynew1
+        WHERE name LIKE 'E%';
+    """)
+    return render_template("StartWithE.jinja2.html", data=data)
+
+#@app.route("/FineBarrier")
+#def fine_barrier():
+    data = DB().select("""
+        SELECT *
+        FROM librarynew1
+        WHERE fine > 100;
+    """)
+    return render_template("FineBarrier.jinja2.html", data=data)

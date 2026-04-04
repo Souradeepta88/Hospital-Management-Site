@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<!-- Prescription Display -->
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<title>Prescription Display</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--bg:#e8fbfb;
+--card:#ffffff;
+--border:#7dddd8;
+--cyan:#06b6d4;
+--cyan-dark:#0891b2;
+--text:#0c2d3a;
+--muted:#4a9baa;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Outfit',sans-serif;
+background:var(--bg);
+min-height:100vh;
+}
+
+/* dotted background */
+
+body::before{
+content:'';
+position:fixed;
+inset:0;
+background-image:radial-gradient(circle,rgba(10,191,176,.2) 1px,transparent 1px);
+background-size:32px 32px;
+pointer-events:none;
+}
+
+/* NAVBAR */
+
+nav{
+height:70px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 40px;
+border-bottom:1px solid var(--border);
+background:rgba(255,255,255,.7);
+backdrop-filter:blur(10px);
+}
+
+.brand{
+font-family:'Space Grotesk',sans-serif;
+font-size:1.3rem;
+font-weight:700;
+color:var(--cyan-dark);
+text-decoration:none;
+}
+
+.back{
+font-family:'JetBrains Mono',monospace;
+font-size:.8rem;
+padding:8px 16px;
+border-radius:8px;
+border:1px solid var(--border);
+text-decoration:none;
+color:var(--text);
+background:white;
+transition:.2s;
+}
+
+.back:hover{
+background:var(--cyan);
+color:white;
+}
+
+/* CONTENT */
+
+.container{
+max-width:900px;
+margin:auto;
+padding:50px 20px;
+}
+
+/* CARD */
+
+.card{
+background:var(--card);
+border:1px solid var(--border);
+border-radius:18px;
+padding:40px;
+box-shadow:0 10px 40px rgba(6,182,212,.18);
+}
+
+/* HEADING */
+
+h1{
+font-family:'Space Grotesk',sans-serif;
+font-size:2.4rem;
+margin-bottom:25px;
+
+background:linear-gradient(135deg,var(--text),var(--cyan));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+/* TABLE */
+
+table{
+width:100%;
+border-collapse:collapse;
+font-size:.95rem;
+}
+
+th{
+background:var(--cyan);
+color:white;
+padding:12px;
+text-align:left;
+font-family:'JetBrains Mono',monospace;
+font-size:.8rem;
+letter-spacing:.05em;
+}
+
+td{
+padding:12px;
+border-bottom:1px solid #e5f5f5;
+}
+
+tr:hover{
+background:#f2ffff;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<nav>
+
+<a class="brand" href="/">✦ Silver HealthCare</a>
+
+<a class="back" href="/">← Back to Menu</a>
+
+</nav>
+
+
+<div class="container">
+
+<div class="card">
+
+<h1>📄 Prescription Details</h1>
+
+<table>
+
+<tr>
+<th>Patient Name</th>
+<th>Doctor Name</th>
+<th>Visit Date</th>
+</tr>
+
+{% for row in data %}
+<tr>
+<td>{{ row[0] }}</td>
+<td>{{ row[1] }}</td>
+<td>{{ row[2] }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+</body>
+</html>

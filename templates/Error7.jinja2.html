@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FK Error 7 — Prescription not found</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    min-height:100vh;
+    background:linear-gradient(135deg,#ecfeff 0%,#cffafe 30%,#a5f3fc 60%,#67e8f9 100%);
+    display:flex;align-items:center;justify-content:center;padding:1.5rem;
+  }
+  .wrap{
+    width:100%;max-width:620px;
+    background:rgba(255,255,255,0.72);
+    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    border:1.5px solid rgba(255,255,255,0.85);
+    border-radius:24px;
+    box-shadow:0 8px 40px rgba(8,145,178,0.18),0 2px 8px rgba(8,145,178,0.10);
+    overflow:hidden;
+  }
+  .header{
+    background:linear-gradient(120deg,#be185d 0%,#ec4899 100%);
+    padding:2rem 2rem 1.6rem;
+    display:flex;align-items:center;gap:1.2rem;
+    position:relative;overflow:hidden;
+  }
+  .header::before{
+    content:'';position:absolute;top:-40px;right:-40px;
+    width:150px;height:150px;border-radius:50%;
+    background:rgba(255,255,255,0.10);pointer-events:none;
+  }
+  .header::after{
+    content:'';position:absolute;bottom:-50px;right:60px;
+    width:100px;height:100px;border-radius:50%;
+    background:rgba(255,255,255,0.07);pointer-events:none;
+  }
+  .icon-circle{
+    width:56px;height:56px;border-radius:50%;flex-shrink:0;
+    background:rgba(255,255,255,0.22);
+    border:2px solid rgba(255,255,255,0.4);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.15rem;font-weight:700;color:#fff;letter-spacing:-0.02em;
+    position:relative;z-index:1;
+  }
+  .header-text{position:relative;z-index:1;}
+  .header-text h1{font-size:1.25rem;font-weight:700;color:#fff;line-height:1.2;}
+  .badge{
+    display:inline-flex;align-items:center;gap:5px;
+    background:rgba(255,255,255,0.22);border:1px solid rgba(255,255,255,0.35);
+    border-radius:999px;padding:3px 10px;margin-top:5px;
+    font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.92);
+    letter-spacing:0.04em;text-transform:uppercase;
+  }
+  .badge-dot{width:6px;height:6px;border-radius:50%;background:#fff;opacity:0.9;}
+  .body{padding:1.8rem 2rem 2rem;}
+  .desc{
+    font-size:0.95rem;color:#1e293b;line-height:1.7;margin-bottom:1.4rem;
+  }
+  .desc strong{color:#0e7490;font-weight:600;}
+  .val{
+    background:#fce7f3;color:#9d174d;
+    font-family:'Courier New',monospace;font-size:0.88rem;font-style:normal;
+    padding:2px 7px;border-radius:5px;
+    border:1px solid rgba(0,0,0,0.08);
+  }
+  .fk-table{
+    background:linear-gradient(135deg,rgba(236,254,255,0.7),rgba(207,250,254,0.5));
+    border:1.5px solid rgba(8,145,178,0.18);
+    border-radius:14px;padding:1rem 1.2rem;margin-bottom:1.4rem;
+  }
+  .fk-table table{width:100%;border-collapse:collapse;font-size:0.85rem;}
+  .fk-table td{padding:5px 4px;vertical-align:middle;}
+  .fk-table td:first-child{
+    color:#0e7490;font-weight:600;width:46%;white-space:nowrap;
+  }
+  .fk-table td:last-child{color:#1e293b;}
+  .fk-table td code{
+    background:rgba(8,145,178,0.10);color:#0e7490;
+    padding:2px 6px;border-radius:4px;font-size:0.82rem;
+  }
+  .fk-table tr+tr td{border-top:1px solid rgba(8,145,178,0.10);}
+  .flow{
+    display:flex;align-items:center;gap:6px;
+    margin-bottom:1.4rem;flex-wrap:wrap;
+  }
+  .flow-step{
+    background:rgba(255,255,255,0.8);border:1.5px solid rgba(8,145,178,0.25);
+    border-radius:10px;padding:5px 12px;
+    font-size:0.8rem;font-weight:600;color:#0e7490;
+    white-space:nowrap;
+  }
+  .flow-step.done{
+    background:rgba(8,145,178,0.12);border-color:rgba(8,145,178,0.35);
+  }
+  .flow-step.missing{
+    background:#fee2e2;border-color:#fca5a5;color:#991b1b;
+  }
+  .flow-step.target{
+    background:rgba(8,145,178,0.08);border-color:rgba(8,145,178,0.3);
+    color:#0e7490;opacity:0.55;
+  }
+  .flow-arrow{color:#be185d;font-size:1rem;font-weight:700;flex-shrink:0;}
+  .tip{
+    background:linear-gradient(135deg,rgba(254,252,232,0.9),rgba(253,246,178,0.7));
+    border:1.5px solid rgba(202,138,4,0.30);
+    border-left:4px solid #be185d;
+    border-radius:0 12px 12px 0;
+    padding:0.75rem 1rem;margin-bottom:1.8rem;
+    font-size:0.87rem;color:#1e293b;line-height:1.6;
+  }
+  .tip strong{display:block;font-weight:700;color:#be185d;margin-bottom:3px;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.04em;}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;}
+  .btn{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:0.6rem 1.3rem;border-radius:10px;
+    font-size:0.88rem;font-weight:600;text-decoration:none;
+    transition:transform 0.12s,box-shadow 0.12s,filter 0.12s;
+    border:none;cursor:pointer;
+  }
+  .btn:hover{transform:translateY(-1px);filter:brightness(0.95);}
+  .btn:active{transform:scale(0.97);}
+  .btn-fix{
+    background:linear-gradient(135deg,#be185d,#ec4899);
+    color:#fff;
+    box-shadow:0 4px 14px rgba(8,145,178,0.30);
+  }
+  .btn-back{
+    background:rgba(255,255,255,0.75);
+    color:#0e7490;
+    border:1.5px solid rgba(8,145,178,0.30);
+  }
+  .btn-home{
+    background:rgba(255,255,255,0.55);
+    color:#64748b;
+    border:1.5px solid rgba(100,116,139,0.20);
+  }
+  .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(8,145,178,0.15),transparent);margin:1.4rem 0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="icon-circle">M</div>
+    <div class="header-text">
+      <h1>Foreign Key Violation</h1>
+      <div class="badge"><span class="badge-dot"></span>FK Error #7 &nbsp;·&nbsp; Prescription not found</div>
+    </div>
+  </div>
+  <div class="body">
+    <p class="desc">You're trying to add a <strong>Medication</strong>, but prescription number <code class='val'>{{ missing_value }}</code> doesn't exist in the <strong>Prescription</strong> table yet.</p>
+
+    <div class="flow">
+      <div class="flow-step done">&#10003; prescription</div>
+      <span class="flow-arrow">&#8594;</span>
+      <div class="flow-step missing">&#10007; medication (missing)</div>
+      <span class="flow-arrow">&#8594;</span>
+      <div class="flow-step target">medication entry</div>
+    </div>
+
+    <div class="fk-table">
+      <table>
+        <tr>
+          <td>Child table</td>
+          <td><code>{{ child_table }}</code> &rarr; <code>{{ child_column }}</code></td>
+        </tr>
+        <tr>
+          <td>Parent table</td>
+          <td><code>{{ parent_table }}</code> &rarr; <code>{{ parent_column }}</code></td>
+        </tr>
+        <tr>
+          <td>Missing value</td>
+          <td><code class="val">{{ missing_value }}</code></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="tip">
+      <strong>&#9881; How to fix</strong>
+      First create <strong>{{ missing_value }}</strong> in the <strong>{{ parent_table }}</strong> table using the button below, then come back and submit this form again.
+    </div>
+
+    <div class="actions">
+      <a href="{{ fix_url }}" class="btn btn-fix">&#43; Create Prescription</a>
+      <a href="/medicationform" class="btn btn-back">&#8592; Back to Medication Form</a>
+      <a href="/" class="btn btn-home">&#8962; Home</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

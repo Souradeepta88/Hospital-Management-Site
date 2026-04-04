@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Costs Form</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--bg:#e0f8f7;
+--card:#ffffff;
+--border:#7dddd8;
+--cyan:#06b6d4;
+--cyan-dark:#0891b2;
+--text:#0c2d3a;
+--muted:#4a9baa;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Outfit',sans-serif;
+background:var(--bg);
+min-height:100vh;
+}
+
+/* dotted background */
+
+body::before{
+content:'';
+position:fixed;
+inset:0;
+background-image:radial-gradient(circle,rgba(10,191,176,.2) 1px,transparent 1px);
+background-size:32px 32px;
+pointer-events:none;
+}
+
+/* NAVBAR */
+
+nav{
+
+height:70px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+padding:0 40px;
+
+border-bottom:1px solid var(--border);
+background:rgba(255,255,255,.6);
+backdrop-filter:blur(10px);
+
+}
+
+.brand{
+font-family:'Space Grotesk',sans-serif;
+font-size:1.3rem;
+font-weight:700;
+color:var(--cyan-dark);
+text-decoration:none;
+}
+
+.back-btn{
+
+font-family:'JetBrains Mono',monospace;
+font-size:.8rem;
+
+padding:8px 16px;
+
+border-radius:8px;
+border:1px solid var(--border);
+
+background:white;
+
+text-decoration:none;
+color:var(--text);
+
+transition:.2s;
+
+}
+
+.back-btn:hover{
+
+background:var(--cyan);
+color:white;
+
+}
+
+/* MAIN FORM AREA */
+
+.container{
+
+display:flex;
+justify-content:center;
+padding:60px 20px;
+
+}
+
+/* CARD */
+
+.form-card{
+
+background:var(--card);
+border:1px solid var(--border);
+border-radius:20px;
+
+padding:50px;
+width:550px;
+
+box-shadow:0 12px 40px rgba(6,182,212,.18);
+
+}
+
+/* HEADING */
+
+h1{
+
+font-family:'Space Grotesk',sans-serif;
+font-size:2.3rem;
+margin-bottom:30px;
+
+background:linear-gradient(135deg,var(--text),var(--cyan));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+}
+
+/* GRID */
+
+.form-grid{
+
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:22px;
+
+}
+
+.full{
+grid-column:span 2;
+}
+
+/* LABEL */
+
+label{
+
+font-family:'JetBrains Mono',monospace;
+font-size:.7rem;
+letter-spacing:.08em;
+color:var(--muted);
+text-transform:uppercase;
+
+}
+
+/* INPUT */
+
+input,select,textarea{
+
+margin-top:6px;
+padding:12px 14px;
+
+border-radius:10px;
+border:1px solid var(--border);
+
+background:#f8ffff;
+
+font-size:.9rem;
+
+transition:.25s;
+
+}
+
+/* focus glow */
+
+input:focus,
+select:focus,
+textarea:focus{
+
+outline:none;
+border-color:var(--cyan);
+
+box-shadow:0 0 0 3px rgba(6,182,212,.2);
+
+}
+
+/* TOTAL BOX */
+
+.total-box{
+
+margin-top:20px;
+padding:12px;
+
+border-radius:10px;
+border:1px dashed var(--border);
+
+font-family:'JetBrains Mono',monospace;
+font-size:.9rem;
+
+background:#f3ffff;
+
+}
+
+/* BUTTON */
+
+button{
+
+margin-top:30px;
+
+padding:14px 30px;
+
+border:none;
+border-radius:12px;
+
+font-family:'Space Grotesk',sans-serif;
+font-weight:600;
+
+background:var(--cyan);
+color:white;
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+button:hover{
+
+background:var(--cyan-dark);
+
+transform:translateY(-2px);
+
+box-shadow:0 10px 25px rgba(6,182,212,.35);
+
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+
+<a class="brand" href="/">✦ Silver HealthCare</a>
+
+<a class="back-btn" href="/">← Back to Main Menu</a>
+
+</nav>
+
+<div class="container">
+
+<div class="form-card">
+
+<h1>Enter Costs Information</h1>
+
+<form method="POST" action="/costsform">
+
+<div class="form-grid">
+
+<div>
+<label>Patient Name</label>
+<input type="text" name="patient_name" required>
+</div>
+
+<div>
+<label>Admitted</label>
+<select name="admitted" required>
+<option value="true">Yes</option>
+<option value="false">No</option>
+</select>
+</div>
+
+<div>
+<label>Admission Cost (₹)</label>
+<input type="number" id="admission_cost" name="admission_cost" required>
+</div>
+
+<div>
+<label>Medicine Cost (₹)</label>
+<input type="number" id="medicine_cost" name="medicine_cost" required>
+</div>
+
+<div>
+<label>Doctor Fee (₹)</label>
+<input type="number" id="doctor_fee" name="doctor_fee" required>
+</div>
+
+<div>
+<label>Date</label>
+<input type="date">
+</div>
+
+<div class="full">
+<label>Additional Notes</label>
+<textarea rows="3" placeholder="Optional comments..."></textarea>
+</div>
+
+</div>
+
+<div class="total-box">
+Estimated Total Cost: ₹ <span id="total">0</span>
+</div>
+
+<button type="submit">Submit Record</button>
+
+</form>
+
+</div>
+
+</div>
+
+<script>
+
+function updateTotal(){
+
+let a=parseFloat(document.getElementById("admission_cost").value)||0;
+let b=parseFloat(document.getElementById("medicine_cost").value)||0;
+let c=parseFloat(document.getElementById("doctor_fee").value)||0;
+
+document.getElementById("total").innerText=a+b+c;
+
+}
+
+document.querySelectorAll("input").forEach(i=>{
+
+i.addEventListener("input",updateTotal);
+
+});
+
+</script>
+
+</body>
+</html>

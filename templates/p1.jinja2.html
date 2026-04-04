@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>P1 — Deactivate Doctor · Silver Care</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--r:#e05c6e;--r2:#f08090;--r3:#ffc0c8;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#1a0810 0%,#250d18 60%,#1a0810 100%);min-height:100vh;color:#f0d8de;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(224,92,110,0.1) 0%,transparent 55%),radial-gradient(ellipse at 80% 70%,rgba(240,128,144,0.06) 0%,transparent 50%);pointer-events:none;z-index:0;}
+    body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(224,92,110,0.08) 1px,transparent 1px);background-size:36px 36px;pointer-events:none;z-index:0;}
+
+    nav{position:sticky;top:0;z-index:100;background:rgba(26,8,16,0.93);backdrop-filter:blur(20px);border-bottom:1px solid rgba(224,92,110,0.15);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+    .brand{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:white;text-decoration:none;}
+    .back{display:inline-flex;align-items:center;gap:8px;color:rgba(224,92,110,0.7);text-decoration:none;font-size:0.85rem;font-weight:600;padding:8px 16px;border-radius:10px;border:1px solid rgba(224,92,110,0.2);transition:all 0.2s;}
+    .back:hover{background:rgba(224,92,110,0.1);color:var(--r2);border-color:rgba(224,92,110,0.4);}
+
+    main{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:60px 40px 80px;}
+
+    .page-hero{margin-bottom:48px;animation:fadeUp 0.7s ease both;}
+    .chip{display:inline-flex;align-items:center;gap:8px;background:rgba(224,92,110,0.1);border:1px solid rgba(224,92,110,0.3);border-radius:30px;padding:6px 16px;font-size:0.7rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--r2);margin-bottom:20px;}
+    .chip-icon{font-size:0.9rem;}
+    h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:white;line-height:1.1;margin-bottom:14px;}
+    h1 span{background:linear-gradient(120deg,var(--r),var(--r2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .desc{color:rgba(240,216,222,0.5);font-size:1rem;line-height:1.75;max-width:600px;}
+
+    /* Two-col layout */
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;}
+    .left-col{display:flex;flex-direction:column;gap:24px;}
+
+    /* Execute form */
+    .exec-card{background:linear-gradient(135deg,rgba(224,92,110,0.08),rgba(240,128,144,0.04));border:1px solid rgba(224,92,110,0.2);border-radius:24px;padding:36px 32px;position:relative;overflow:hidden;animation:fadeUp 0.7s 0.05s ease both;}
+    .exec-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--r),var(--r2));}
+    .exec-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:900;color:white;margin-bottom:6px;}
+    .exec-sub{font-size:0.84rem;color:rgba(240,216,222,0.45);margin-bottom:28px;line-height:1.6;}
+
+    .input-group{margin-bottom:20px;}
+    .input-label{display:block;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(224,92,110,0.6);margin-bottom:8px;}
+    .input-wrap{position:relative;}
+    .input-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:1rem;pointer-events:none;}
+    input[type="number"]{width:100%;background:rgba(224,92,110,0.06);border:1px solid rgba(224,92,110,0.2);border-radius:14px;padding:14px 16px 14px 44px;font-family:'JetBrains Mono',monospace;font-size:1rem;color:white;outline:none;transition:all 0.2s;}
+    input[type="number"]:focus{border-color:rgba(224,92,110,0.5);background:rgba(224,92,110,0.1);box-shadow:0 0 0 3px rgba(224,92,110,0.1);}
+    input[type="number"]::placeholder{color:rgba(240,216,222,0.25);}
+
+    .exec-btn{width:100%;background:linear-gradient(135deg,var(--r),var(--r2));color:white;padding:16px;border-radius:50px;font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;border:none;cursor:pointer;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 8px 32px rgba(224,92,110,0.3);display:flex;align-items:center;justify-content:center;gap:10px;}
+    .exec-btn:hover{transform:translateY(-2px) scale(1.01);box-shadow:0 16px 48px rgba(224,92,110,0.45);}
+    .exec-btn:active{transform:translateY(0) scale(0.99);}
+
+    .msg-success{background:rgba(67,201,160,0.1);border:1px solid rgba(67,201,160,0.3);border-radius:14px;padding:16px 20px;color:#7eddd4;display:flex;align-items:center;gap:10px;margin-bottom:20px;font-weight:600;font-size:0.92rem;}
+    .msg-error{background:rgba(224,92,110,0.1);border:1px solid rgba(224,92,110,0.3);border-radius:14px;padding:16px 20px;color:#f08090;display:flex;align-items:flex-start;gap:10px;margin-bottom:20px;font-size:0.88rem;}
+    .msg-warn{background:rgba(240,160,80,0.08);border:1px solid rgba(240,160,80,0.2);border-radius:14px;padding:14px 18px;color:#f0c080;display:flex;align-items:flex-start;gap:8px;margin-top:16px;font-size:0.8rem;line-height:1.55;}
+
+    /* SQL card */
+    .sql-card{background:rgba(224,92,110,0.04);border:1px solid rgba(224,92,110,0.12);border-radius:20px;padding:28px 24px;position:relative;overflow:hidden;animation:fadeUp 0.7s 0.1s ease both;}
+    .sql-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--r),var(--r2));}
+    .sql-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+    .sql-lbl{font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(224,92,110,0.45);}
+    .sql-tag{background:rgba(224,92,110,0.1);border:1px solid rgba(224,92,110,0.2);border-radius:8px;padding:3px 10px;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--r2);}
+    pre{font-family:'JetBrains Mono',monospace;font-size:0.78rem;line-height:1.85;color:#d0a0a8;overflow-x:auto;}
+    .kw{color:#e05c6e;} .tbl{color:#f08090;} .fn{color:#ffc0c8;} .cmt{color:rgba(208,160,168,0.3);} .num{color:#f0d080;}
+
+    /* Steps */
+    .steps-card{background:rgba(224,92,110,0.04);border:1px solid rgba(224,92,110,0.1);border-radius:20px;padding:28px 24px;animation:fadeUp 0.7s 0.15s ease both;}
+    .steps-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:white;margin-bottom:20px;}
+    .step{display:flex;gap:16px;margin-bottom:16px;align-items:flex-start;}
+    .step:last-child{margin-bottom:0;}
+    .step-num{width:28px;height:28px;border-radius:50%;background:rgba(224,92,110,0.15);border:1px solid rgba(224,92,110,0.25);display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;color:var(--r2);flex-shrink:0;margin-top:1px;}
+    .step-text{font-size:0.84rem;color:rgba(240,216,222,0.55);line-height:1.55;}
+    .step-text strong{color:rgba(240,216,222,0.8);}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+    @media(max-width:900px){.two-col{grid-template-columns:1fr;}nav{padding:0 20px;}main{padding:40px 20px;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="brand">Silver Care Hospital</a>
+  <a href="/" class="back">← Back to Portal</a>
+</nav>
+<main>
+  <div class="page-hero">
+    <div class="chip"><span class="chip-icon">⚙️</span>Stored Procedure · Task P1</div>
+    <h1><span>Deactivate</span> a Doctor<br/>by ID</h1>
+    <p class="desc">Executes a PostgreSQL UPDATE that sets a doctor's IsActive status to false. Validates the ID exists first, confirms row count after update, and reports whether the operation succeeded.</p>
+  </div>
+
+  <div class="two-col">
+    <div class="left-col">
+
+      <!-- Execute form -->
+      <div class="exec-card">
+        <div class="exec-title">⚙️ Execute Procedure</div>
+        <div class="exec-sub">Enter the Doctor's numeric ID to deactivate their account. This mirrors calling <code>CALL deactivate_doctor(id)</code>.</div>
+
+        {% if message %}
+        <div class="msg-success">✅ {{ message }}</div>
+        {% endif %}
+        {% if error %}
+        <div class="msg-error">⚠️ {{ error }}</div>
+        {% endif %}
+
+        <form method="POST" action="/p1">
+          <div class="input-group">
+            <label class="input-label" for="doctor_id">Doctor ID</label>
+            <div class="input-wrap">
+              <span class="input-icon">🩺</span>
+              <input type="number" id="doctor_id" name="doctor_id" placeholder="e.g. 101" min="1" value="{{ doctor_id or '' }}" required/>
+            </div>
+          </div>
+          <button type="submit" class="exec-btn">⚙️ Deactivate Doctor</button>
+        </form>
+
+        <div class="msg-warn">⚠️ <span>This permanently sets <strong>IsActive = false</strong> for the doctor. They will no longer appear in active doctor queries until manually reactivated.</span></div>
+      </div>
+
+      <!-- Steps -->
+      <div class="steps-card">
+        <div class="steps-title">How the Procedure Works</div>
+        <div class="step"><div class="step-num">1</div><div class="step-text"><strong>ID Lookup</strong> — Checks if the Doctor ID exists in the database before proceeding.</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-text"><strong>UPDATE</strong> — Sets <code>IsActive = false</code> on the matching doctor record.</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Row Count Check</strong> — Validates rows_affected &gt; 0 to confirm the operation succeeded.</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Feedback</strong> — Returns a success message with the doctor's name, or a not-found error.</div></div>
+      </div>
+
+    </div>
+
+    <!-- SQL card -->
+    <div class="sql-card">
+      <div class="sql-top"><span class="sql-lbl">Procedure SQL</span><span class="sql-tag">PostgreSQL plpgsql</span></div>
+      <pre>{{ sql_shown }}</pre>
+    </div>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>C2 — Amoxicillin Prescriptions · Silver Care</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--p:#9664dc;--p2:#b890f0;--p3:#d4b8ff;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#0e0a1a 0%,#14103a 60%,#0e0a1a 100%);min-height:100vh;color:#e0d8f8;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(150,100,220,0.12) 0%,transparent 55%),radial-gradient(ellipse at 80% 70%,rgba(184,144,240,0.07) 0%,transparent 50%);pointer-events:none;z-index:0;}
+    /* Constellation dots */
+    body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(150,100,220,0.15) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+
+    nav{position:sticky;top:0;z-index:100;background:rgba(14,10,26,0.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(150,100,220,0.15);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+    .brand{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:white;text-decoration:none;}
+    .back{display:inline-flex;align-items:center;gap:8px;color:rgba(150,100,220,0.7);text-decoration:none;font-size:0.85rem;font-weight:600;padding:8px 16px;border-radius:10px;border:1px solid rgba(150,100,220,0.2);transition:all 0.2s;}
+    .back:hover{background:rgba(150,100,220,0.1);color:var(--p2);border-color:rgba(150,100,220,0.4);}
+
+    main{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:60px 40px 80px;}
+
+    .page-hero{margin-bottom:48px;animation:fadeUp 0.7s ease both;}
+    .chip{display:inline-flex;align-items:center;gap:8px;background:rgba(150,100,220,0.1);border:1px solid rgba(150,100,220,0.3);border-radius:30px;padding:6px 16px;font-size:0.7rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--p2);margin-bottom:20px;}
+    .chip-dot{width:6px;height:6px;background:var(--p2);border-radius:50%;animation:blink 1.5s ease-in-out infinite;}
+    @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+    h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:white;line-height:1.1;margin-bottom:14px;}
+    h1 span{background:linear-gradient(120deg,var(--p),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .desc{color:rgba(224,216,248,0.5);font-size:1rem;line-height:1.75;max-width:600px;}
+
+    /* Prescription pill hero */
+    .rx-hero{background:linear-gradient(135deg,rgba(150,100,220,0.1),rgba(184,144,240,0.06));border:1px solid rgba(150,100,220,0.2);border-radius:24px;padding:32px 40px;display:flex;align-items:center;gap:32px;margin-bottom:40px;animation:fadeUp 0.7s 0.05s ease both;position:relative;overflow:hidden;}
+    .rx-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--p),var(--p2));}
+    .rx-pill{font-size:4rem;flex-shrink:0;}
+    .rx-info{flex:1;}
+    .rx-label{font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(150,100,220,0.5);margin-bottom:8px;}
+    .rx-drug{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:white;margin-bottom:6px;}
+    .rx-sub{font-size:0.88rem;color:rgba(224,216,248,0.45);}
+    .rx-count{text-align:right;}
+    .rx-num{font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;background:linear-gradient(120deg,var(--p),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+    .rx-num-lbl{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(224,216,248,0.35);}
+
+    .sql-box{background:rgba(150,100,220,0.04);border:1px solid rgba(150,100,220,0.15);border-radius:20px;padding:28px 32px;margin-bottom:40px;position:relative;overflow:hidden;animation:fadeUp 0.7s 0.1s ease both;}
+    .sql-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--p),var(--p2));}
+    .sql-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+    .sql-lbl{font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(150,100,220,0.45);}
+    .sql-tag{background:rgba(150,100,220,0.1);border:1px solid rgba(150,100,220,0.2);border-radius:8px;padding:3px 10px;font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--p2);}
+    pre{font-family:'JetBrains Mono',monospace;font-size:0.86rem;line-height:1.9;color:#b8a8e0;}
+    .kw{color:#9664dc;} .tbl{color:#b890f0;} .str{color:#f0c060;} .cmt{color:rgba(184,168,224,0.3);}
+
+    /* Results cards */
+    .results-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;animation:fadeUp 0.7s 0.2s ease both;}
+    .results-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:white;}
+    .results-badge{background:rgba(150,100,220,0.1);border:1px solid rgba(150,100,220,0.2);border-radius:20px;padding:5px 14px;font-size:0.78rem;font-weight:700;color:var(--p2);}
+
+    .presc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;animation:fadeUp 0.7s 0.3s ease both;}
+    .presc-card{background:rgba(255,255,255,0.03);border:1px solid rgba(150,100,220,0.12);border-radius:20px;padding:28px 24px;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden;}
+    .presc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--p),var(--p2));opacity:0;transition:opacity 0.3s;}
+    .presc-card:hover{transform:translateY(-5px);border-color:rgba(150,100,220,0.3);background:rgba(150,100,220,0.05);}
+    .presc-card:hover::before{opacity:1;}
+    .presc-card-top{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+    .presc-avatar{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,rgba(150,100,220,0.2),rgba(184,144,240,0.1));border:1px solid rgba(150,100,220,0.2);display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
+    .presc-patient{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:white;}
+    .presc-patient-sub{font-size:0.72rem;color:rgba(224,216,248,0.4);margin-top:2px;}
+    .presc-divider{height:1px;background:rgba(150,100,220,0.1);margin:14px 0;}
+    .presc-row{display:flex;align-items:center;gap:10px;font-size:0.85rem;color:rgba(224,216,248,0.55);margin-bottom:8px;}
+    .presc-row:last-child{margin-bottom:0;}
+    .presc-icon{width:28px;height:28px;border-radius:8px;background:rgba(150,100,220,0.1);display:flex;align-items:center;justify-content:center;font-size:0.8rem;flex-shrink:0;}
+    .presc-val{color:var(--p3);font-weight:600;}
+    .med-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(150,100,220,0.2),rgba(184,144,240,0.1));border:1px solid rgba(150,100,220,0.3);border-radius:20px;padding:5px 14px;font-size:0.78rem;font-weight:700;color:var(--p2);margin-top:14px;}
+
+    .empty{text-align:center;padding:80px 40px;color:rgba(224,216,248,0.35);}
+    .err{background:rgba(224,92,110,0.08);border:1px solid rgba(224,92,110,0.2);border-radius:14px;padding:18px 22px;color:#f08090;font-family:'JetBrains Mono',monospace;font-size:0.84rem;margin-bottom:32px;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+    @media(max-width:768px){nav{padding:0 20px;}main{padding:40px 20px;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="brand">Silver Care Hospital</a>
+  <a href="/" class="back">← Back to Portal</a>
+</nav>
+<main>
+  <div class="page-hero">
+    <div class="chip"><div class="chip-dot"></div>Complex Query · Task C2</div>
+    <h1><span>Amoxicillin</span> Prescriptions<br/>&amp; Prescribing Doctors</h1>
+    <p class="desc">A 4-table chain join — patients, prescriptions, doctors and medications — to identify every patient who was prescribed Amoxicillin, who prescribed it, and when.</p>
+  </div>
+
+  <div class="rx-hero">
+    <div class="rx-pill">💊</div>
+    <div class="rx-info">
+      <div class="rx-label">Medication Filter</div>
+      <div class="rx-drug">Amoxicillin</div>
+      <div class="rx-sub">Broad-spectrum antibiotic · Prescription tracking</div>
+    </div>
+    <div class="rx-count">
+      <div class="rx-num">{{ data|length }}</div>
+      <div class="rx-num-lbl">Records Found</div>
+    </div>
+  </div>
+
+  <div class="sql-box">
+    <div class="sql-top"><span class="sql-lbl">SQL Query</span><span class="sql-tag">4-TABLE JOIN</span></div>
+    <pre><span class="kw">SELECT</span>  p.username     <span class="kw">AS</span> patient_name,
+        d.username     <span class="kw">AS</span> doctor_name,
+        m.medication,
+        pr.visit_date
+<span class="kw">FROM</span>    <span class="tbl">patients</span> p
+<span class="kw">JOIN</span>    <span class="tbl">prescription</span> pr  <span class="kw">ON</span> p.username  = pr.patient_name
+<span class="kw">JOIN</span>    <span class="tbl">doctor</span> d         <span class="kw">ON</span> pr.doctor_name = d.username
+<span class="kw">JOIN</span>    <span class="tbl">medication</span> m    <span class="kw">ON</span> pr.prescription_number = m.prescription_number
+<span class="kw">WHERE</span>   m.medication = <span class="str">'Amoxicillin'</span>
+<span class="kw">ORDER BY</span> pr.visit_date <span class="kw">DESC</span>;
+<span class="cmt">-- 4 tables joined · filtered to Amoxicillin · sorted by recency</span></pre>
+  </div>
+
+  {% if error %}<div class="err">⚠ {{ error }}</div>{% endif %}
+
+  <div class="results-hdr">
+    <div class="results-title">Prescription Records</div>
+    <div class="results-badge">{{ data|length }} Record{% if data|length != 1 %}s{% endif %}</div>
+  </div>
+
+  {% if data %}
+  <div class="presc-grid">
+    {% for row in data %}
+    <div class="presc-card">
+      <div class="presc-card-top">
+        <div class="presc-avatar">🧑‍⚕️</div>
+        <div>
+          <div class="presc-patient">{{ row[0] }}</div>
+          <div class="presc-patient-sub">Patient</div>
+        </div>
+      </div>
+      <div class="presc-divider"></div>
+      <div class="presc-row"><div class="presc-icon">👨‍⚕️</div>Prescribed by <span class="presc-val">Dr. {{ row[1] }}</span></div>
+      <div class="presc-row"><div class="presc-icon">📅</div>Visit Date <span class="presc-val">{{ row[3] }}</span></div>
+      <div class="med-badge">💊 {{ row[2] }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty">No Amoxicillin prescriptions found in the system.</div>
+  {% endif %}
+</main>
+</body>
+</html>

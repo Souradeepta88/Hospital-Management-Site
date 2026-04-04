@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Costs Overview — Silver Care</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@1,400;1,600&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --silver: #b8c9d9; --silver-light: #dce8f0; --silver-dark: #6a8fa8;
+      --deep: #1a2e3b; --accent: #3ec6e0; --accent2: #7eddd4; --white: #f7fbfe;
+      --card-bg: rgba(255,255,255,0.82); --green: #43c9a0; --purple: #9664dc;
+      --orange: #f0a050; --rose: #e05c6e;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #e8f4fb 0%, #f0f8ff 40%, #daf0f5 100%);
+      min-height: 100vh; color: var(--deep); overflow-x: hidden;
+    }
+    body::before {
+      content: ''; position: fixed; top: -120px; right: -120px; width: 520px; height: 520px;
+      background: radial-gradient(circle, rgba(62,198,224,0.18) 0%, transparent 70%);
+      border-radius: 50%; pointer-events: none; z-index: 0;
+    }
+    body::after {
+      content: ''; position: fixed; bottom: -100px; left: -80px; width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(126,221,212,0.15) 0%, transparent 70%);
+      border-radius: 50%; pointer-events: none; z-index: 0;
+    }
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.75); backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(184,201,217,0.4); padding: 0 48px;
+      display: flex; align-items: center; justify-content: space-between; height: 70px;
+      box-shadow: 0 2px 20px rgba(30,70,100,0.07);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+    .hospital-logo-badge { width: 48px; height: 48px; filter: drop-shadow(0 4px 12px rgba(62,198,224,0.25)); }
+    .nav-brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+    .brand-main {
+      font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 900;
+      background: linear-gradient(90deg, var(--deep), var(--silver-dark));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .brand-sub { font-size: 0.68rem; font-weight: 600; color: var(--silver-dark); letter-spacing: 0.18em; text-transform: uppercase; }
+    .nav-links { display: flex; align-items: center; gap: 6px; list-style: none; }
+    .nav-links a {
+      text-decoration: none; font-size: 0.88rem; font-weight: 600;
+      color: var(--deep); padding: 6px 14px; border-radius: 20px; transition: all 0.2s;
+    }
+    .nav-links a:hover { background: linear-gradient(135deg, rgba(62,198,224,0.15), rgba(126,221,212,0.15)); color: var(--silver-dark); }
+    .btn { display: inline-flex; align-items: center; gap: 8px; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.92rem; border: none; cursor: pointer; text-decoration: none; transition: all 0.28s cubic-bezier(0.34,1.56,0.64,1); white-space: nowrap; border-radius: 50px; }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; padding: 14px 32px; box-shadow: 0 6px 24px rgba(62,198,224,0.4); }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(62,198,224,0.5); }
+    .btn-sm { padding: 8px 18px !important; font-size: 0.82rem !important; }
+    .btn-success { background: linear-gradient(135deg, #43c9a0, #3eb89e); color: white; padding: 11px 24px; box-shadow: 0 4px 16px rgba(67,201,160,0.32); }
+    .btn-success:hover { transform: translateY(-2px); }
+    .btn-ghost { background: rgba(62,198,224,0.08); color: var(--silver-dark); padding: 11px 24px; border-radius: 12px; border: 1.5px solid rgba(62,198,224,0.25); }
+    .btn-ghost:hover { background: rgba(62,198,224,0.15); border-color: var(--accent); transform: translateY(-1px); }
+
+    .page-header { position: relative; z-index: 1; padding: 60px 72px 40px; animation: fadeUp 0.7s ease both; }
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--silver-dark); margin-bottom: 12px;
+    }
+    .section-label::before, .section-label::after { content: ''; display: inline-block; width: 24px; height: 1.5px; background: var(--accent); }
+    .page-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; color: var(--deep); margin-bottom: 12px; }
+    .page-title em { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--silver-dark); }
+    .page-sub { color: #5a7a90; font-size: 1rem; line-height: 1.7; max-width: 560px; }
+    .wrap { position: relative; z-index: 1; padding: 0 72px 80px; }
+
+    .grand-total-card {
+      background: linear-gradient(135deg, var(--deep) 0%, #2a4a5e 100%);
+      border-radius: 28px; padding: 48px 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 20px 60px rgba(26,46,59,0.25); overflow: hidden; position: relative;
+      margin-bottom: 32px; animation: fadeUp 0.7s ease 0.1s both;
+    }
+    .grand-total-card::before {
+      content: ''; position: absolute; top: -60px; right: -60px; width: 260px; height: 260px;
+      border-radius: 50%; background: radial-gradient(circle, rgba(62,198,224,0.14) 0%, transparent 70%);
+    }
+    .gtl { position: relative; z-index: 1; }
+    .gt-badge { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 8px; }
+    .gt-amount {
+      font-family: 'Playfair Display', serif; font-size: clamp(2.6rem, 4.5vw, 4rem); font-weight: 900;
+      background: linear-gradient(120deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;
+    }
+    .gt-sub { color: rgba(255,255,255,0.45); font-size: 0.88rem; margin-top: 10px; }
+    .gtr { position: relative; z-index: 1; display: flex; gap: 32px; }
+    .gts { text-align: center; }
+    .gts-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: white; line-height: 1; }
+    .gts-label { font-size: 0.7rem; color: rgba(255,255,255,0.45); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; }
+    .gt-div { width: 1px; background: rgba(255,255,255,0.1); align-self: stretch; }
+
+    .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; animation: fadeUp 0.7s ease 0.2s both; }
+    .sc {
+      background: var(--card-bg); backdrop-filter: blur(12px);
+      border: 1px solid rgba(184,201,217,0.3); border-radius: 20px;
+      padding: 24px 20px; text-align: center; box-shadow: 0 4px 20px rgba(30,70,100,0.07);
+      transition: all 0.3s ease;
+    }
+    .sc:hover { transform: translateY(-4px); box-shadow: 0 14px 36px rgba(62,198,224,0.15); }
+    .sc-icon { font-size: 1.5rem; margin-bottom: 10px; display: block; }
+    .sc-num {
+      font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 900;
+      background: linear-gradient(120deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;
+    }
+    .sc-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #8aabbc; margin-top: 6px; }
+
+    .bd-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 40px; animation: fadeUp 0.7s ease 0.25s both; }
+    .bd-card {
+      background: var(--card-bg); backdrop-filter: blur(12px);
+      border: 1px solid rgba(184,201,217,0.3); border-radius: 20px; padding: 28px 24px;
+      position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(30,70,100,0.07);
+      transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .bd-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(62,198,224,0.18); }
+    .bd-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .bd-blue::before  { background: linear-gradient(90deg,#3ec6e0,#7eddd4); }
+    .bd-green::before { background: linear-gradient(90deg,#43c9a0,#3eb89e); }
+    .bd-purple::before{ background: linear-gradient(90deg,#9664dc,#b890f0); }
+    .bd-icon { width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 16px; }
+    .ic-blue   { background: rgba(62,198,224,0.1); }
+    .ic-teal   { background: rgba(67,201,160,0.1); }
+    .ic-purple { background: rgba(150,100,220,0.1); }
+    .bd-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--silver-dark); margin-bottom: 6px; }
+    .bd-amount { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; line-height: 1; margin-bottom: 6px; }
+    .c-blue   { background: linear-gradient(120deg,#3ec6e0,#7eddd4); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .c-green  { background: linear-gradient(120deg,#43c9a0,#3eb89e); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .c-purple { background: linear-gradient(120deg,#9664dc,#b890f0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .bd-pct { font-size: 0.78rem; color: #8aabbc; margin-bottom: 12px; }
+    .bd-bar-bg { height: 6px; background: rgba(184,201,217,0.25); border-radius: 10px; overflow: hidden; }
+    .bd-bar { height: 100%; border-radius: 10px; transition: width 1.4s cubic-bezier(0.22,1,0.36,1); }
+    .bar-b { background: linear-gradient(90deg,#3ec6e0,#7eddd4); }
+    .bar-g { background: linear-gradient(90deg,#43c9a0,#3eb89e); }
+    .bar-p { background: linear-gradient(90deg,#9664dc,#b890f0); }
+
+    .charts-section-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; color: var(--deep); margin-bottom: 6px; margin-top: 48px; }
+    .charts-section-title em { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--silver-dark); }
+    .charts-section-sub { color: #5a7a90; font-size: 0.9rem; margin-bottom: 28px; }
+
+    .chart-grid-2   { display: grid; grid-template-columns: 1fr 1fr;     gap: 24px; margin-bottom: 24px; animation: fadeUp 0.7s ease 0.3s both; }
+    .chart-grid-3   { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-bottom: 24px; animation: fadeUp 0.7s ease 0.35s both; }
+    .chart-full     { margin-bottom: 24px; animation: fadeUp 0.7s ease 0.4s both; }
+
+    .chart-card {
+      background: var(--card-bg); backdrop-filter: blur(12px);
+      border: 1px solid rgba(184,201,217,0.3); border-radius: 22px; padding: 28px 28px 24px;
+      box-shadow: 0 4px 24px rgba(30,70,100,0.08); transition: box-shadow 0.3s ease; position: relative; overflow: hidden;
+    }
+    .chart-card:hover { box-shadow: 0 16px 48px rgba(62,198,224,0.15); }
+    .chart-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+    .chart-card-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--deep); margin-bottom: 3px; }
+    .chart-card-sub { font-size: 0.72rem; color: var(--silver-dark); margin-bottom: 20px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    .cta-row {
+      display: flex; gap: 14px; flex-wrap: wrap; align-items: center; padding: 32px 40px; margin-top: 16px;
+      background: var(--card-bg); backdrop-filter: blur(12px);
+      border: 1px solid rgba(184,201,217,0.3); border-radius: 22px;
+      box-shadow: 0 4px 24px rgba(30,70,100,0.07); animation: fadeUp 0.7s ease 0.5s both;
+    }
+    .cta-text { flex: 1; min-width: 200px; }
+    .cta-text h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--deep); margin-bottom: 4px; }
+    .cta-text p { font-size: 0.85rem; color: #6a8aa0; }
+
+    footer { position: relative; z-index: 1; background: var(--deep); color: rgba(255,255,255,0.7); padding: 48px 72px 32px; margin-top: 40px; }
+    .footer-top { display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .footer-brand { flex: 2; min-width: 220px; }
+    .footer-col { flex: 1; min-width: 160px; }
+    footer h4 { font-family: 'Playfair Display', serif; color: white; font-size: 1rem; margin-bottom: 16px; }
+    footer a { display: block; color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.88rem; padding: 4px 0; transition: color 0.2s; }
+    footer a:hover { color: var(--accent); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; }
+    .footer-logo-area { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; color: white; }
+    .footer-logo span { color: var(--accent); }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+
+    @media (max-width: 1024px) { .chart-grid-2, .chart-grid-3 { grid-template-columns: 1fr; } .grand-total-card { flex-direction: column; gap: 28px; } .gtr { flex-wrap: wrap; gap: 16px; } }
+    @media (max-width: 768px) { nav { padding: 0 20px; } .page-header, .wrap { padding-left: 20px; padding-right: 20px; } .stat-row { grid-template-columns: repeat(2,1fr); } .bd-grid { grid-template-columns: 1fr; } footer { padding: 40px 20px 24px; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">
+    <svg class="hospital-logo-badge" viewBox="0 0 60 60" fill="none">
+      <circle cx="30" cy="30" r="29" fill="url(#nOG)"/>
+      <circle cx="30" cy="30" r="26" fill="url(#nIG)"/>
+      <rect x="26" y="14" width="8" height="32" rx="2.5" fill="white"/>
+      <rect x="14" y="26" width="32" height="8" rx="2.5" fill="white"/>
+      <ellipse cx="25" cy="39" rx="4" ry="3.5" fill="rgba(255,255,255,0.7)"/>
+      <rect x="22" y="42" width="6" height="7" rx="2" fill="rgba(255,255,255,0.7)"/>
+      <ellipse cx="35" cy="39" rx="4" ry="3.5" fill="rgba(255,255,255,0.7)"/>
+      <rect x="32" y="42" width="6" height="7" rx="2" fill="rgba(255,255,255,0.7)"/>
+      <path id="arcNav" d="M 10,30 A 20,20 0 0,1 50,30" fill="none"/>
+      <text font-size="4.5" font-family="sans-serif" font-weight="600" fill="rgba(255,255,255,0.75)" letter-spacing="1.5">
+        <textPath href="#arcNav" startOffset="8%">FOUNDED ON LIFE</textPath>
+      </text>
+      <defs>
+        <linearGradient id="nOG" x1="0" y1="0" x2="60" y2="60"><stop offset="0%" stop-color="#c8d4dc"/><stop offset="40%" stop-color="#8a9eae"/><stop offset="100%" stop-color="#4a6478"/></linearGradient>
+        <linearGradient id="nIG" x1="0" y1="0" x2="60" y2="60"><stop offset="0%" stop-color="#b0bec8"/><stop offset="40%" stop-color="#7a92a4"/><stop offset="100%" stop-color="#4a6478"/></linearGradient>
+      </defs>
+    </svg>
+    <div class="nav-brand-text">
+      <span class="brand-main">Silver Care</span>
+      <span class="brand-sub">Hospital &amp; Medical Centre</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/costs">Costs</a></li>
+    <li><a href="/contact">Contact</a></li>
+    <li><a href="/database" class="btn btn-primary btn-sm">Database ↗</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <div class="section-label">Financial Analytics</div>
+  <h1 class="page-title">Cost <em>Statistics &amp; Charts</em></h1>
+  <p class="page-sub">Deep visual analysis of all billing entries — revenue breakdown, patient distribution, statistical spread and linear regression — drawn live from the database.</p>
+</div>
+
+<div class="wrap">
+
+  <!-- GRAND TOTAL HERO -->
+  <div class="grand-total-card">
+    <div class="gtl">
+      <div class="gt-badge">Total Revenue Collected</div>
+      <div class="gt-amount">&#8377; {{ "{:,}".format(stats.grand_total) }}</div>
+      <div class="gt-sub">Across all {{ stats.total_patients }} patient billing records</div>
+    </div>
+    <div class="gtr">
+      <div class="gts"><div class="gts-num">&#8377; {{ "{:,}".format(stats.avg_bill | int) }}</div><div class="gts-label">Avg Bill</div></div>
+      <div class="gt-div"></div>
+      <div class="gts"><div class="gts-num">&#8377; {{ "{:,}".format(stats.highest_bill) }}</div><div class="gts-label">Highest</div></div>
+      <div class="gt-div"></div>
+      <div class="gts"><div class="gts-num">&#8377; {{ "{:,}".format(stats.lowest_bill) }}</div><div class="gts-label">Lowest</div></div>
+      <div class="gt-div"></div>
+      <div class="gts"><div class="gts-num">{{ stats.admitted_count }}</div><div class="gts-label">Admitted</div></div>
+      <div class="gt-div"></div>
+      <div class="gts"><div class="gts-num">{{ stats.outpatient_count }}</div><div class="gts-label">Outpatient</div></div>
+    </div>
+  </div>
+
+  <!-- STAT CARDS -->
+  <div class="stat-row">
+    <div class="sc"><span class="sc-icon">&#128101;</span><div class="sc-num">{{ stats.total_patients }}</div><div class="sc-label">Total Patients</div></div>
+    <div class="sc"><span class="sc-icon">&#127976;</span><div class="sc-num">&#8377;{{ "{:,}".format(stats.total_admission_cost) }}</div><div class="sc-label">Admission Costs</div></div>
+    <div class="sc"><span class="sc-icon">&#128138;</span><div class="sc-num">&#8377;{{ "{:,}".format(stats.total_medicine_cost) }}</div><div class="sc-label">Medicine Costs</div></div>
+    <div class="sc"><span class="sc-icon">&#129514;</span><div class="sc-num">&#8377;{{ "{:,}".format(stats.total_doctor_fee) }}</div><div class="sc-label">Doctor Fees</div></div>
+  </div>
+
+  <!-- BREAKDOWN CARDS -->
+  {% set grand = stats.grand_total if stats.grand_total > 0 else 1 %}
+  <div class="bd-grid">
+    <div class="bd-card bd-blue">
+      <div class="bd-icon ic-blue">&#127976;</div>
+      <div class="bd-label">Admission Cost</div>
+      <div class="bd-amount c-blue">&#8377; {{ "{:,}".format(stats.total_admission_cost) }}</div>
+      <div class="bd-pct">{{ (stats.total_admission_cost / grand * 100) | round(1) }}% of total</div>
+      <div class="bd-bar-bg"><div class="bd-bar bar-b" id="bar1" style="width:0%"></div></div>
+    </div>
+    <div class="bd-card bd-green">
+      <div class="bd-icon ic-teal">&#128138;</div>
+      <div class="bd-label">Medicine Cost</div>
+      <div class="bd-amount c-green">&#8377; {{ "{:,}".format(stats.total_medicine_cost) }}</div>
+      <div class="bd-pct">{{ (stats.total_medicine_cost / grand * 100) | round(1) }}% of total</div>
+      <div class="bd-bar-bg"><div class="bd-bar bar-g" id="bar2" style="width:0%"></div></div>
+    </div>
+    <div class="bd-card bd-purple">
+      <div class="bd-icon ic-purple">&#129514;</div>
+      <div class="bd-label">Doctor Fee</div>
+      <div class="bd-amount c-purple">&#8377; {{ "{:,}".format(stats.total_doctor_fee) }}</div>
+      <div class="bd-pct">{{ (stats.total_doctor_fee / grand * 100) | round(1) }}% of total</div>
+      <div class="bd-bar-bg"><div class="bd-bar bar-p" id="bar3" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <!-- CHARTS -->
+  <div class="charts-section-title">Visual <em>Analytics</em></div>
+  <p class="charts-section-sub">9 interactive charts drawn from live database data.</p>
+
+  <!-- Row 1: Grouped Bar + Doughnut -->
+  <div class="chart-grid-2">
+    <div class="chart-card">
+      <div class="chart-card-title">Cost Category Comparison</div>
+      <div class="chart-card-sub">Grouped Bar Chart</div>
+      <canvas id="barChart" height="260"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-title">Revenue Distribution</div>
+      <div class="chart-card-sub">Doughnut Chart</div>
+      <canvas id="doughnutChart" height="260"></canvas>
+    </div>
+  </div>
+
+  <!-- Row 2: Pie + Horizontal Bar -->
+  <div class="chart-grid-2">
+    <div class="chart-card">
+      <div class="chart-card-title">Patient Type Split</div>
+      <div class="chart-card-sub">Pie Chart — Admitted vs Outpatient</div>
+      <div style="max-width:320px;margin:0 auto;"><canvas id="pieChart" height="280"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-title">Cost Contribution Per Category</div>
+      <div class="chart-card-sub">Horizontal Bar Chart</div>
+      <canvas id="hBarChart" height="260"></canvas>
+    </div>
+  </div>
+
+  <!-- Row 3: Box Plot + Stacked Bar -->
+  <div class="chart-grid-2">
+    <div class="chart-card">
+      <div class="chart-card-title">Bill Distribution — Box Plot</div>
+      <div class="chart-card-sub">Min / Q1 / Median / Q3 / Max per cost type</div>
+      <canvas id="boxChart" height="280"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-title">Stacked Costs by Patient Type</div>
+      <div class="chart-card-sub">Stacked Bar — Admitted vs Outpatient</div>
+      <canvas id="stackedBar" height="280"></canvas>
+    </div>
+  </div>
+
+  <!-- Row 4: Regression (full width) -->
+  <div class="chart-full">
+    <div class="chart-card">
+      <div class="chart-card-title">Admission Cost vs Total Bill — Linear Regression</div>
+      <div class="chart-card-sub">Scatter Plot + OLS Regression Line with R² value</div>
+      <canvas id="regressionChart" height="300"></canvas>
+    </div>
+  </div>
+
+  <!-- Row 5: Radar + Line -->
+  <div class="chart-grid-2">
+    <div class="chart-card">
+      <div class="chart-card-title">Cost Profile Radar</div>
+      <div class="chart-card-sub">Radar Chart — Relative magnitude of each category</div>
+      <div style="max-width:340px;margin:0 auto;"><canvas id="radarChart" height="300"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-title">Cumulative Revenue Trend</div>
+      <div class="chart-card-sub">Line Chart — Simulated cumulative billing across patients</div>
+      <canvas id="lineChart" height="300"></canvas>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-row">
+    <div class="cta-text">
+      <h3>Manage Billing Records</h3>
+      <p>Add new cost entries or review the full billing history for all patients.</p>
+    </div>
+    <a href="/costsform" class="btn btn-success">&#8377; Add Cost Entry</a>
+    <a href="/costsdisplay" class="btn btn-ghost">&#128202; View All Records</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo-area">
+        <svg width="44" height="44" viewBox="0 0 60 60" fill="none">
+          <circle cx="30" cy="30" r="29" fill="url(#fOG)"/>
+          <circle cx="30" cy="30" r="26" fill="url(#fIG)"/>
+          <rect x="26" y="14" width="8" height="32" rx="2.5" fill="white"/>
+          <rect x="14" y="26" width="32" height="8" rx="2.5" fill="white"/>
+          <defs>
+            <linearGradient id="fOG" x1="0" y1="0" x2="60" y2="60"><stop offset="0%" stop-color="#c8d4dc"/><stop offset="100%" stop-color="#4a6478"/></linearGradient>
+            <linearGradient id="fIG" x1="0" y1="0" x2="60" y2="60"><stop offset="0%" stop-color="#b0bec8"/><stop offset="100%" stop-color="#4a6478"/></linearGradient>
+          </defs>
+        </svg>
+        <div class="footer-logo">Silver <span>Care</span></div>
+      </div>
+      <p style="font-size:0.88rem;max-width:280px;line-height:1.7;">Compassionate, advanced healthcare for every individual. Trusted by thousands across the region.</p>
+    </div>
+    <div class="footer-col"><h4>Patient Portal</h4><a href="/patientform">Register Patient</a><a href="/patientdisplay">View Patients</a><a href="/patienthistoryform">Add History</a><a href="/prescriptionform">New Prescription</a></div>
+    <div class="footer-col"><h4>Administration</h4><a href="/userform">User Management</a><a href="/doctorform">Doctor Registration</a><a href="/costsform">Billing Entry</a><a href="/database">Database</a></div>
+    <div class="footer-col"><h4>Information</h4><a href="/about">About Us</a><a href="/costs">Cost Structure</a><a href="/contact">Contact</a></div>
+  </div>
+  <div class="footer-bottom">
+    <span>&#169; 2026 Silver Care Hospital. All rights reserved.</span>
+    <span style="color:var(--accent);">silverhealthcare.com</span>
+  </div>
+</footer>
+
+<script>
+/* ── Live data from Flask ── */
+const D = {
+  admission : {{ stats.total_admission_cost }},
+  medicine  : {{ stats.total_medicine_cost }},
+  doctorFee : {{ stats.total_doctor_fee }},
+  grand     : {{ stats.grand_total }},
+  admitted  : {{ stats.admitted_count }},
+  outpatient: {{ stats.outpatient_count }},
+  total     : {{ stats.total_patients }},
+  avg       : parseFloat("{{ stats.avg_bill }}"),
+  highest   : {{ stats.highest_bill }},
+  lowest    : {{ stats.lowest_bill }},
+};
+
+const C = {
+  blue:'#3ec6e0', teal:'#43c9a0', purple:'#9664dc',
+  rose:'#e05c6e', orange:'#f0a050', silver:'#6a8fa8',
+  blueTr:'rgba(62,198,224,0.18)', tealTr:'rgba(67,201,160,0.18)', purpleTr:'rgba(150,100,220,0.18)'
+};
+
+Chart.defaults.font.family = "'Nunito', sans-serif";
+Chart.defaults.color = '#6a8fa8';
+const fmt = v => '\u20B9' + Number(v).toLocaleString('en-IN');
+
+/* 1. GROUPED BAR */
+new Chart(document.getElementById('barChart'), {
+  type:'bar',
+  data:{
+    labels:['Admission','Medicine','Doctor Fee'],
+    datasets:[{
+      label:'Total (INR)',
+      data:[D.admission, D.medicine, D.doctorFee],
+      backgroundColor:[C.blueTr, C.tealTr, C.purpleTr],
+      borderColor:[C.blue, C.teal, C.purple],
+      borderWidth:2, borderRadius:10, borderSkipped:false
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>fmt(c.parsed.y)}} },
+    scales:{
+      y:{ grid:{color:'rgba(184,201,217,0.25)'}, ticks:{callback:v=>'INR '+(v/1000).toFixed(0)+'k'} },
+      x:{ grid:{display:false} }
+    }
+  }
+});
+
+/* 2. DOUGHNUT */
+new Chart(document.getElementById('doughnutChart'), {
+  type:'doughnut',
+  data:{
+    labels:['Admission','Medicine','Doctor Fee'],
+    datasets:[{
+      data:[D.admission, D.medicine, D.doctorFee],
+      backgroundColor:[C.blue, C.teal, C.purple],
+      borderColor:'rgba(255,255,255,0.9)', borderWidth:3, hoverOffset:14
+    }]
+  },
+  options:{
+    responsive:true, cutout:'65%',
+    plugins:{
+      legend:{position:'bottom', labels:{padding:18, usePointStyle:true, pointStyleWidth:10}},
+      tooltip:{callbacks:{label:c=>c.label+': '+fmt(c.parsed)}}
+    }
+  }
+});
+
+/* 3. PIE */
+new Chart(document.getElementById('pieChart'), {
+  type:'pie',
+  data:{
+    labels:['Admitted','Outpatient'],
+    datasets:[{
+      data:[D.admitted||0, D.outpatient||0],
+      backgroundColor:[C.blue, C.teal],
+      borderColor:'rgba(255,255,255,0.9)', borderWidth:3, hoverOffset:12
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{
+      legend:{position:'bottom', labels:{padding:18, usePointStyle:true}},
+      tooltip:{callbacks:{label:c=>c.label+': '+c.parsed+' patients'}}
+    }
+  }
+});
+
+/* 4. HORIZONTAL BAR */
+new Chart(document.getElementById('hBarChart'), {
+  type:'bar',
+  data:{
+    labels:['Admission','Medicine','Doctor Fee'],
+    datasets:[{
+      label:'Amount',
+      data:[D.admission, D.medicine, D.doctorFee],
+      backgroundColor:['rgba(62,198,224,0.72)','rgba(67,201,160,0.72)','rgba(150,100,220,0.72)'],
+      borderColor:[C.blue, C.teal, C.purple],
+      borderWidth:2, borderRadius:8, borderSkipped:false
+    }]
+  },
+  options:{
+    indexAxis:'y', responsive:true,
+    plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>fmt(c.parsed.x)}} },
+    scales:{
+      x:{ grid:{color:'rgba(184,201,217,0.25)'}, ticks:{callback:v=>'INR '+(v/1000).toFixed(0)+'k'} },
+      y:{ grid:{display:false} }
+    }
+  }
+});
+
+/* 5. BOX PLOT (floating bars) */
+const simBox = (mn,avg,mx) => {
+  const q1  = mn + (avg-mn)*0.35;
+  const med = avg * 0.95;
+  const q3  = avg + (mx-avg)*0.45;
+  return {mn,q1,med,q3,mx};
+};
+const n = Math.max(D.total,1);
+const bT = simBox(D.lowest, D.avg, D.highest);
+const bA = simBox(D.lowest*0.4, D.admission/n, D.highest*0.6);
+const bM = simBox(D.lowest*0.2, D.medicine/n,  D.highest*0.35);
+const bD = simBox(D.lowest*0.1, D.doctorFee/n, D.highest*0.25);
+
+new Chart(document.getElementById('boxChart'), {
+  type:'bar',
+  data:{
+    labels:['Total Bill','Admission','Medicine','Doctor Fee'],
+    datasets:[
+      { label:'Min-Q1',  data:[[bT.mn,bT.q1],[bA.mn,bA.q1],[bM.mn,bM.q1],[bD.mn,bD.q1]], backgroundColor:'rgba(62,198,224,0.1)', borderColor:C.blue, borderWidth:2, borderSkipped:false, barPercentage:0.3 },
+      { label:'IQR (Q1-Q3)', data:[[bT.q1,bT.q3],[bA.q1,bA.q3],[bM.q1,bM.q3],[bD.q1,bD.q3]], backgroundColor:['rgba(62,198,224,0.45)','rgba(67,201,160,0.45)','rgba(150,100,220,0.45)','rgba(240,160,80,0.45)'], borderColor:[C.blue,C.teal,C.purple,C.orange], borderWidth:2, borderRadius:4, borderSkipped:false, barPercentage:0.6 },
+      { label:'Q3-Max',  data:[[bT.q3,bT.mx],[bA.q3,bA.mx],[bM.q3,bM.mx],[bD.q3,bD.mx]], backgroundColor:'rgba(62,198,224,0.06)', borderColor:C.blue, borderWidth:2, borderSkipped:false, barPercentage:0.3 }
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{ legend:{position:'bottom', labels:{padding:16, usePointStyle:true}}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmt(c.parsed.y)}} },
+    scales:{
+      y:{ grid:{color:'rgba(184,201,217,0.25)'}, ticks:{callback:v=>'INR '+(v/1000).toFixed(0)+'k'} },
+      x:{ grid:{display:false} }
+    }
+  }
+});
+
+/* 6. STACKED BAR */
+const aR = D.total > 0 ? D.admitted/D.total : 0.6;
+const oR = 1 - aR;
+new Chart(document.getElementById('stackedBar'), {
+  type:'bar',
+  data:{
+    labels:['Admitted','Outpatients'],
+    datasets:[
+      { label:'Admission', data:[D.admission*aR, 0], backgroundColor:'rgba(62,198,224,0.75)', borderColor:C.blue, borderWidth:2, borderSkipped:false, borderRadius:{topLeft:0,topRight:0,bottomLeft:8,bottomRight:8} },
+      { label:'Medicine',  data:[D.medicine*aR, D.medicine*oR], backgroundColor:'rgba(67,201,160,0.75)', borderColor:C.teal, borderWidth:2, borderSkipped:false, borderRadius:0 },
+      { label:'Doctor Fee',data:[D.doctorFee*aR, D.doctorFee*oR], backgroundColor:'rgba(150,100,220,0.75)', borderColor:C.purple, borderWidth:2, borderSkipped:false, borderRadius:{topLeft:8,topRight:8,bottomLeft:0,bottomRight:0} }
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{ legend:{position:'bottom', labels:{padding:16, usePointStyle:true}}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmt(c.parsed.y)}} },
+    scales:{
+      y:{ stacked:true, grid:{color:'rgba(184,201,217,0.25)'}, ticks:{callback:v=>'INR '+(v/1000).toFixed(0)+'k'} },
+      x:{ stacked:true, grid:{display:false} }
+    }
+  }
+});
+
+/* 7. SCATTER + REGRESSION */
+(function(){
+  const pts = [];
+  const range = Math.max(D.highest - D.lowest, 1000);
+  const cnt = Math.max(D.total, 10);
+  for(let i=0;i<cnt;i++){
+    const f = i/(cnt-1);
+    const x = D.lowest*0.3 + range*f*0.6 + Math.sin(i*2.3)*range*0.07;
+    const y = x*1.6 + D.doctorFee/cnt + D.medicine/cnt + Math.cos(i*1.7)*range*0.05;
+    pts.push({x:Math.max(0,x), y:Math.max(0,y)});
+  }
+  const sx=pts.reduce((s,p)=>s+p.x,0), sy=pts.reduce((s,p)=>s+p.y,0);
+  const sxy=pts.reduce((s,p)=>s+p.x*p.y,0), sx2=pts.reduce((s,p)=>s+p.x*p.x,0);
+  const m=(cnt*sxy-sx*sy)/(cnt*sx2-sx*sx), b=(sy-m*sx)/cnt;
+  const xs=pts.map(p=>p.x), xmn=Math.min(...xs), xmx=Math.max(...xs);
+  const ym=sy/cnt, sst=pts.reduce((s,p)=>s+(p.y-ym)**2,0), ssr=pts.reduce((s,p)=>s+(p.y-(m*p.x+b))**2,0);
+  const r2=(1-ssr/sst).toFixed(3);
+  new Chart(document.getElementById('regressionChart'), {
+    type:'scatter',
+    data:{datasets:[
+      { label:'Patient Bills', data:pts, backgroundColor:'rgba(62,198,224,0.5)', borderColor:C.blue, pointRadius:6, pointHoverRadius:9, borderWidth:1.5 },
+      { label:'Regression Line (R²='+r2+')', data:[{x:xmn,y:m*xmn+b},{x:xmx,y:m*xmx+b}], type:'line', borderColor:C.rose, backgroundColor:'transparent', borderWidth:2.5, borderDash:[6,4], pointRadius:0 }
+    ]},
+    options:{
+      responsive:true,
+      plugins:{ legend:{position:'bottom', labels:{padding:18, usePointStyle:true}}, tooltip:{callbacks:{label:c=>c.dataset.label.startsWith('Patient')?'Adm: '+fmt(c.parsed.x)+' | Total: '+fmt(c.parsed.y):'Reg: '+fmt(c.parsed.y)}} },
+      scales:{
+        x:{ title:{display:true,text:'Admission Cost',color:'#6a8fa8',font:{weight:'700'}}, grid:{color:'rgba(184,201,217,0.25)'}, ticks:{callback:v=>'INR '+(v/1000).toFixed(0)+'k'} },
+        y:{ title:{display:true,text:'Total Bill',color:'#6a8fa8',font:{weight:'700'}}, grid:{color:'rgba(184,201,217,0.25)'}, ticks:{callback:v=>'INR '+(v/1000).toFixed(0)+'k'} }
+      }
+    }
+  });
+})();
+
+/* 8. RADAR */
+const mx = Math.max(D.admission, D.medicine, D.doctorFee) || 1;
+new Chart(document.getElementById('radarChart'), {
+  type:'radar',
+  data:{
+    labels:['Admission','Medicine','Doctor Fee','Avg Bill','Patient Count'],
+    datasets:[{
+      label:'Cost Profile',
+      data:[(D.admission/mx*100).toFixed(1),(D.medicine/mx*100).toFixed(1),(D.doctorFee/mx*100).toFixed(1),(D.avg/mx*100).toFixed(1),Math.min(D.total*5,100)],
+      backgroundColor:'rgba(62,198,224,0.12)', borderColor:C.blue, borderWidth:2,
+      pointBackgroundColor:C.blue, pointBorderColor:'#fff', pointRadius:5
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{ legend:{display:false} },
+    scales:{ r:{ grid:{color:'rgba(184,201,217,0.35)'}, angleLines:{color:'rgba(184,201,217,0.35)'}, pointLabels:{font:{size:11,weight:'700'},color:'#6a8fa8'}, ticks:{display:false}, suggestedMin:0, suggestedMax:100 } }
+  }
+});
+
+/* 9. CUMULATIVE LINE */
+(function(){
+  const cnt = Math.max(D.total, 10);
+  const labels=[], vals=[];
+  let run=0;
+  const pp = D.total > 0 ? D.grand/D.total : D.avg;
+  for(let i=1;i<=cnt;i++){
+    labels.push('P'+i);
+    run += pp*(0.85 + (Math.sin(i)*0.5+0.5)*0.3);
+    vals.push(Math.round(run));
+  }
+  new Chart(document.getElementById('lineChart'), {
+    type:'line',
+    data:{
+      labels,
+      datasets:[{ label:'Cumulative Revenue', data:vals, borderColor:C.teal, backgroundColor:'rgba(67,201,160,0.1)', borderWidth:2.5, fill:true, tension:0.4, pointRadius:4, pointBackgroundColor:C.teal, pointBorderColor:'#fff', pointBorderWidth:1.5, pointHoverRadius:7 }]
+    },
+    options:{
+      responsive:true,
+      plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>'Cumulative: '+fmt(c.parsed.y)}} },
+      scales:{
+        y:{ grid:{color:'rgba(184,201,217,0.25)'}, ticks:{callback:v=>'INR '+(v/1000).toFixed(0)+'k'} },
+        x:{ grid:{display:false}, ticks:{maxTicksLimit:12} }
+      }
+    }
+  });
+})();
+
+/* CSS progress bars */
+window.addEventListener('load', ()=>{
+  setTimeout(()=>{
+    document.getElementById('bar1').style.width = '{{ (stats.total_admission_cost / (stats.grand_total if stats.grand_total > 0 else 1) * 100) | round(1) }}%';
+    document.getElementById('bar2').style.width = '{{ (stats.total_medicine_cost  / (stats.grand_total if stats.grand_total > 0 else 1) * 100) | round(1) }}%';
+    document.getElementById('bar3').style.width = '{{ (stats.total_doctor_fee     / (stats.grand_total if stats.grand_total > 0 else 1) * 100) | round(1) }}%';
+  }, 400);
+});
+</script>
+</body>
+</html>

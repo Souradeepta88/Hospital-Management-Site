@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<!--Display all Doctor details id, username, qualification, phone, age, specialization and IsActive-->
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Doctor Records</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--bg:#e0f8f7;
+--card:#ffffff;
+--border:#7dddd8;
+--cyan:#06b6d4;
+--cyan-dark:#0891b2;
+--text:#0c2d3a;
+--muted:#4a9baa;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Outfit',sans-serif;
+background:var(--bg);
+min-height:100vh;
+}
+
+/* dotted background */
+
+body::before{
+content:'';
+position:fixed;
+inset:0;
+background-image:radial-gradient(circle,rgba(10,191,176,.2) 1px,transparent 1px);
+background-size:32px 32px;
+pointer-events:none;
+}
+
+/* NAVBAR */
+
+nav{
+height:70px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 40px;
+border-bottom:1px solid var(--border);
+background:rgba(255,255,255,.7);
+backdrop-filter:blur(10px);
+}
+
+.brand{
+font-family:'Space Grotesk',sans-serif;
+font-size:1.3rem;
+font-weight:700;
+color:var(--cyan-dark);
+text-decoration:none;
+}
+
+.back{
+font-family:'JetBrains Mono',monospace;
+font-size:.8rem;
+padding:8px 16px;
+border-radius:8px;
+border:1px solid var(--border);
+text-decoration:none;
+color:var(--text);
+background:white;
+transition:.2s;
+}
+
+.back:hover{
+background:var(--cyan);
+color:white;
+}
+
+/* PAGE HEADER */
+
+.header{
+max-width:1100px;
+margin:auto;
+padding:50px 20px 20px;
+}
+
+.header h1{
+font-family:'Space Grotesk',sans-serif;
+font-size:2.6rem;
+background:linear-gradient(135deg,var(--text),var(--cyan));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+/* SEARCH BAR */
+
+.search-box{
+margin-top:20px;
+}
+
+.search-box input{
+padding:10px 14px;
+width:260px;
+border-radius:8px;
+border:1px solid var(--border);
+font-family:'Outfit',sans-serif;
+}
+
+/* TABLE CARD */
+
+.table-card{
+max-width:1100px;
+margin:auto;
+margin-top:20px;
+background:var(--card);
+border-radius:16px;
+border:1px solid var(--border);
+box-shadow:0 10px 40px rgba(6,182,212,.15);
+overflow:hidden;
+}
+
+/* TABLE */
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+thead{
+background:#f2ffff;
+}
+
+th{
+font-family:'JetBrains Mono',monospace;
+font-size:.75rem;
+letter-spacing:.06em;
+color:var(--muted);
+text-transform:uppercase;
+padding:14px;
+text-align:left;
+}
+
+td{
+padding:14px;
+border-top:1px solid var(--border);
+font-size:.9rem;
+}
+
+/* row hover */
+
+tbody tr:hover{
+background:#f5ffff;
+}
+
+/* STATUS BADGES */
+
+.badge{
+padding:4px 10px;
+border-radius:20px;
+font-size:.75rem;
+font-weight:500;
+}
+
+.active{
+background:#c9fff3;
+color:#047857;
+}
+
+.inactive{
+background:#ffe4e6;
+color:#b91c1c;
+}
+
+/* EMPTY MESSAGE */
+
+.empty{
+padding:30px;
+text-align:center;
+color:var(--muted);
+}
+
+</style>
+
+<script>
+
+function searchDoctors(){
+
+let input=document.getElementById("search").value.toLowerCase();
+let rows=document.querySelectorAll("tbody tr");
+
+rows.forEach(row=>{
+
+let text=row.innerText.toLowerCase();
+
+if(text.includes(input))
+row.style.display="";
+else
+row.style.display="none";
+
+});
+
+}
+
+</script>
+
+</head>
+
+<body>
+
+<nav>
+
+<a class="brand" href="/">✦ Silver HealthCare</a>
+
+<a class="back" href="/">← Back to Menu</a>
+
+</nav>
+
+<div class="header">
+
+<h1>Doctor Records</h1>
+
+<div class="search-box">
+<input type="text" id="search" onkeyup="searchDoctors()" placeholder="Search doctors...">
+</div>
+
+</div>
+
+<div class="table-card">
+
+{% if data and data|length > 0 %}
+
+<table>
+
+<thead>
+
+<tr>
+<th>ID</th>
+<th>Username</th>
+<th>Qualification</th>
+<th>Phone</th>
+<th>Age</th>
+<th>Specialization</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for row in data %}
+
+<tr>
+
+<td>{{ row[0] }}</td>
+
+<td>{{ row[1] }}</td>
+
+<td>{{ row[2] }}</td>
+
+<td>{{ row[3] }}</td>
+
+<td>{{ row[4] }}</td>
+
+<td>{{ row[5] }}</td>
+
+<td>
+
+{% if row[6] == true or row[6] == "true" %}
+<span class="badge active">Active</span>
+{% else %}
+<span class="badge inactive">Inactive</span>
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% else %}
+
+<div class="empty">
+No doctor records found.
+</div>
+
+{% endif %}
+
+</div>
+
+</body>
+</html>
