@@ -3,336 +3,211 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Costs Form</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-
+<title>Costs Form — Silver Care</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-
 :root{
---bg:#e0f8f7;
---card:#ffffff;
---border:#7dddd8;
---cyan:#06b6d4;
---cyan-dark:#0891b2;
---text:#0c2d3a;
---muted:#4a9baa;
+  --silver:#b8c9d9;--silver-light:#dce8f0;--silver-dark:#6a8fa8;
+  --deep:#1a2e3b;--accent:#3ec6e0;--accent2:#7eddd4;
+  --white:#f7fbfe;--card-bg:rgba(255,255,255,0.88);
+  --text:#1a2e3b;--muted:#5a7a90;
 }
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
+*{ box-sizing:border-box;margin:0;padding:0; }
 body{
-font-family:'Outfit',sans-serif;
-background:var(--bg);
-min-height:100vh;
+  font-family:'Nunito',sans-serif;min-height:100vh;
+  background:linear-gradient(135deg,#e8f4fb 0%,#f0f8ff 40%,#daf0f5 100%);
+  color:var(--text);position:relative;
 }
-
-/* dotted background */
-
 body::before{
-content:'';
-position:fixed;
-inset:0;
-background-image:radial-gradient(circle,rgba(10,191,176,.2) 1px,transparent 1px);
-background-size:32px 32px;
-pointer-events:none;
+  content:'';position:fixed;top:-120px;right:-120px;width:520px;height:520px;
+  background:radial-gradient(circle,rgba(62,198,224,0.18) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none;z-index:0;
 }
-
-/* NAVBAR */
-
+body::after{
+  content:'';position:fixed;bottom:-100px;left:-80px;width:400px;height:400px;
+  background:radial-gradient(circle,rgba(126,221,212,0.15) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none;z-index:0;
+}
 nav{
-
-height:70px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-
-padding:0 40px;
-
-border-bottom:1px solid var(--border);
-background:rgba(255,255,255,.6);
-backdrop-filter:blur(10px);
-
+  height:70px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;background:rgba(255,255,255,0.75);backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(184,201,217,0.4);
+  box-shadow:0 2px 20px rgba(30,70,100,0.07);position:relative;z-index:10;
 }
-
 .brand{
-font-family:'Space Grotesk',sans-serif;
-font-size:1.3rem;
-font-weight:700;
-color:var(--cyan-dark);
-text-decoration:none;
+  font-family:'Playfair Display',serif;font-weight:900;font-size:1.25rem;
+  background:linear-gradient(90deg,var(--deep),var(--silver-dark));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-decoration:none;
 }
-
 .back-btn{
-
-font-family:'JetBrains Mono',monospace;
-font-size:.8rem;
-
-padding:8px 16px;
-
-border-radius:8px;
-border:1px solid var(--border);
-
-background:white;
-
-text-decoration:none;
-color:var(--text);
-
-transition:.2s;
-
+  font-family:'DM Mono',monospace;font-size:.78rem;
+  padding:8px 20px;border-radius:999px;
+  border:1.5px solid rgba(62,198,224,0.35);
+  background:rgba(62,198,224,0.06);
+  text-decoration:none;color:var(--silver-dark);transition:all .25s;
 }
-
-.back-btn:hover{
-
-background:var(--cyan);
-color:white;
-
-}
-
-/* MAIN FORM AREA */
+.back-btn:hover{ background:rgba(62,198,224,0.14);border-color:var(--accent);color:var(--deep); }
 
 .container{
-
-display:flex;
-justify-content:center;
-padding:60px 20px;
-
+  display:flex;justify-content:center;
+  padding:60px 20px 80px;position:relative;z-index:1;
 }
-
-/* CARD */
 
 .form-card{
-
-background:var(--card);
-border:1px solid var(--border);
-border-radius:20px;
-
-padding:50px;
-width:550px;
-
-box-shadow:0 12px 40px rgba(6,182,212,.18);
-
+  background:rgba(255,255,255,0.96);
+  border:1px solid rgba(184,201,217,0.4);
+  border-radius:28px;padding:56px;width:600px;
+  box-shadow:0 20px 80px rgba(30,70,100,0.12),inset 0 1px 0 rgba(255,255,255,1);
+  position:relative;overflow:hidden;
 }
+.form-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent));
+  background-size:200% 100%;animation:shimmer 3s linear infinite;
+}
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 
-/* HEADING */
+.form-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);
+  background:rgba(62,198,224,0.08);border:1px solid rgba(62,198,224,0.22);
+  padding:6px 14px;border-radius:999px;margin-bottom:20px;
+}
+.form-badge::before{ content:'';width:6px;height:6px;background:var(--accent);border-radius:50%; }
 
 h1{
-
-font-family:'Space Grotesk',sans-serif;
-font-size:2.3rem;
-margin-bottom:30px;
-
-background:linear-gradient(135deg,var(--text),var(--cyan));
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-
+  font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;
+  color:var(--deep);letter-spacing:-0.02em;line-height:1.1;margin-bottom:36px;
+}
+h1 em{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  background:linear-gradient(120deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
 
-/* GRID */
-
-.form-grid{
-
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:22px;
-
-}
-
-.full{
-grid-column:span 2;
-}
-
-/* LABEL */
+.form-grid{ display:grid;grid-template-columns:1fr 1fr;gap:24px; }
+.full{ grid-column:span 2; }
+.field{ display:flex;flex-direction:column;gap:8px; }
 
 label{
-
-font-family:'JetBrains Mono',monospace;
-font-size:.7rem;
-letter-spacing:.08em;
-color:var(--muted);
-text-transform:uppercase;
-
+  font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.1em;
+  color:var(--muted);text-transform:uppercase;font-weight:500;
 }
-
-/* INPUT */
-
 input,select,textarea{
-
-margin-top:6px;
-padding:12px 14px;
-
-border-radius:10px;
-border:1px solid var(--border);
-
-background:#f8ffff;
-
-font-size:.9rem;
-
-transition:.25s;
-
+  padding:13px 16px;border-radius:12px;
+  border:1.5px solid rgba(62,198,224,0.22);
+  background:rgba(62,198,224,0.03);
+  font-family:'Nunito',sans-serif;font-size:.92rem;color:var(--text);
+  transition:all .25s;outline:none;width:100%;
 }
-
-/* focus glow */
-
-input:focus,
-select:focus,
-textarea:focus{
-
-outline:none;
-border-color:var(--cyan);
-
-box-shadow:0 0 0 3px rgba(6,182,212,.2);
-
+input:focus,select:focus,textarea:focus{
+  border-color:var(--accent);background:#fff;
+  box-shadow:0 0 0 4px rgba(62,198,224,0.1);
 }
-
-/* TOTAL BOX */
+.input-prefix{ position:relative; }
+.input-prefix::before{
+  content:'₹';position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  font-family:'DM Mono',monospace;font-size:.85rem;color:var(--muted);pointer-events:none;z-index:1;
+}
+.input-prefix input{ padding-left:30px; }
 
 .total-box{
-
-margin-top:20px;
-padding:12px;
-
-border-radius:10px;
-border:1px dashed var(--border);
-
-font-family:'JetBrains Mono',monospace;
-font-size:.9rem;
-
-background:#f3ffff;
-
+  margin-top:24px;padding:20px 22px;border-radius:16px;
+  background:linear-gradient(135deg,rgba(62,198,224,0.06),rgba(126,221,212,0.08));
+  border:1.5px dashed rgba(62,198,224,0.28);
+  display:flex;align-items:center;justify-content:space-between;
 }
-
-/* BUTTON */
+.total-label{
+  font-family:'DM Mono',monospace;font-size:.75rem;
+  text-transform:uppercase;letter-spacing:.1em;color:var(--muted);
+}
+.total-amount{
+  font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;
+  background:linear-gradient(120deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.total-amount span{ font-size:.9rem;font-family:'DM Mono',monospace;margin-right:4px; }
 
 button{
-
-margin-top:30px;
-
-padding:14px 30px;
-
-border:none;
-border-radius:12px;
-
-font-family:'Space Grotesk',sans-serif;
-font-weight:600;
-
-background:var(--cyan);
-color:white;
-
-cursor:pointer;
-
-transition:.25s;
-
+  margin-top:30px;width:100%;padding:16px;border:none;border-radius:14px;
+  font-family:'Playfair Display',serif;font-weight:700;font-size:1.05rem;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:white;cursor:pointer;transition:all .3s;
+  box-shadow:0 6px 24px rgba(62,198,224,0.35);letter-spacing:.02em;
 }
-
-button:hover{
-
-background:var(--cyan-dark);
-
-transform:translateY(-2px);
-
-box-shadow:0 10px 25px rgba(6,182,212,.35);
-
-}
-
+button:hover{ transform:translateY(-3px);box-shadow:0 16px 40px rgba(62,198,224,0.45); }
 </style>
 </head>
-
 <body>
-
 <nav>
-
-<a class="brand" href="/">✦ Silver HealthCare</a>
-
-<a class="back-btn" href="/">← Back to Main Menu</a>
-
+  <a class="brand" href="/">Silver Care</a>
+  <a class="back-btn" href="/">← Back to Main Menu</a>
 </nav>
 
 <div class="container">
-
 <div class="form-card">
+  <div class="form-badge">Billing Entry</div>
+  <h1>Enter <em>Costs</em><br>Information</h1>
 
-<h1>Enter Costs Information</h1>
-
-<form method="POST" action="/costsform">
-
-<div class="form-grid">
-
-<div>
-<label>Patient Name</label>
-<input type="text" name="patient_name" required>
+  <form method="POST" action="/costsform">
+  <div class="form-grid">
+    <div class="field">
+      <label>Patient Name</label>
+      <input type="text" name="patient_name" placeholder="Full name" required>
+    </div>
+    <div class="field">
+      <label>Admitted</label>
+      <select name="admitted" required>
+        <option value="true">Yes — Admitted</option>
+        <option value="false">No — Outpatient</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Admission Cost (₹)</label>
+      <div class="input-prefix">
+        <input type="number" id="admission_cost" name="admission_cost" placeholder="0" required>
+      </div>
+    </div>
+    <div class="field">
+      <label>Medicine Cost (₹)</label>
+      <div class="input-prefix">
+        <input type="number" id="medicine_cost" name="medicine_cost" placeholder="0" required>
+      </div>
+    </div>
+    <div class="field">
+      <label>Doctor Fee (₹)</label>
+      <div class="input-prefix">
+        <input type="number" id="doctor_fee" name="doctor_fee" placeholder="0" required>
+      </div>
+    </div>
+    <div class="field">
+      <label>Date</label>
+      <input type="date">
+    </div>
+    <div class="field full">
+      <label>Additional Notes</label>
+      <textarea rows="3" placeholder="Optional comments..."></textarea>
+    </div>
+  </div>
+  <div class="total-box">
+    <span class="total-label">Estimated Total</span>
+    <div class="total-amount"><span>₹</span><span id="total">0</span></div>
+  </div>
+  <button type="submit">Submit Billing Record →</button>
+  </form>
 </div>
-
-<div>
-<label>Admitted</label>
-<select name="admitted" required>
-<option value="true">Yes</option>
-<option value="false">No</option>
-</select>
-</div>
-
-<div>
-<label>Admission Cost (₹)</label>
-<input type="number" id="admission_cost" name="admission_cost" required>
-</div>
-
-<div>
-<label>Medicine Cost (₹)</label>
-<input type="number" id="medicine_cost" name="medicine_cost" required>
-</div>
-
-<div>
-<label>Doctor Fee (₹)</label>
-<input type="number" id="doctor_fee" name="doctor_fee" required>
-</div>
-
-<div>
-<label>Date</label>
-<input type="date">
-</div>
-
-<div class="full">
-<label>Additional Notes</label>
-<textarea rows="3" placeholder="Optional comments..."></textarea>
-</div>
-
-</div>
-
-<div class="total-box">
-Estimated Total Cost: ₹ <span id="total">0</span>
-</div>
-
-<button type="submit">Submit Record</button>
-
-</form>
-
-</div>
-
 </div>
 
 <script>
-
 function updateTotal(){
-
-let a=parseFloat(document.getElementById("admission_cost").value)||0;
-let b=parseFloat(document.getElementById("medicine_cost").value)||0;
-let c=parseFloat(document.getElementById("doctor_fee").value)||0;
-
-document.getElementById("total").innerText=a+b+c;
-
+  let a=parseFloat(document.getElementById("admission_cost").value)||0;
+  let b=parseFloat(document.getElementById("medicine_cost").value)||0;
+  let c=parseFloat(document.getElementById("doctor_fee").value)||0;
+  document.getElementById("total").innerText=(a+b+c).toLocaleString('en-IN');
 }
-
-document.querySelectorAll("input").forEach(i=>{
-
-i.addEventListener("input",updateTotal);
-
-});
-
+document.querySelectorAll("input").forEach(i=>{ i.addEventListener("input",updateTotal); });
 </script>
-
 </body>
 </html>

@@ -1,265 +1,248 @@
 <!DOCTYPE html>
 <!-- Display costs information -->
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Costs Display — Silver HealthCare</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
+<title>Costs Display — Silver Care</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-
 :root{
---bg:#e0f8f7;
---card:#ffffff;
---border:#7dddd8;
---cyan:#06b6d4;
---cyan-light:#cffafe;
---cyan-dark:#0891b2;
---text:#0c2d3a;
---muted:#4a9baa;
-
---heading:'Space Grotesk',sans-serif;
---body:'Outfit',sans-serif;
---mono:'JetBrains Mono',monospace;
+  --silver:#b8c9d9; --silver-light:#dce8f0; --silver-dark:#6a8fa8;
+  --deep:#1a2e3b; --accent:#3ec6e0; --accent2:#7eddd4;
+  --white:#f7fbfe; --card-bg:rgba(255,255,255,0.88);
+  --text:#1a2e3b; --muted:#5a7a90;
 }
-
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
-
+*{ box-sizing:border-box; margin:0; padding:0; }
 body{
-font-family:var(--body);
-background:var(--bg);
-color:var(--text);
-min-height:100vh;
+  font-family:'Nunito',sans-serif;
+  min-height:100vh;
+  background:linear-gradient(135deg,#e8f4fb 0%,#f0f8ff 40%,#daf0f5 100%);
+  color:var(--text);
+  overflow-x:hidden;
+  position:relative;
 }
-
-/* dotted grid background */
-
 body::before{
-content:'';
-position:fixed;
-inset:0;
-background-image:radial-gradient(circle,rgba(10,191,176,.18) 1px,transparent 1px);
-background-size:32px 32px;
-pointer-events:none;
+  content:'';position:fixed;top:-120px;right:-120px;width:520px;height:520px;
+  background:radial-gradient(circle,rgba(62,198,224,0.18) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none;z-index:0;
 }
-
-/* NAVBAR */
+body::after{
+  content:'';position:fixed;bottom:-100px;left:-80px;width:400px;height:400px;
+  background:radial-gradient(circle,rgba(126,221,212,0.15) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none;z-index:0;
+}
 
 nav{
-height:64px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:0 40px;
-border-bottom:1px solid var(--border);
-background:rgba(232,247,246,.9);
-backdrop-filter:blur(12px);
+  position:sticky;top:0;z-index:100;
+  height:70px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;
+  background:rgba(255,255,255,0.75);backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(184,201,217,0.4);
+  box-shadow:0 2px 20px rgba(30,70,100,0.07);
 }
-
 .nav-brand{
-font-family:var(--heading);
-font-weight:700;
-color:var(--cyan-dark);
-text-decoration:none;
+  font-family:'Playfair Display',serif;font-weight:900;font-size:1.25rem;
+  background:linear-gradient(90deg,var(--deep),var(--silver-dark));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-decoration:none;
 }
-
 .nav-back{
-font-family:var(--mono);
-font-size:.8rem;
-color:var(--muted);
-text-decoration:none;
+  font-family:'DM Mono',monospace;font-size:.78rem;
+  color:var(--silver-dark);padding:8px 20px;
+  border:1.5px solid rgba(62,198,224,0.35);border-radius:999px;
+  text-decoration:none;transition:all .25s;
+  background:rgba(62,198,224,0.06);
 }
-
-/* HERO */
+.nav-back:hover{ background:rgba(62,198,224,0.14);border-color:var(--accent);color:var(--deep); }
 
 .hero{
-max-width:1100px;
-margin:auto;
-padding:70px 40px 40px;
+  position:relative;z-index:1;
+  max-width:1200px;margin:auto;padding:64px 48px 36px;
 }
-
-.hero-label{
-font-family:var(--mono);
-font-size:.7rem;
-letter-spacing:.18em;
-color:var(--cyan-dark);
-text-transform:uppercase;
-margin-bottom:18px;
+.hero-eyebrow{
+  font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--silver-dark);margin-bottom:14px;
+  display:flex;align-items:center;gap:12px;
 }
-
+.hero-eyebrow::before{
+  content:'';display:block;width:28px;height:1.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+}
 .hero h1{
-font-family:var(--heading);
-font-size:clamp(2.4rem,5vw,3.5rem);
-font-weight:800;
-background:linear-gradient(135deg,var(--text),var(--cyan));
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-margin-bottom:10px;
+  font-family:'Playfair Display',serif;font-weight:900;
+  font-size:clamp(2.8rem,5.5vw,4.6rem);
+  color:var(--deep);line-height:1.05;letter-spacing:-0.02em;
+  margin-bottom:12px;
 }
-
-.hero p{
-color:var(--muted);
+.hero h1 em{
+  font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05em;
+  background:linear-gradient(120deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
+.hero-sub{ font-size:1rem;color:var(--muted);font-weight:400;max-width:480px;line-height:1.7; }
 
-/* TABLE CARD */
+.stats-strip{
+  position:relative;z-index:1;max-width:1200px;margin:0 auto 32px;padding:0 48px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.stat-card{
+  background:var(--card-bg);border:1px solid rgba(184,201,217,0.35);
+  border-radius:18px;padding:22px 26px;backdrop-filter:blur(10px);
+  box-shadow:0 4px 24px rgba(30,70,100,0.08);
+  position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;
+}
+.stat-card:hover{ transform:translateY(-3px);box-shadow:0 12px 36px rgba(62,198,224,0.15); }
+.stat-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  opacity:0;transition:.3s;
+}
+.stat-card:hover::before{ opacity:1; }
+.stat-label{
+  font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:6px;
+}
+.stat-value{
+  font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;
+  background:linear-gradient(120deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.stat-value.text{ font-size:1.1rem;color:var(--deep);-webkit-text-fill-color:var(--deep); }
 
 .section{
-max-width:1100px;
-margin:auto;
-padding:20px 40px 80px;
+  position:relative;z-index:1;max-width:1200px;margin:auto;padding:0 48px 80px;
 }
 
 .table-card{
-background:var(--card);
-border:1px solid var(--border);
-border-radius:16px;
-overflow:hidden;
-box-shadow:0 4px 24px rgba(10,191,176,.08);
+  background:rgba(255,255,255,0.95);
+  border:1px solid rgba(184,201,217,0.35);
+  border-radius:24px;overflow:hidden;
+  box-shadow:0 8px 50px rgba(30,70,100,0.1),inset 0 1px 0 rgba(255,255,255,0.9);
 }
-
-table{
-width:100%;
-border-collapse:collapse;
-font-size:.9rem;
+.table-header{
+  padding:22px 28px;
+  background:linear-gradient(135deg,var(--deep),#264a60);
+  display:flex;align-items:center;justify-content:space-between;
 }
-
-thead{
-background:var(--cyan-light);
+.table-header-title{
+  font-family:'Playfair Display',serif;font-weight:700;color:#fff;
+  font-size:1.05rem;display:flex;align-items:center;gap:10px;
 }
-
+.table-header-title::before{
+  content:'';width:8px;height:8px;background:var(--accent);border-radius:50%;
+  box-shadow:0 0 8px var(--accent);animation:blink 2s infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.4;}}
+.live-badge{
+  font-family:'DM Mono',monospace;font-size:.68rem;
+  padding:4px 12px;background:rgba(62,198,224,0.18);
+  border:1px solid rgba(62,198,224,0.35);border-radius:999px;color:var(--accent);
+}
+table{ width:100%;border-collapse:collapse; }
+thead{ background:linear-gradient(135deg,#f0feff,#e8f6fb);border-bottom:2px solid rgba(62,198,224,0.15); }
 thead th{
-font-family:var(--mono);
-font-size:.7rem;
-letter-spacing:.1em;
-text-transform:uppercase;
-color:var(--cyan-dark);
-padding:14px 20px;
-text-align:left;
+  font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);padding:16px 24px;text-align:left;font-weight:500;
 }
+tbody tr{ border-bottom:1px solid rgba(62,198,224,0.07);transition:all .2s; }
+tbody tr:last-child{ border-bottom:none; }
+tbody tr:hover{ background:linear-gradient(135deg,rgba(62,198,224,0.04),rgba(126,221,212,0.06));transform:translateX(3px); }
+tbody td{ padding:16px 24px;vertical-align:middle; }
 
-tbody tr{
-border-bottom:1px solid rgba(10,191,176,.08);
+.patient-cell{ display:flex;align-items:center;gap:12px; }
+.patient-avatar{
+  width:38px;height:38px;border-radius:12px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-weight:700;color:#fff;font-size:.9rem;
+  flex-shrink:0;box-shadow:0 4px 12px rgba(62,198,224,0.3);
 }
-
-tbody tr:hover{
-background:rgba(10,191,176,.05);
-}
-
-tbody td{
-padding:14px 20px;
-}
-
-/* currency style */
+.patient-name{ font-weight:600;color:var(--text);font-size:.9rem; }
 
 .money{
-font-family:var(--mono);
-color:var(--cyan-dark);
-font-weight:600;
+  font-family:'DM Mono',monospace;font-weight:500;color:#1a4a5a;font-size:.88rem;
+  background:rgba(62,198,224,0.08);padding:4px 10px;border-radius:8px;
+  border:1px solid rgba(62,198,224,0.15);display:inline-block;
 }
-
-/* admission badge */
-
 .badge{
-font-family:var(--mono);
-padding:4px 10px;
-border-radius:20px;
-font-size:.7rem;
+  font-family:'DM Mono',monospace;padding:5px 12px;border-radius:999px;
+  font-size:.7rem;font-weight:600;letter-spacing:.04em;
+  display:inline-flex;align-items:center;gap:6px;
 }
-
-.badge-true{
-background:rgba(6,182,212,.12);
-color:#0891b2;
-border:1px solid rgba(6,182,212,.35);
-}
-
-.badge-false{
-background:rgba(6,182,212,.05);
-color:#94a3b8;
-border:1px solid rgba(6,182,212,.15);
-}
+.badge::before{ content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0; }
+.badge-true{ background:rgba(62,198,224,0.1);color:#1a6a7a;border:1px solid rgba(62,198,224,0.25); }
+.badge-true::before{ background:var(--accent); }
+.badge-false{ background:rgba(106,143,168,0.1);color:#4a6a80;border:1px solid rgba(106,143,168,0.2); }
+.badge-false::before{ background:var(--silver-dark);opacity:.6; }
 
 footer{
-border-top:1px solid var(--border);
-padding:25px 40px;
-text-align:center;
-font-family:var(--mono);
-font-size:.75rem;
-color:var(--muted);
+  position:relative;z-index:1;padding:28px 48px;text-align:center;
+  font-family:'DM Mono',monospace;font-size:.72rem;color:var(--muted);
+  border-top:1px solid rgba(184,201,217,0.3);
 }
-
 </style>
 </head>
-
 <body>
-
 <nav>
-<a class="nav-brand" href="/">✦ Silver HealthCare</a>
-<a class="nav-back" href="/">← Back to Portal</a>
+  <a class="nav-brand" href="/">Silver Care</a>
+  <a class="nav-back" href="/">← Back to Portal</a>
 </nav>
 
 <header class="hero">
-<p class="hero-label">Billing Records</p>
-<h1>Costs Information</h1>
-<p>Overview of hospital costs including admission, medicine, and doctor fees.</p>
+  <p class="hero-eyebrow">Billing Records</p>
+  <h1>Costs <em>Information</em></h1>
+  <p class="hero-sub">Overview of hospital costs including admission, medicine, and doctor fees.</p>
 </header>
 
-<section class="section">
-
-<div class="table-card">
-
-<table>
-
-<thead>
-<tr>
-<th>Patient Name</th>
-<th>Admitted</th>
-<th>Admission Cost</th>
-<th>Medicine Cost</th>
-<th>Doctor Fee</th>
-</tr>
-</thead>
-
-<tbody>
-
-{% for row in data %}
-
-<tr>
-
-<td>{{ row[1] }}</td>
-
-<td>
-{% if row[2] %}
-<span class="badge badge-true">Admitted</span>
-{% else %}
-<span class="badge badge-false">Outpatient</span>
-{% endif %}
-</td>
-
-<td class="money">₹ {{ row[3] }}</td>
-<td class="money">₹ {{ row[4] }}</td>
-<td class="money">₹ {{ row[5] }}</td>
-
-</tr>
-
-{% endfor %}
-
-</tbody>
-
-</table>
-
+<div class="stats-strip">
+  <div class="stat-card">
+    <div class="stat-label">Total Records</div>
+    <div class="stat-value">{% if data %}{{ data|length }}{% else %}0{% endif %}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Module</div>
+    <div class="stat-value text">Billing</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Status</div>
+    <div class="stat-value" style="font-size:1rem;font-family:'DM Mono',monospace;">Live ✦</div>
+  </div>
 </div>
 
+<section class="section">
+  <div class="table-card">
+    <div class="table-header">
+      <div class="table-header-title">Billing Records</div>
+      <span class="live-badge">LIVE DATA</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Patient Name</th><th>Status</th><th>Admission Cost</th><th>Medicine Cost</th><th>Doctor Fee</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in data %}
+        <tr>
+          <td>
+            <div class="patient-cell">
+              <div class="patient-avatar">{{ row[1][0]|upper if row[1] else '?' }}</div>
+              <span class="patient-name">{{ row[1] }}</span>
+            </div>
+          </td>
+          <td>
+            {% if row[2] %}<span class="badge badge-true">Admitted</span>
+            {% else %}<span class="badge badge-false">Outpatient</span>{% endif %}
+          </td>
+          <td><span class="money">₹ {{ row[3] }}</span></td>
+          <td><span class="money">₹ {{ row[4] }}</span></td>
+          <td><span class="money">₹ {{ row[5] }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </section>
-
-<footer>
-Silver HealthCare — Billing Dashboard
-</footer>
-
+<footer>Silver Care Hospital — Billing Dashboard &nbsp;✦&nbsp; All data encrypted &amp; secure</footer>
 </body>
 </html>

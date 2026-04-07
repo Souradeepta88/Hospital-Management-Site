@@ -1,246 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-<title>Patient History Form</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-
+<title>Patient History Form — Silver Care</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+:root{ --deep:#1a2e3b;--accent:#3ec6e0;--accent2:#7eddd4;--silver-dark:#6a8fa8;--text:#1a2e3b;--muted:#5a7a90; }
+*{ box-sizing:border-box;margin:0;padding:0; }
+body{ font-family:'Nunito',sans-serif;min-height:100vh;background:linear-gradient(135deg,#e8f4fb 0%,#f0f8ff 40%,#daf0f5 100%);position:relative; }
+body::before{ content:'';position:fixed;top:-120px;right:-120px;width:520px;height:520px;background:radial-gradient(circle,rgba(62,198,224,0.18) 0%,transparent 70%);border-radius:50%;pointer-events:none;z-index:0; }
+body::after{ content:'';position:fixed;bottom:-100px;left:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(126,221,212,0.15) 0%,transparent 70%);border-radius:50%;pointer-events:none;z-index:0; }
+nav{ height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(255,255,255,0.75);backdrop-filter:blur(18px);border-bottom:1px solid rgba(184,201,217,0.4);box-shadow:0 2px 20px rgba(30,70,100,0.07);position:relative;z-index:10; }
+.brand{ font-family:'Playfair Display',serif;font-weight:900;font-size:1.25rem;background:linear-gradient(90deg,var(--deep),var(--silver-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none; }
+.back{ font-family:'DM Mono',monospace;font-size:.78rem;padding:8px 20px;border-radius:999px;border:1.5px solid rgba(62,198,224,0.35);text-decoration:none;color:var(--silver-dark);background:rgba(62,198,224,0.06);transition:all .25s; }
+.back:hover{ background:rgba(62,198,224,0.14);border-color:var(--accent);color:var(--deep); }
+.container{ display:flex;justify-content:center;padding:60px 20px 80px;position:relative;z-index:1; }
+.form-card{ background:rgba(255,255,255,0.96);border:1px solid rgba(184,201,217,0.4);border-radius:28px;padding:56px;width:740px;box-shadow:0 20px 80px rgba(30,70,100,0.12),inset 0 1px 0 #fff;position:relative;overflow:hidden; }
+.form-card::before{ content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent));background-size:200% 100%;animation:shimmer 3s linear infinite; }
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+.form-header{ display:flex;align-items:center;gap:16px;margin-bottom:28px; }
+.form-icon{ width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;box-shadow:0 8px 24px rgba(62,198,224,0.3); }
+h1{ font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--deep);letter-spacing:-0.02em; }
+h1 em{ font-family:'Cormorant Garamond',serif;font-style:italic;background:linear-gradient(120deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
 
-:root{
---bg:#e8fbfb;
---card:#ffffff;
---border:#7dddd8;
---cyan:#06b6d4;
---cyan-dark:#0891b2;
---text:#0c2d3a;
---muted:#4a9baa;
-}
+.trigger-error{ display:flex;align-items:flex-start;gap:12px;background:#fff1f2;border:1.5px solid #fecdd3;border-left:4px solid #f43f5e;border-radius:0 14px 14px 0;padding:16px 18px;margin-bottom:24px;animation:shake .35s ease; }
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
+.err-title{ display:block;color:#9f1239;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px; }
+.err-msg{ color:#be123c;font-size:.88rem;line-height:1.5; }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+.date-hint{ display:flex;align-items:center;gap:12px;background:rgba(62,198,224,0.06);border:1.5px solid rgba(62,198,224,0.22);border-left:4px solid var(--accent);border-radius:0 12px 12px 0;padding:12px 16px;margin-bottom:28px;font-size:.85rem;color:#1a5060;line-height:1.5; }
 
-body{
-font-family:'Outfit',sans-serif;
-background:var(--bg);
-min-height:100vh;
-}
+.form-grid{ display:grid;grid-template-columns:1fr 1fr;gap:22px; }
+.full{ grid-column:span 2; }
+.field{ display:flex;flex-direction:column;gap:8px; }
+label{ font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;font-weight:500; }
+label .opt{ font-size:.64rem;color:var(--accent2);margin-left:4px; }
+input,textarea{ padding:13px 16px;border-radius:12px;border:1.5px solid rgba(62,198,224,0.22);background:rgba(62,198,224,0.03);font-family:'Nunito',sans-serif;font-size:.92rem;color:var(--text);transition:all .25s;outline:none;width:100%; }
+input:focus,textarea:focus{ border-color:var(--accent);background:#fff;box-shadow:0 0 0 4px rgba(62,198,224,0.1); }
+input.err-field{ border-color:#f43f5e;box-shadow:0 0 0 3px rgba(244,63,94,.12); }
+textarea{ resize:vertical;min-height:90px; }
+.field-note{ font-size:.72rem;color:var(--muted);font-family:'DM Mono',monospace; }
+.field-note.danger{ color:#f43f5e; }
 
-/* dotted background */
-
-body::before{
-content:'';
-position:fixed;
-inset:0;
-background-image:radial-gradient(circle,rgba(10,191,176,.2) 1px,transparent 1px);
-background-size:32px 32px;
-pointer-events:none;
-}
-
-/* NAVBAR */
-
-nav{
-height:70px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:0 40px;
-border-bottom:1px solid var(--border);
-background:rgba(255,255,255,.7);
-backdrop-filter:blur(10px);
-}
-
-.brand{
-font-family:'Space Grotesk',sans-serif;
-font-size:1.3rem;
-font-weight:700;
-color:var(--cyan-dark);
-text-decoration:none;
-}
-
-.back{
-font-family:'JetBrains Mono',monospace;
-font-size:.8rem;
-padding:8px 16px;
-border-radius:8px;
-border:1px solid var(--border);
-text-decoration:none;
-color:var(--text);
-background:white;
-transition:.2s;
-}
-
-.back:hover{
-background:var(--cyan);
-color:white;
-}
-
-/* PAGE CONTAINER */
-
-.container{
-display:flex;
-justify-content:center;
-padding:60px 20px;
-}
-
-/* FORM CARD */
-
-.form-card{
-background:var(--card);
-border:1px solid var(--border);
-border-radius:18px;
-padding:50px;
-width:650px;
-box-shadow:0 10px 40px rgba(6,182,212,.18);
-}
-
-/* HEADING */
-
-h1{
-font-family:'Space Grotesk',sans-serif;
-font-size:2.4rem;
-margin-bottom:30px;
-
-background:linear-gradient(135deg,var(--text),var(--cyan));
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-
-/* GRID LAYOUT */
-
-.form-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
-}
-
-.full{
-grid-column:span 2;
-}
-
-/* LABEL */
-
-label{
-font-family:'JetBrains Mono',monospace;
-font-size:.7rem;
-letter-spacing:.06em;
-color:var(--muted);
-text-transform:uppercase;
-}
-
-/* INPUT */
-
-input{
-margin-top:6px;
-padding:12px 14px;
-border-radius:10px;
-border:1px solid var(--border);
-background:#f8ffff;
-font-size:.9rem;
-transition:.25s;
-width:100%;
-}
-
-/* INPUT FOCUS */
-
-input:focus{
-outline:none;
-border-color:var(--cyan);
-box-shadow:0 0 0 3px rgba(6,182,212,.2);
-}
-
-/* BUTTON */
-
-button{
-margin-top:30px;
-padding:14px 30px;
-border:none;
-border-radius:12px;
-font-family:'Space Grotesk',sans-serif;
-font-weight:600;
-background:var(--cyan);
-color:white;
-cursor:pointer;
-transition:.25s;
-}
-
-button:hover{
-background:var(--cyan-dark);
-transform:translateY(-2px);
-box-shadow:0 10px 25px rgba(6,182,212,.35);
-}
-
+.submit-row{ margin-top:30px;display:flex;align-items:center;gap:12px;flex-wrap:wrap; }
+button[type="submit"]{ padding:14px 32px;border:none;border-radius:14px;font-family:'Playfair Display',serif;font-weight:700;font-size:.95rem;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;cursor:pointer;transition:all .3s;box-shadow:0 6px 20px rgba(62,198,224,0.28); }
+button[type="submit"]:hover{ transform:translateY(-3px);box-shadow:0 12px 32px rgba(62,198,224,0.4); }
+button[type="reset"]{ padding:14px 22px;border-radius:14px;border:1.5px solid rgba(62,198,224,0.22);background:white;color:var(--muted);font-family:'Nunito',sans-serif;font-size:.9rem;cursor:pointer;transition:.2s; }
+button[type="reset"]:hover{ background:rgba(62,198,224,0.06);color:var(--deep); }
+.trigger-badge{ margin-left:auto;display:flex;align-items:center;gap:8px;background:rgba(62,198,224,0.08);border:1px solid rgba(62,198,224,0.22);color:var(--muted);font-family:'DM Mono',monospace;font-size:.72rem;padding:7px 14px;border-radius:999px; }
+.tdot{ width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite; }
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
 </style>
-
 </head>
-
-
 <body>
-
 <nav>
-
-<a class="brand" href="/">✦ Silver HealthCare</a>
-
-<a class="back" href="/">← Back to Menu</a>
-
+  <a class="brand" href="/">Silver Care</a>
+  <a class="back" href="/">← Back to Menu</a>
 </nav>
-
-
 <div class="container">
-
 <div class="form-card">
+  <div class="form-header">
+    <div class="form-icon">📋</div>
+    <h1>Insert Patient <em>History</em></h1>
+  </div>
 
-<h1>📋 Insert Patient History</h1>
+  {% if trigger_error %}
+  <div class="trigger-error">
+    <span style="font-size:1.1rem;flex-shrink:0">🚫</span>
+    <div><span class="err-title">Trigger Blocked This Insert</span><span class="err-msg">{{ trigger_error }}</span></div>
+  </div>
+  {% endif %}
 
-<form method="post" action="/patienthistoryform">
+  <div class="date-hint">
+    <span style="font-size:1rem;flex-shrink:0">⚡</span>
+    <span><strong>Trigger active —</strong> leave <em>Visit Date</em> blank and it will auto-default to <strong>today's date</strong>. Negative bill amounts will be <strong>blocked</strong>.</span>
+  </div>
 
-<div class="form-grid">
-
-<div>
-<label>Patient Name</label>
-<input type="text" name="patient_name" placeholder="Enter patient name">
+  <form method="post" action="/patienthistoryform">
+  <div class="form-grid">
+    <div class="field"><label>Patient Name</label><input type="text" name="patient_name" placeholder="e.g. Pranav" required value="{{ form.patient_name if form else '' }}"></div>
+    <div class="field"><label>Doctor Name</label><input type="text" name="doctor_name" placeholder="e.g. Tanav" required value="{{ form.doctor_name if form else '' }}"></div>
+    <div class="field"><label>Visit Date <span class="opt">(optional — defaults to today)</span></label><input type="date" name="visit_date" value="{{ form.visit_date if form else '' }}"></div>
+    <div class="field"><label>Treatment</label><input type="text" name="treatment" placeholder="e.g. tuberculosis" required value="{{ form.treatment if form else '' }}"></div>
+    <div class="field full"><label>Description</label><textarea name="description" placeholder="Describe the treatment or diagnosis…" required>{{ form.description if form else '' }}</textarea></div>
+    <div class="field"><label>Bill Amount</label><input type="number" name="BillAmount" id="billInput" placeholder="e.g. 7892" min="0" required value="{{ form.BillAmount if form else '' }}" oninput="checkBill(this)"><span class="field-note" id="billNote">Must be 0 or positive</span></div>
+  </div>
+  <div class="submit-row">
+    <button type="submit">Submit History →</button>
+    <button type="reset" onclick="resetBill()">Reset</button>
+    <div class="trigger-badge"><span class="tdot"></span> Trigger ON</div>
+  </div>
+  </form>
 </div>
-
-<div>
-<label>Doctor Name</label>
-<input type="text" name="doctor_name" placeholder="Enter doctor name">
 </div>
-
-<div>
-<label>Visit Date</label>
-<input type="date" name="visit_date">
-</div>
-
-<div>
-<label>Treatment</label>
-<input type="text" name="treatment" placeholder="Enter treatment type">
-</div>
-
-<div class="full">
-<label>Description</label>
-<input type="text" name="description" placeholder="Describe the treatment or diagnosis">
-</div>
-
-<div>
-<label>Bill Amount</label>
-<input type="number" name="BillAmount" placeholder="Enter bill amount">
-</div>
-
-</div>
-
-<button type="submit">Submit History</button>
-
-</form>
-
-</div>
-
-</div>
-
+<script>
+function checkBill(input) {
+  const note = document.getElementById("billNote");
+  if (parseInt(input.value) < 0) { input.classList.add("err-field"); note.textContent="⚠ Negative — trigger will block this insert"; note.classList.add("danger"); }
+  else { input.classList.remove("err-field"); note.textContent="Must be 0 or positive"; note.classList.remove("danger"); }
+}
+function resetBill() {
+  const i=document.getElementById("billInput"), n=document.getElementById("billNote");
+  i.classList.remove("err-field"); n.textContent="Must be 0 or positive"; n.classList.remove("danger");
+}
+</script>
 </body>
 </html>

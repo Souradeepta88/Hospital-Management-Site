@@ -1,262 +1,64 @@
 <!DOCTYPE html>
-<!-- Form to insert doctor details -->
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-<title>Doctor Form</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-
+<title>Doctor Form — Silver Care</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-
-:root{
---bg:#e0f8f7;
---card:#ffffff;
---border:#7dddd8;
---cyan:#06b6d4;
---cyan-dark:#0891b2;
---text:#0c2d3a;
---muted:#4a9baa;
-}
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
+:root{ --deep:#1a2e3b;--accent:#3ec6e0;--accent2:#7eddd4;--silver-dark:#6a8fa8;--text:#1a2e3b;--muted:#5a7a90; }
+*{ box-sizing:border-box;margin:0;padding:0; }
 body{
-font-family:'Outfit',sans-serif;
-background:var(--bg);
-min-height:100vh;
+  font-family:'Nunito',sans-serif;min-height:100vh;
+  background:linear-gradient(135deg,#e8f4fb 0%,#f0f8ff 40%,#daf0f5 100%);
+  position:relative;
 }
-
-/* dotted background */
-
-body::before{
-content:'';
-position:fixed;
-inset:0;
-background-image:radial-gradient(circle,rgba(10,191,176,.2) 1px,transparent 1px);
-background-size:32px 32px;
-pointer-events:none;
-}
-
-/* NAVBAR */
-
-nav{
-height:70px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:0 40px;
-border-bottom:1px solid var(--border);
-background:rgba(255,255,255,.7);
-backdrop-filter:blur(10px);
-}
-
-.brand{
-font-family:'Space Grotesk',sans-serif;
-font-size:1.3rem;
-font-weight:700;
-color:var(--cyan-dark);
-text-decoration:none;
-}
-
-.back{
-font-family:'JetBrains Mono',monospace;
-font-size:.8rem;
-padding:8px 16px;
-border-radius:8px;
-border:1px solid var(--border);
-text-decoration:none;
-color:var(--text);
-background:white;
-transition:.2s;
-}
-
-.back:hover{
-background:var(--cyan);
-color:white;
-}
-
-/* FORM CONTAINER */
-
-.container{
-display:flex;
-justify-content:center;
-padding:60px 20px;
-}
-
-/* CARD */
-
-.form-card{
-background:var(--card);
-border:1px solid var(--border);
-border-radius:18px;
-padding:50px;
-width:650px;
-box-shadow:0 10px 40px rgba(6,182,212,.18);
-}
-
-/* HEADING */
-
-h1{
-font-family:'Space Grotesk',sans-serif;
-font-size:2.4rem;
-margin-bottom:30px;
-
-background:linear-gradient(135deg,var(--text),var(--cyan));
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-
-/* GRID */
-
-.form-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
-}
-
-.full{
-grid-column:span 2;
-}
-
-/* LABEL */
-
-label{
-font-family:'JetBrains Mono',monospace;
-font-size:.7rem;
-letter-spacing:.06em;
-color:var(--muted);
-text-transform:uppercase;
-}
-
-/* INPUT */
-
-input,select{
-margin-top:6px;
-padding:12px 14px;
-border-radius:10px;
-border:1px solid var(--border);
-background:#f8ffff;
-font-size:.9rem;
-transition:.25s;
-width:100%;
-}
-
-/* focus glow */
-
-input:focus,
-select:focus{
-outline:none;
-border-color:var(--cyan);
-box-shadow:0 0 0 3px rgba(6,182,212,.2);
-}
-
-/* BUTTON */
-
-button{
-margin-top:30px;
-padding:14px 30px;
-border:none;
-border-radius:12px;
-font-family:'Space Grotesk',sans-serif;
-font-weight:600;
-background:var(--cyan);
-color:white;
-cursor:pointer;
-transition:.25s;
-}
-
-button:hover{
-background:var(--cyan-dark);
-transform:translateY(-2px);
-box-shadow:0 10px 25px rgba(6,182,212,.35);
-}
-
+body::before{ content:'';position:fixed;top:-120px;right:-120px;width:520px;height:520px;background:radial-gradient(circle,rgba(62,198,224,0.18) 0%,transparent 70%);border-radius:50%;pointer-events:none;z-index:0; }
+body::after{ content:'';position:fixed;bottom:-100px;left:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(126,221,212,0.15) 0%,transparent 70%);border-radius:50%;pointer-events:none;z-index:0; }
+nav{ height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(255,255,255,0.75);backdrop-filter:blur(18px);border-bottom:1px solid rgba(184,201,217,0.4);box-shadow:0 2px 20px rgba(30,70,100,0.07);position:relative;z-index:10; }
+.brand{ font-family:'Playfair Display',serif;font-weight:900;font-size:1.25rem;background:linear-gradient(90deg,var(--deep),var(--silver-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none; }
+.back{ font-family:'DM Mono',monospace;font-size:.78rem;padding:8px 20px;border-radius:999px;border:1.5px solid rgba(62,198,224,0.35);text-decoration:none;color:var(--silver-dark);background:rgba(62,198,224,0.06);transition:all .25s; }
+.back:hover{ background:rgba(62,198,224,0.14);border-color:var(--accent);color:var(--deep); }
+.container{ display:flex;justify-content:center;padding:60px 20px 80px;position:relative;z-index:1; }
+.form-card{ background:rgba(255,255,255,0.96);border:1px solid rgba(184,201,217,0.4);border-radius:28px;padding:56px;width:700px;box-shadow:0 20px 80px rgba(30,70,100,0.12),inset 0 1px 0 #fff;position:relative;overflow:hidden; }
+.form-card::before{ content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent));background-size:200% 100%;animation:shimmer 3s linear infinite; }
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+.form-badge{ display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:rgba(62,198,224,0.08);border:1px solid rgba(62,198,224,0.22);padding:6px 14px;border-radius:999px;margin-bottom:20px; }
+.form-badge::before{ content:'';width:6px;height:6px;background:var(--accent);border-radius:50%; }
+h1{ font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;color:var(--deep);letter-spacing:-0.02em;line-height:1.1;margin-bottom:36px; }
+h1 em{ font-family:'Cormorant Garamond',serif;font-style:italic;background:linear-gradient(120deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+.form-grid{ display:grid;grid-template-columns:1fr 1fr;gap:22px; }
+.full{ grid-column:span 2; }
+.field{ display:flex;flex-direction:column;gap:8px; }
+label{ font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;font-weight:500; }
+input,select{ padding:13px 16px;border-radius:12px;border:1.5px solid rgba(62,198,224,0.22);background:rgba(62,198,224,0.03);font-family:'Nunito',sans-serif;font-size:.92rem;color:var(--text);transition:all .25s;outline:none;width:100%; }
+input:focus,select:focus{ border-color:var(--accent);background:#fff;box-shadow:0 0 0 4px rgba(62,198,224,0.1); }
+button{ margin-top:32px;width:100%;padding:16px;border:none;border-radius:14px;font-family:'Playfair Display',serif;font-weight:700;font-size:1.05rem;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;cursor:pointer;transition:all .3s;box-shadow:0 6px 24px rgba(62,198,224,0.35); }
+button:hover{ transform:translateY(-3px);box-shadow:0 16px 40px rgba(62,198,224,0.45); }
 </style>
-
 </head>
-
 <body>
-
 <nav>
-
-<a class="brand" href="/">✦ Silver HealthCare</a>
-
-<a class="back" href="/">← Back to Main Menu</a>
-
+  <a class="brand" href="/">Silver Care</a>
+  <a class="back" href="/">← Back to Main Menu</a>
 </nav>
-
-
 <div class="container">
-
 <div class="form-card">
-
-<h1>👨‍⚕️ Insert Doctor Details</h1>
-
-<form method="post" action="/doctorform">
-
-<div class="form-grid">
-
-<div>
-<label>Username</label>
-<input type="text" id="username" name="username" placeholder="Enter doctor username" required>
+  <div class="form-badge">Staff Registry</div>
+  <h1>👨‍⚕️ Insert <em>Doctor</em> Details</h1>
+  <form method="post" action="/doctorform">
+  <div class="form-grid">
+    <div class="field"><label>Username</label><input type="text" id="username" name="username" placeholder="Enter doctor username" required></div>
+    <div class="field"><label>Qualification</label><input type="text" id="qualification" name="qualification" placeholder="MBBS, MD, etc"></div>
+    <div class="field"><label>Phone</label><input type="text" id="phone" name="phone" placeholder="Enter phone number"></div>
+    <div class="field"><label>Email</label><input type="email" id="email" name="email" placeholder="doctor@email.com"></div>
+    <div class="field"><label>Appointment Time</label><input type="time" id="time" name="time"></div>
+    <div class="field"><label>Age</label><input type="number" id="age" name="age" placeholder="Doctor age"></div>
+    <div class="field full"><label>Specialization</label><input type="text" id="specialization" name="specialization" placeholder="Cardiology, Neurology, etc"></div>
+    <div class="field full"><label>Is Active</label><select id="IsActive" name="IsActive"><option value="">Select Status</option><option value="true">Active</option><option value="false">Inactive</option></select></div>
+  </div>
+  <button type="submit">Submit Doctor Record →</button>
+  </form>
 </div>
-
-<div>
-<label>Qualification</label>
-<input type="text" id="qualification" name="qualification" placeholder="MBBS, MD, etc">
 </div>
-
-<div>
-<label>Phone</label>
-<input type="text" id="phone" name="phone" placeholder="Enter phone number">
-</div>
-
-<div>
-<label>Email</label>
-<input type="email" id="email" name="email" placeholder="doctor@email.com">
-</div>
-
-<div>
-<label>Appointment Time</label>
-<input type="time" id="time" name="time">
-</div>
-
-<div>
-<label>Age</label>
-<input type="number" id="age" name="age" placeholder="Doctor age">
-</div>
-
-<div class="full">
-<label>Specialization</label>
-<input type="text" id="specialization" name="specialization" placeholder="Cardiology, Neurology, etc">
-</div>
-
-<div class="full">
-<label>Is Active</label>
-<select id="IsActive" name="IsActive">
-<option value="">Select</option>
-<option value="true">True</option>
-<option value="false">False</option>
-</select>
-</div>
-
-</div>
-
-<button type="submit">Submit Doctor</button>
-
-</form>
-
-</div>
-
-</div>
-
 </body>
-
 </html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>C3 — Top 10 Patients · Silver Care</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--gold:#f0c040;--gold2:#f8dc80;--gold3:#fdf0b8;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#1a1200 0%,#251a00 60%,#1a1200 100%);min-height:100vh;color:#f0e4b0;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(240,192,64,0.1) 0%,transparent 55%),radial-gradient(ellipse at 80% 80%,rgba(248,220,128,0.07) 0%,transparent 50%);pointer-events:none;z-index:0;}
+    /* Trophy shimmer lines */
+    body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(240,192,64,0.015) 40px,rgba(240,192,64,0.015) 41px);pointer-events:none;z-index:0;}
+
+    nav{position:sticky;top:0;z-index:100;background:rgba(26,18,0,0.93);backdrop-filter:blur(20px);border-bottom:1px solid rgba(240,192,64,0.15);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+    .brand{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:white;text-decoration:none;}
+    .back{display:inline-flex;align-items:center;gap:8px;color:rgba(240,192,64,0.7);text-decoration:none;font-size:0.85rem;font-weight:600;padding:8px 16px;border-radius:10px;border:1px solid rgba(240,192,64,0.2);transition:all 0.2s;}
+    .back:hover{background:rgba(240,192,64,0.1);color:var(--gold2);border-color:rgba(240,192,64,0.4);}
+
+    main{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:60px 40px 80px;}
+
+    .page-hero{margin-bottom:48px;animation:fadeUp 0.7s ease both;}
+    .chip{display:inline-flex;align-items:center;gap:8px;background:rgba(240,192,64,0.1);border:1px solid rgba(240,192,64,0.3);border-radius:30px;padding:6px 16px;font-size:0.7rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;}
+    h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:white;line-height:1.1;margin-bottom:14px;}
+    h1 span{background:linear-gradient(120deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .desc{color:rgba(240,228,176,0.5);font-size:1rem;line-height:1.75;max-width:580px;}
+
+    /* Podium top 3 */
+    .podium{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:40px;animation:fadeUp 0.7s 0.1s ease both;}
+    .podium-card{border-radius:20px;padding:28px 20px;text-align:center;position:relative;overflow:hidden;transition:all 0.3s ease;}
+    .podium-card:hover{transform:translateY(-4px);}
+    .p1{background:linear-gradient(135deg,rgba(240,192,64,0.15),rgba(248,220,128,0.08));border:1px solid rgba(240,192,64,0.35);order:2;}
+    .p2{background:linear-gradient(135deg,rgba(192,192,208,0.1),rgba(192,192,208,0.05));border:1px solid rgba(192,192,208,0.25);order:1;}
+    .p3{background:linear-gradient(135deg,rgba(176,120,64,0.1),rgba(176,120,64,0.05));border:1px solid rgba(176,120,64,0.25);order:3;}
+    .podium-medal{font-size:2.8rem;display:block;margin-bottom:10px;}
+    .podium-rank{font-family:'Playfair Display',serif;font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;}
+    .p1 .podium-rank{color:var(--gold);}
+    .p2 .podium-rank{color:#c0c0d0;}
+    .p3 .podium-rank{color:#b07840;}
+    .podium-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:white;margin-bottom:6px;}
+    .podium-visits{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;line-height:1;}
+    .p1 .podium-visits{background:linear-gradient(120deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .p2 .podium-visits{color:#c0c0d0;}
+    .p3 .podium-visits{color:#b07840;}
+    .podium-visits-lbl{font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(240,228,176,0.4);margin-top:4px;}
+    .podium-spend{font-size:0.85rem;color:rgba(240,228,176,0.5);margin-top:8px;}
+
+    .sql-box{background:rgba(240,192,64,0.04);border:1px solid rgba(240,192,64,0.13);border-radius:18px;padding:24px 28px;margin-bottom:40px;position:relative;overflow:hidden;animation:fadeUp 0.7s 0.15s ease both;}
+    .sql-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold2));}
+    .sql-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+    .sql-lbl{font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(240,192,64,0.4);}
+    .sql-tag{background:rgba(240,192,64,0.1);border:1px solid rgba(240,192,64,0.2);border-radius:8px;padding:3px 10px;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--gold);}
+    pre{font-family:'JetBrains Mono',monospace;font-size:0.84rem;line-height:1.9;color:#c8a858;overflow-x:auto;}
+    .kw{color:#f0c040;} .tbl{color:#f8dc80;} .fn{color:#a8e888;} .cmt{color:rgba(200,168,88,0.3);}
+
+    /* Remaining table */
+    .results-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;animation:fadeUp 0.7s 0.2s ease both;}
+    .results-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:900;color:white;}
+    .results-badge{background:rgba(240,192,64,0.1);border:1px solid rgba(240,192,64,0.2);border-radius:20px;padding:5px 14px;font-size:0.78rem;font-weight:700;color:var(--gold);}
+    .table-wrap{border-radius:18px;overflow:hidden;border:1px solid rgba(240,192,64,0.1);animation:fadeUp 0.7s 0.25s ease both;}
+    table{width:100%;border-collapse:collapse;}
+    thead tr{background:rgba(240,192,64,0.08);border-bottom:1px solid rgba(240,192,64,0.12);}
+    thead th{padding:14px 18px;text-align:left;font-size:0.65rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(240,192,64,0.55);}
+    tbody tr{border-bottom:1px solid rgba(240,192,64,0.05);transition:background 0.2s;}
+    tbody tr:hover{background:rgba(240,192,64,0.04);}
+    tbody tr:last-child{border-bottom:none;}
+    td{padding:14px 18px;font-size:0.9rem;color:#d8c880;}
+    .td-rank{font-family:'Playfair Display',serif;font-weight:900;color:rgba(240,192,64,0.35);}
+    .td-name{font-weight:700;color:white;}
+    .td-visits{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--gold);}
+    .td-spend{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;color:var(--gold2);}
+
+    .empty{text-align:center;padding:80px 40px;color:rgba(240,228,176,0.35);}
+    .err{background:rgba(224,92,110,0.08);border:1px solid rgba(224,92,110,0.2);border-radius:14px;padding:18px 22px;color:#f08090;font-family:'JetBrains Mono',monospace;font-size:0.84rem;margin-bottom:32px;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+    @media(max-width:768px){nav{padding:0 20px;}main{padding:40px 20px;}.podium{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="brand">Silver Care Hospital</a>
+  <a href="/" class="back">← Back to Portal</a>
+</nav>
+<main>
+  <div class="page-hero">
+    <div class="chip">🏆 Complex Query · Task C3</div>
+    <h1>Top 10 Most <span>Frequent</span><br/>Patients &amp; Total Spend</h1>
+    <p class="desc">Ranks the 10 patients with the highest visit counts alongside their cumulative spending. Uses a correlated subquery to aggregate costs per patient from the costs table.</p>
+  </div>
+
+  {% if error %}<div class="err">⚠ {{ error }}</div>{% endif %}
+
+  {% if data and data|length >= 3 %}
+  <div class="podium">
+    <!-- 2nd place -->
+    <div class="podium-card p2">
+      <span class="podium-medal">🥈</span>
+      <div class="podium-rank">2nd Place</div>
+      <div class="podium-name">{{ data[1][0] }}</div>
+      <div class="podium-visits">{{ data[1][1] }}</div>
+      <div class="podium-visits-lbl">Visits</div>
+      <div class="podium-spend">₹{{ "{:,}".format(data[1][2] or 0) }}</div>
+    </div>
+    <!-- 1st place -->
+    <div class="podium-card p1">
+      <span class="podium-medal">🥇</span>
+      <div class="podium-rank">Champion</div>
+      <div class="podium-name">{{ data[0][0] }}</div>
+      <div class="podium-visits">{{ data[0][1] }}</div>
+      <div class="podium-visits-lbl">Visits</div>
+      <div class="podium-spend">₹{{ "{:,}".format(data[0][2] or 0) }}</div>
+    </div>
+    <!-- 3rd place -->
+    <div class="podium-card p3">
+      <span class="podium-medal">🥉</span>
+      <div class="podium-rank">3rd Place</div>
+      <div class="podium-name">{{ data[2][0] }}</div>
+      <div class="podium-visits">{{ data[2][1] }}</div>
+      <div class="podium-visits-lbl">Visits</div>
+      <div class="podium-spend">₹{{ "{:,}".format(data[2][2] or 0) }}</div>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="sql-box">
+    <div class="sql-top"><span class="sql-lbl">SQL Query</span><span class="sql-tag">GROUP BY · SUBQUERY · LIMIT 10</span></div>
+    <pre><span class="kw">SELECT</span>
+    ph.patient_name,
+    <span class="fn">COUNT</span>(ph.id)  <span class="kw">AS</span> total_visits,
+    (
+        <span class="kw">SELECT</span> <span class="fn">SUM</span>(c.medicine_cost + c.doctor_fee
+               + <span class="fn">COALESCE</span>(c.admission_cost, 0))
+        <span class="kw">FROM</span>   <span class="tbl">costs</span> c
+        <span class="kw">WHERE</span>  c.patient_name = ph.patient_name
+    ) <span class="kw">AS</span> total_spent
+<span class="kw">FROM</span>     <span class="tbl">patienthistory</span> ph
+<span class="kw">GROUP BY</span> ph.patient_name
+<span class="kw">ORDER BY</span> total_visits <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="fn">10</span>;
+<span class="cmt">-- Top 10 by visit count · correlated subquery for spend</span></pre>
+  </div>
+
+  {% if data %}
+  <div class="results-hdr">
+    <div class="results-title">Full Leaderboard</div>
+    <div class="results-badge">Top {{ data|length }}</div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Rank</th><th>Patient</th><th>Total Visits</th><th>Total Spent</th></tr></thead>
+      <tbody>
+        {% for row in data %}
+        <tr>
+          <td class="td-rank">#{{ loop.index }}</td>
+          <td class="td-name">{{ row[0] }}</td>
+          <td class="td-visits">{{ row[1] }}</td>
+          <td class="td-spend">₹{{ "{:,}".format(row[2] or 0) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty">No patient history records found.</div>
+  {% endif %}
+</main>
+</body>
+</html>

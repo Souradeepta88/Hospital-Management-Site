@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>T2 — Repeat Patient Visits · Silver Care</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--m:#e040a0;--m2:#f080c0;--m3:#ffc0e0;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#180010 0%,#220018 60%,#180010 100%);min-height:100vh;color:#f0c8dc;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(224,64,160,0.1) 0%,transparent 55%),radial-gradient(ellipse at 80% 70%,rgba(240,128,192,0.07) 0%,transparent 50%);pointer-events:none;z-index:0;}
+    body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(224,64,160,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(224,64,160,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+
+    nav{position:sticky;top:0;z-index:100;background:rgba(24,0,16,0.93);backdrop-filter:blur(20px);border-bottom:1px solid rgba(224,64,160,0.15);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+    .brand{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:white;text-decoration:none;}
+    .back{display:inline-flex;align-items:center;gap:8px;color:rgba(224,64,160,0.7);text-decoration:none;font-size:0.85rem;font-weight:600;padding:8px 16px;border-radius:10px;border:1px solid rgba(224,64,160,0.2);transition:all 0.2s;}
+    .back:hover{background:rgba(224,64,160,0.1);color:var(--m2);border-color:rgba(224,64,160,0.4);}
+
+    main{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:60px 40px 80px;}
+
+    .page-hero{margin-bottom:48px;animation:fadeUp 0.7s ease both;}
+    .chip{display:inline-flex;align-items:center;gap:8px;background:rgba(224,64,160,0.1);border:1px solid rgba(224,64,160,0.3);border-radius:30px;padding:6px 16px;font-size:0.7rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--m2);margin-bottom:20px;}
+    .chip-heart{font-size:0.85rem;}
+    h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:white;line-height:1.1;margin-bottom:14px;}
+    h1 span{background:linear-gradient(120deg,var(--m),var(--m2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .desc{color:rgba(240,200,220,0.5);font-size:1rem;line-height:1.75;max-width:600px;}
+
+    /* Loyalty score banner */
+    .loyalty-banner{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:40px;animation:fadeUp 0.7s 0.08s ease both;}
+    .lb-card{background:rgba(224,64,160,0.07);border:1px solid rgba(224,64,160,0.15);border-radius:18px;padding:22px 18px;text-align:center;transition:all 0.3s ease;}
+    .lb-card:hover{background:rgba(224,64,160,0.11);border-color:rgba(224,64,160,0.28);}
+    .lb-icon{font-size:1.6rem;margin-bottom:10px;display:block;}
+    .lb-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;background:linear-gradient(120deg,var(--m),var(--m2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+    .lb-lbl{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(240,200,220,0.38);margin-top:6px;}
+
+    .sql-box{background:rgba(224,64,160,0.04);border:1px solid rgba(224,64,160,0.13);border-radius:18px;padding:24px 28px;margin-bottom:40px;position:relative;overflow:hidden;animation:fadeUp 0.7s 0.12s ease both;}
+    .sql-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--m),var(--m2));}
+    .sql-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+    .sql-lbl{font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(224,64,160,0.4);}
+    .sql-tag{background:rgba(224,64,160,0.1);border:1px solid rgba(224,64,160,0.2);border-radius:8px;padding:3px 10px;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--m2);}
+    pre{font-family:'JetBrains Mono',monospace;font-size:0.86rem;line-height:1.9;color:#c888a8;}
+    .kw{color:#e040a0;} .tbl{color:#f080c0;} .fn{color:#f0c080;} .cmt{color:rgba(200,136,168,0.3);}
+
+    .results-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;animation:fadeUp 0.7s 0.18s ease both;}
+    .results-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:white;}
+    .results-badge{background:rgba(224,64,160,0.1);border:1px solid rgba(224,64,160,0.2);border-radius:20px;padding:5px 14px;font-size:0.78rem;font-weight:700;color:var(--m2);}
+
+    /* Pair cards */
+    .pairs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;animation:fadeUp 0.7s 0.22s ease both;}
+    .pair-card{background:rgba(224,64,160,0.05);border:1px solid rgba(224,64,160,0.12);border-radius:20px;padding:24px 22px;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden;}
+    .pair-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--m),var(--m2));opacity:0;transition:opacity 0.3s;}
+    .pair-card:hover{transform:translateY(-5px);border-color:rgba(224,64,160,0.3);background:rgba(224,64,160,0.08);}
+    .pair-card:hover::before{opacity:1;}
+    .pair-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+    .pair-avatars{display:flex;align-items:center;}
+    .av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;border:2px solid rgba(224,64,160,0.2);}
+    .av1{background:rgba(224,64,160,0.12);}
+    .av2{background:rgba(240,128,192,0.1);margin-left:-10px;}
+    .pair-count-badge{background:linear-gradient(135deg,var(--m),var(--m2));border-radius:20px;padding:4px 14px;font-family:'Playfair Display',serif;font-size:1rem;font-weight:900;color:white;box-shadow:0 4px 14px rgba(224,64,160,0.35);}
+    .pair-connect{font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(240,200,220,0.35);margin-bottom:6px;}
+    .pair-patient{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:white;margin-bottom:3px;}
+    .pair-doctor{font-size:0.82rem;color:rgba(240,200,220,0.5);}
+    .pair-footer{margin-top:14px;padding-top:12px;border-top:1px solid rgba(224,64,160,0.1);display:flex;align-items:center;gap:6px;}
+    .pair-footer span{font-size:0.75rem;color:rgba(240,200,220,0.45);}
+    .loyalty-pill{background:rgba(224,64,160,0.1);border:1px solid rgba(224,64,160,0.2);border-radius:20px;padding:3px 10px;font-size:0.7rem;font-weight:700;color:var(--m2);}
+
+    .empty{text-align:center;padding:80px 40px;color:rgba(240,200,220,0.35);}
+    .err{background:rgba(224,92,110,0.08);border:1px solid rgba(224,92,110,0.2);border-radius:14px;padding:18px 22px;color:#f08090;font-family:'JetBrains Mono',monospace;font-size:0.84rem;margin-bottom:32px;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+    @media(max-width:768px){nav{padding:0 20px;}main{padding:40px 20px;}.loyalty-banner{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="brand">Silver Care Hospital</a>
+  <a href="/" class="back">← Back to Portal</a>
+</nav>
+<main>
+  <div class="page-hero">
+    <div class="chip"><span class="chip-heart">💗</span>Simple Query · Task T2</div>
+    <h1>Patients Who Visited<br/>the Same <span>Doctor Twice+</span></h1>
+    <p class="desc">Identifies loyal patient–doctor pairs where the patient has returned to the same doctor at least twice. Groups by patient and doctor, filters with HAVING COUNT ≥ 2.</p>
+  </div>
+
+  {% if error %}<div class="err">⚠ {{ error }}</div>{% endif %}
+
+  {% set max_visits = data[0][2] if data else 1 %}
+  {% set total_pairs = data|length %}
+  {% set total_repeat_visits = data | sum(attribute=2) if data else 0 %}
+
+  <div class="loyalty-banner">
+    <div class="lb-card"><span class="lb-icon">💗</span><div class="lb-num">{{ total_pairs }}</div><div class="lb-lbl">Loyal Pairs</div></div>
+    <div class="lb-card"><span class="lb-icon">🔄</span><div class="lb-num">{{ total_repeat_visits }}</div><div class="lb-lbl">Total Repeat Visits</div></div>
+    <div class="lb-card"><span class="lb-icon">🏆</span><div class="lb-num">{{ max_visits }}</div><div class="lb-lbl">Max Visits (1 Pair)</div></div>
+  </div>
+
+  <div class="sql-box">
+    <div class="sql-top"><span class="sql-lbl">SQL Query</span><span class="sql-tag">GROUP BY · HAVING</span></div>
+    <pre><span class="kw">SELECT</span>
+    ph.patient_name,
+    ph.doctor_name,
+    <span class="fn">COUNT</span>(ph.id) <span class="kw">AS</span> visit_count
+<span class="kw">FROM</span>     <span class="tbl">patienthistory</span> ph
+<span class="kw">GROUP BY</span> ph.patient_name, ph.doctor_name
+<span class="kw">HAVING</span>   <span class="fn">COUNT</span>(ph.id) &gt;= 2
+<span class="kw">ORDER BY</span> visit_count <span class="kw">DESC</span>;
+<span class="cmt">-- HAVING filters only pairs with 2+ visits to the same doctor</span></pre>
+  </div>
+
+  <div class="results-hdr">
+    <div class="results-title">Loyal Patient–Doctor Pairs</div>
+    <div class="results-badge">{{ data|length }} Pair{% if data|length != 1 %}s{% endif %}</div>
+  </div>
+
+  {% if data %}
+  <div class="pairs-grid">
+    {% for row in data %}
+    <div class="pair-card">
+      <div class="pair-top">
+        <div class="pair-avatars">
+          <div class="av av1">🧑</div>
+          <div class="av av2">👨‍⚕️</div>
+        </div>
+        <div class="pair-count-badge">{{ row[2] }}×</div>
+      </div>
+      <div class="pair-connect">Patient → Doctor</div>
+      <div class="pair-patient">{{ row[0] }}</div>
+      <div class="pair-doctor">Dr. {{ row[1] }}</div>
+      <div class="pair-footer">
+        <div class="loyalty-pill">💗 Loyal Patient</div>
+        <span>{{ row[2] }} visits together</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty">No patient–doctor pairs with 2+ visits found yet.</div>
+  {% endif %}
+</main>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>P2 — Inactive Doctors · Silver Care</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--r:#c83030;--r2:#e86060;--r3:#f8a8a8;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#180505 0%,#220808 60%,#180505 100%);min-height:100vh;color:#f0ccc8;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(200,48,48,0.1) 0%,transparent 55%),radial-gradient(ellipse at 80% 70%,rgba(232,96,96,0.06) 0%,transparent 50%);pointer-events:none;z-index:0;}
+    body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(200,48,48,0.06) 1px,transparent 1px);background-size:38px 38px;pointer-events:none;z-index:0;}
+
+    nav{position:sticky;top:0;z-index:100;background:rgba(24,5,5,0.93);backdrop-filter:blur(20px);border-bottom:1px solid rgba(200,48,48,0.15);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+    .brand{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:white;text-decoration:none;}
+    .back{display:inline-flex;align-items:center;gap:8px;color:rgba(200,48,48,0.7);text-decoration:none;font-size:0.85rem;font-weight:600;padding:8px 16px;border-radius:10px;border:1px solid rgba(200,48,48,0.2);transition:all 0.2s;}
+    .back:hover{background:rgba(200,48,48,0.1);color:var(--r2);border-color:rgba(200,48,48,0.4);}
+
+    main{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:60px 40px 80px;}
+
+    .page-hero{margin-bottom:48px;animation:fadeUp 0.7s ease both;}
+    .chip{display:inline-flex;align-items:center;gap:8px;background:rgba(200,48,48,0.1);border:1px solid rgba(200,48,48,0.3);border-radius:30px;padding:6px 16px;font-size:0.7rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--r2);margin-bottom:20px;}
+    .chip-alert{font-size:0.85rem;animation:blink 1.5s ease-in-out infinite;}
+    @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+    h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:white;line-height:1.1;margin-bottom:14px;}
+    h1 span{background:linear-gradient(120deg,var(--r),var(--r2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .desc{color:rgba(240,204,200,0.5);font-size:1rem;line-height:1.75;max-width:600px;}
+
+    /* Alert banner */
+    .alert-banner{display:flex;align-items:center;gap:24px;background:linear-gradient(135deg,rgba(200,48,48,0.12),rgba(232,96,96,0.06));border:1px solid rgba(200,48,48,0.25);border-radius:22px;padding:28px 36px;margin-bottom:40px;position:relative;overflow:hidden;animation:fadeUp 0.7s 0.05s ease both;}
+    .alert-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--r),var(--r2));}
+    /* Pulse ring */
+    .alert-pulse{position:relative;width:60px;height:60px;flex-shrink:0;}
+    .pulse-ring{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(200,48,48,0.4);animation:ringPulse 2s ease-out infinite;}
+    .pulse-ring:nth-child(2){animation-delay:0.4s;}
+    .pulse-ring:nth-child(3){animation-delay:0.8s;}
+    @keyframes ringPulse{0%{transform:scale(0.8);opacity:0.8;}100%{transform:scale(1.8);opacity:0;}}
+    .alert-icon-inner{position:absolute;inset:8px;background:rgba(200,48,48,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;border:1px solid rgba(200,48,48,0.3);}
+    .alert-text{flex:1;}
+    .alert-lbl{font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,48,48,0.55);margin-bottom:6px;}
+    .alert-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:white;margin-bottom:4px;}
+    .alert-sub{font-size:0.85rem;color:rgba(240,204,200,0.45);}
+    .alert-count{text-align:right;}
+    .ac-num{font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;background:linear-gradient(120deg,var(--r),var(--r2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+    .ac-lbl{font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(240,204,200,0.35);}
+
+    /* Two col layout */
+    .two-col{display:grid;grid-template-columns:1fr 340px;gap:28px;margin-bottom:40px;animation:fadeUp 0.7s 0.1s ease both;}
+    .sql-box{background:rgba(200,48,48,0.04);border:1px solid rgba(200,48,48,0.12);border-radius:18px;padding:24px 24px;position:relative;overflow:hidden;height:fit-content;}
+    .sql-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--r),var(--r2));}
+    .sql-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+    .sql-lbl{font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,48,48,0.4);}
+    .sql-tag{background:rgba(200,48,48,0.1);border:1px solid rgba(200,48,48,0.2);border-radius:8px;padding:3px 10px;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--r2);}
+    pre{font-family:'JetBrains Mono',monospace;font-size:0.78rem;line-height:1.85;color:#c08080;overflow-x:auto;}
+    .kw{color:#c83030;} .tbl{color:#e86060;} .fn{color:#f8a8a8;} .str{color:#80c868;} .cmt{color:rgba(192,128,128,0.3);}
+
+    /* Info panel */
+    .info-panel{display:flex;flex-direction:column;gap:16px;}
+    .info-card{background:rgba(200,48,48,0.06);border:1px solid rgba(200,48,48,0.12);border-radius:16px;padding:20px 18px;}
+    .info-card-title{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;color:white;margin-bottom:10px;}
+    .info-card p{font-size:0.82rem;color:rgba(240,204,200,0.5);line-height:1.65;}
+    .info-tag{display:inline-block;margin-top:10px;background:rgba(200,48,48,0.1);border:1px solid rgba(200,48,48,0.2);border-radius:8px;padding:3px 10px;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--r2);}
+
+    /* Results */
+    .results-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;animation:fadeUp 0.7s 0.15s ease both;}
+    .results-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:white;}
+    .results-badge{background:rgba(200,48,48,0.1);border:1px solid rgba(200,48,48,0.2);border-radius:20px;padding:5px 14px;font-size:0.78rem;font-weight:700;color:var(--r2);}
+
+    .doc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;animation:fadeUp 0.7s 0.2s ease both;}
+    .doc-card{background:rgba(200,48,48,0.05);border:1px solid rgba(200,48,48,0.12);border-radius:20px;padding:24px 20px;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden;}
+    .doc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--r),var(--r2));opacity:0;transition:opacity 0.3s;}
+    .doc-card:hover{transform:translateY(-5px);border-color:rgba(200,48,48,0.28);background:rgba(200,48,48,0.08);}
+    .doc-card:hover::before{opacity:1;}
+    .doc-top{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+    .doc-avatar{width:46px;height:46px;border-radius:14px;background:rgba(200,48,48,0.12);border:1px solid rgba(200,48,48,0.2);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+    .doc-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:white;}
+    .doc-id{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:rgba(200,48,48,0.5);margin-top:2px;}
+    .doc-info{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+    .doc-info-row{display:flex;align-items:center;gap:8px;font-size:0.82rem;color:rgba(240,204,200,0.5);}
+    .doc-info-icon{width:22px;height:22px;border-radius:6px;background:rgba(200,48,48,0.1);display:flex;align-items:center;justify-content:center;font-size:0.7rem;flex-shrink:0;}
+    .doc-last-visit{margin-top:10px;padding-top:10px;border-top:1px solid rgba(200,48,48,0.1);font-size:0.78rem;}
+    .dlv-label{color:rgba(240,204,200,0.35);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;font-size:0.65rem;margin-bottom:3px;}
+    .dlv-val{color:var(--r3);font-weight:700;}
+    .never-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(200,48,48,0.15);border:1px solid rgba(200,48,48,0.25);border-radius:20px;padding:3px 10px;font-size:0.72rem;font-weight:700;color:var(--r2);}
+    .status-dot{width:5px;height:5px;background:var(--r2);border-radius:50%;animation:blink 1.5s infinite;}
+
+    .empty{text-align:center;padding:80px 40px;color:rgba(240,204,200,0.35);}
+    .err{background:rgba(224,92,110,0.08);border:1px solid rgba(224,92,110,0.2);border-radius:14px;padding:18px 22px;color:#f08090;font-family:'JetBrains Mono',monospace;font-size:0.84rem;margin-bottom:32px;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+    @media(max-width:900px){.two-col{grid-template-columns:1fr;}nav{padding:0 20px;}main{padding:40px 20px;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="brand">Silver Care Hospital</a>
+  <a href="/" class="back">← Back to Portal</a>
+</nav>
+<main>
+  <div class="page-hero">
+    <div class="chip"><span class="chip-alert">🚨</span>Procedure · Task P2</div>
+    <h1>Doctors with <span>No Appointments</span><br/>in the Last Year</h1>
+    <p class="desc">Identifies all doctors who haven't seen a patient in over 12 months (or never). Mirrors the Oracle CURSOR procedure — adapted to PostgreSQL with a NOT EXISTS subquery and 12-month interval filter.</p>
+  </div>
+
+  <div class="alert-banner">
+    <div class="alert-pulse">
+      <div class="pulse-ring"></div><div class="pulse-ring"></div><div class="pulse-ring"></div>
+      <div class="alert-icon-inner">⚠️</div>
+    </div>
+    <div class="alert-text">
+      <div class="alert-lbl">Inactivity Alert</div>
+      <div class="alert-title">Doctors Needing Review</div>
+      <div class="alert-sub">No patient visits in 12+ months · Flagged for administrative action</div>
+    </div>
+    <div class="alert-count">
+      <div class="ac-num">{{ data|length }}</div>
+      <div class="ac-lbl">Flagged</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="sql-box">
+      <div class="sql-top"><span class="sql-lbl">Procedure SQL</span><span class="sql-tag">NOT EXISTS · INTERVAL</span></div>
+      <pre>{{ sql_shown }}</pre>
+    </div>
+    <div class="info-panel">
+      <div class="info-card">
+        <div class="info-card-title">🔍 How it Works</div>
+        <p>Uses a <strong>NOT EXISTS</strong> correlated subquery to find doctors who have zero visits in the past 12 months. Doctors with no history at all are also included.</p>
+        <span class="info-tag">NOT EXISTS subquery</span>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">📅 12-Month Window</div>
+        <p>PostgreSQL equivalent of Oracle's <code>ADD_MONTHS(SYSDATE,-12)</code> — uses <code>CURRENT_DATE - INTERVAL '12 months'</code> for compatibility.</p>
+        <span class="info-tag">CURRENT_DATE - INTERVAL '12 months'</span>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">⚙️ Action</div>
+        <p>These doctors should be contacted for scheduling review, status verification, or potential deactivation using <a href="/p1" style="color:var(--r2);text-decoration:none;font-weight:700;">P1 → Deactivate Doctor</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  {% if error %}<div class="err">⚠ {{ error }}</div>{% endif %}
+
+  <div class="results-hdr">
+    <div class="results-title">Flagged Doctors</div>
+    <div class="results-badge">{{ data|length }} Doctor{% if data|length != 1 %}s{% endif %} Inactive</div>
+  </div>
+
+  {% if data %}
+  <div class="doc-grid">
+    {% for row in data %}
+    <div class="doc-card">
+      <div class="doc-top">
+        <div class="doc-avatar">🩺</div>
+        <div>
+          <div class="doc-name">Dr. {{ row[1] }}</div>
+          <div class="doc-id">ID #{{ row[0] }}</div>
+        </div>
+      </div>
+      <div class="doc-info">
+        <div class="doc-info-row"><div class="doc-info-icon">🏥</div>{{ row[2] or 'Unspecified' }}</div>
+        <div class="doc-info-row"><div class="doc-info-icon">🎓</div>{{ row[3] or 'Not listed' }}</div>
+        <div class="doc-info-row">
+          <div class="doc-info-icon">{% if row[4] %}✅{% else %}❌{% endif %}</div>
+          Status: {% if row[4] %}Active{% else %}Inactive{% endif %}
+        </div>
+      </div>
+      <div class="doc-last-visit">
+        <div class="dlv-label">Last Visit</div>
+        {% if row[5] %}
+        <div class="dlv-val">{{ row[5] }}</div>
+        {% else %}
+        <div class="never-badge"><div class="status-dot"></div>Never Seen a Patient</div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty">🎉 All doctors have been active within the last 12 months!</div>
+  {% endif %}
+</main>
+</body>
+</html>

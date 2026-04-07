@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>C4 — Doctor Repeat Rate · Silver Care</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--b:#60c8f8;--b2:#98def8;--b3:#c8eeff;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#030e18 0%,#071520 60%,#030e18 100%);min-height:100vh;color:#c0dff0;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 35%,rgba(96,200,248,0.1) 0%,transparent 55%),radial-gradient(ellipse at 85% 65%,rgba(152,222,248,0.06) 0%,transparent 50%);pointer-events:none;z-index:0;}
+    body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(96,200,248,0.06) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0;}
+
+    nav{position:sticky;top:0;z-index:100;background:rgba(3,14,24,0.93);backdrop-filter:blur(20px);border-bottom:1px solid rgba(96,200,248,0.15);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+    .brand{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:white;text-decoration:none;}
+    .back{display:inline-flex;align-items:center;gap:8px;color:rgba(96,200,248,0.7);text-decoration:none;font-size:0.85rem;font-weight:600;padding:8px 16px;border-radius:10px;border:1px solid rgba(96,200,248,0.2);transition:all 0.2s;}
+    .back:hover{background:rgba(96,200,248,0.1);color:var(--b2);border-color:rgba(96,200,248,0.4);}
+
+    main{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:60px 40px 80px;}
+
+    .page-hero{margin-bottom:48px;animation:fadeUp 0.7s ease both;}
+    .chip{display:inline-flex;align-items:center;gap:8px;background:rgba(96,200,248,0.1);border:1px solid rgba(96,200,248,0.3);border-radius:30px;padding:6px 16px;font-size:0.7rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--b);margin-bottom:20px;}
+    .chip-dot{width:6px;height:6px;background:var(--b);border-radius:50%;animation:blink 1.5s ease-in-out infinite;}
+    @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+    h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:white;line-height:1.1;margin-bottom:14px;}
+    h1 span{background:linear-gradient(120deg,var(--b),var(--b2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .desc{color:rgba(192,223,240,0.5);font-size:1rem;line-height:1.75;max-width:600px;}
+
+    /* Summary stats */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:40px;animation:fadeUp 0.7s 0.05s ease both;}
+    .scard{background:rgba(96,200,248,0.05);border:1px solid rgba(96,200,248,0.12);border-radius:16px;padding:20px 16px;text-align:center;transition:all 0.3s ease;}
+    .scard:hover{background:rgba(96,200,248,0.09);border-color:rgba(96,200,248,0.25);}
+    .sc-icon{font-size:1.4rem;margin-bottom:8px;display:block;}
+    .sc-num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;background:linear-gradient(120deg,var(--b),var(--b2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+    .sc-lbl{font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(192,223,240,0.4);margin-top:5px;}
+
+    .sql-box{background:rgba(96,200,248,0.04);border:1px solid rgba(96,200,248,0.12);border-radius:18px;padding:24px 28px;margin-bottom:40px;position:relative;overflow:hidden;animation:fadeUp 0.7s 0.1s ease both;}
+    .sql-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--b),var(--b2));}
+    .sql-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+    .sql-lbl{font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(96,200,248,0.4);}
+    .sql-tag{background:rgba(96,200,248,0.1);border:1px solid rgba(96,200,248,0.2);border-radius:8px;padding:3px 10px;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--b);}
+    pre{font-family:'JetBrains Mono',monospace;font-size:0.83rem;line-height:1.9;color:#88b8d8;overflow-x:auto;}
+    .kw{color:#60c8f8;} .tbl{color:#98def8;} .fn{color:#a8f098;} .cmt{color:rgba(136,184,216,0.3);}
+
+    /* Doctor cards */
+    .results-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;animation:fadeUp 0.7s 0.15s ease both;}
+    .results-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:white;}
+    .results-badge{background:rgba(96,200,248,0.1);border:1px solid rgba(96,200,248,0.2);border-radius:20px;padding:5px 14px;font-size:0.78rem;font-weight:700;color:var(--b);}
+
+    .doctor-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;animation:fadeUp 0.7s 0.2s ease both;}
+    .doc-card{background:rgba(96,200,248,0.04);border:1px solid rgba(96,200,248,0.1);border-radius:20px;padding:24px 22px;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden;}
+    .doc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--b),var(--b2));opacity:0;transition:opacity 0.3s;}
+    .doc-card:hover{transform:translateY(-5px);border-color:rgba(96,200,248,0.28);background:rgba(96,200,248,0.07);}
+    .doc-card:hover::before{opacity:1;}
+    .doc-top{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+    .doc-avatar{width:46px;height:46px;border-radius:14px;background:rgba(96,200,248,0.1);border:1px solid rgba(96,200,248,0.15);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+    .doc-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:white;}
+    .doc-sub{font-size:0.7rem;color:rgba(192,223,240,0.4);margin-top:2px;}
+    .doc-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .doc-metric{background:rgba(96,200,248,0.05);border-radius:10px;padding:12px 14px;}
+    .dm-val{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:var(--b);line-height:1;}
+    .dm-lbl{font-size:0.65rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(192,223,240,0.35);margin-top:3px;}
+    .doc-avg-wrap{margin-top:14px;}
+    .doc-avg-label{display:flex;justify-content:space-between;margin-bottom:5px;}
+    .avg-lbl{font-size:0.68rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:rgba(192,223,240,0.4);}
+    .avg-val{font-family:'Playfair Display',serif;font-size:0.88rem;font-weight:700;color:var(--b2);}
+    .avg-bar-bg{height:4px;background:rgba(96,200,248,0.08);border-radius:4px;overflow:hidden;}
+    .avg-bar-fill{height:100%;background:linear-gradient(90deg,var(--b),var(--b2));border-radius:4px;transition:width 1.2s cubic-bezier(0.22,1,0.36,1);}
+
+    .empty{text-align:center;padding:80px 40px;color:rgba(192,223,240,0.35);}
+    .err{background:rgba(224,92,110,0.08);border:1px solid rgba(224,92,110,0.2);border-radius:14px;padding:18px 22px;color:#f08090;font-family:'JetBrains Mono',monospace;font-size:0.84rem;margin-bottom:32px;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+    @media(max-width:768px){nav{padding:0 20px;}main{padding:40px 20px;}.stats-row{grid-template-columns:repeat(2,1fr);}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="brand">Silver Care Hospital</a>
+  <a href="/" class="back">← Back to Portal</a>
+</nav>
+<main>
+  <div class="page-hero">
+    <div class="chip"><div class="chip-dot"></div>Complex Query · Task C4</div>
+    <h1>Doctor <span>Repeat Patient</span><br/>Frequency Analysis</h1>
+    <p class="desc">Calculates how frequently each doctor sees returning patients — total visits, unique patients, and the average visits per patient ratio using a LEFT JOIN + GROUP BY with NULLIF protection.</p>
+  </div>
+
+  {% if error %}<div class="err">⚠ {{ error }}</div>{% endif %}
+
+  {% set total_docs = data|length %}
+  {% set total_visits_all = data | sum(attribute=1) if data else 0 %}
+  {% set total_unique = data | sum(attribute=2) if data else 0 %}
+  {% set max_avg = data | map(attribute=3) | select | max if data else 1 %}
+
+  <div class="stats-row">
+    <div class="scard"><span class="sc-icon">🩺</span><div class="sc-num">{{ total_docs }}</div><div class="sc-lbl">Total Doctors</div></div>
+    <div class="scard"><span class="sc-icon">🗓️</span><div class="sc-num">{{ total_visits_all }}</div><div class="sc-lbl">Total Visits</div></div>
+    <div class="scard"><span class="sc-icon">👥</span><div class="sc-num">{{ total_unique }}</div><div class="sc-lbl">Unique Patients</div></div>
+    <div class="scard"><span class="sc-icon">🔄</span>
+      <div class="sc-num">{{ (total_visits_all / total_unique | float) | round(1) if total_unique > 0 else '—' }}</div>
+      <div class="sc-lbl">Overall Avg</div>
+    </div>
+  </div>
+
+  <div class="sql-box">
+    <div class="sql-top"><span class="sql-lbl">SQL Query</span><span class="sql-tag">LEFT JOIN · GROUP BY · NULLIF</span></div>
+    <pre><span class="kw">SELECT</span>
+    d.username                              <span class="kw">AS</span> doctor_name,
+    <span class="fn">COUNT</span>(ph.id)                           <span class="kw">AS</span> total_visits,
+    <span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> ph.patient_name)        <span class="kw">AS</span> unique_patients,
+    <span class="fn">ROUND</span>(
+        <span class="fn">COUNT</span>(ph.id)::NUMERIC /
+        <span class="fn">NULLIF</span>(<span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> ph.patient_name), 0),
+    2)                                      <span class="kw">AS</span> avg_visits_per_patient
+<span class="kw">FROM</span>  <span class="tbl">doctor</span> d
+<span class="kw">LEFT JOIN</span> <span class="tbl">patienthistory</span> ph <span class="kw">ON</span> d.username = ph.doctor_name
+<span class="kw">GROUP BY</span> d.username
+<span class="kw">ORDER BY</span> total_visits <span class="kw">DESC</span>;
+<span class="cmt">-- NULLIF prevents division-by-zero · LEFT JOIN includes doctors with 0 visits</span></pre>
+  </div>
+
+  <div class="results-hdr">
+    <div class="results-title">Doctor Analytics</div>
+    <div class="results-badge">{{ data|length }} Doctor{% if data|length != 1 %}s{% endif %}</div>
+  </div>
+
+  {% if data %}
+  {% set max_visits = data[0][1] if data else 1 %}
+  <div class="doctor-grid">
+    {% for row in data %}
+    {% set avg_val = row[3] | float if row[3] else 0 %}
+    {% set avg_pct = (avg_val / (max_avg | float) * 100) | round(1) if max_avg else 0 %}
+    <div class="doc-card">
+      <div class="doc-top">
+        <div class="doc-avatar">👨‍⚕️</div>
+        <div>
+          <div class="doc-name">Dr. {{ row[0] }}</div>
+          <div class="doc-sub">Rank #{{ loop.index }}</div>
+        </div>
+      </div>
+      <div class="doc-metrics">
+        <div class="doc-metric"><div class="dm-val">{{ row[1] }}</div><div class="dm-lbl">Visits</div></div>
+        <div class="doc-metric"><div class="dm-val">{{ row[2] }}</div><div class="dm-lbl">Unique Patients</div></div>
+      </div>
+      <div class="doc-avg-wrap">
+        <div class="doc-avg-label">
+          <span class="avg-lbl">Avg Visits / Patient</span>
+          <span class="avg-val">{{ avg_val }}</span>
+        </div>
+        <div class="avg-bar-bg"><div class="avg-bar-fill" style="width:{{ avg_pct }}%"></div></div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty">No doctor visit data found. Add patient history records first.</div>
+  {% endif %}
+</main>
+</body>
+</html>

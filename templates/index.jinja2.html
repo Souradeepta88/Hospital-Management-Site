@@ -27,6 +27,8 @@
       background: radial-gradient(circle, rgba(126,221,212,0.15) 0%, transparent 70%);
       border-radius: 50%; pointer-events: none; z-index: 0;
     }
+
+    /* ── NAV ── */
     nav {
       position: sticky; top: 0; z-index: 100;
       background: rgba(255,255,255,0.75); backdrop-filter: blur(18px);
@@ -60,6 +62,7 @@
     .btn-sm { padding: 8px 18px !important; font-size: 0.82rem !important; }
     .btn-lg { padding: 18px 44px !important; font-size: 1rem !important; }
 
+    /* ── HERO ── */
     .hero { position: relative; z-index: 1; min-height: 92vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; overflow: hidden; }
     .particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
     .particle { position: absolute; border-radius: 50%; animation: floatUp linear infinite; opacity: 0; }
@@ -98,6 +101,7 @@
     .chip-text-main { font-size: 0.82rem; font-weight: 700; color: var(--deep); }
     .chip-text-sub { font-size: 0.7rem; color: var(--silver-dark); }
 
+    /* ── SECTIONS ── */
     section { position: relative; z-index: 1; padding: 80px 72px; }
     .section-label { display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--silver-dark); margin-bottom: 12px; }
     .section-label::before, .section-label::after { content: ''; display: inline-block; width: 24px; height: 1.5px; background: var(--accent); }
@@ -105,7 +109,6 @@
     .section-title em { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--silver-dark); }
     .section-sub { color: #5a7a90; font-size: 1rem; max-width: 560px; line-height: 1.7; margin-bottom: 48px; }
 
-    .stats-strip { position: relative; z-index: 1; padding: 0 72px; }
     .stats-row { display: flex; gap: 0; background: var(--card-bg); backdrop-filter: blur(16px); border: 1px solid rgba(184,201,217,0.3); border-radius: 24px; box-shadow: 0 8px 40px rgba(30,70,100,0.1); overflow: hidden; }
     .stat-card { flex: 1; padding: 32px 24px; text-align: center; position: relative; transition: background 0.3s; }
     .stat-card:not(:last-child)::after { content: ''; position: absolute; right: 0; top: 20%; bottom: 20%; width: 1px; background: rgba(184,201,217,0.4); }
@@ -134,37 +137,40 @@
     .portal-card:hover .card-arrow { transform: translateX(4px) rotate(-10deg); }
     .ic-blue { background: rgba(62,198,224,0.12); } .ic-teal { background: rgba(67,201,160,0.12); } .ic-purple { background: rgba(150,100,220,0.12); } .ic-orange { background: rgba(255,160,80,0.12); } .ic-rose { background: rgba(224,92,110,0.12); } .ic-sky { background: rgba(100,180,230,0.12); }
 
-    /* ════════════════════════════════════════
-       TO DO SECTION — SPECTACULAR
-    ════════════════════════════════════════ */
+    /* ════ TODO SECTION ════ */
     .todo-section {
       position: relative; z-index: 1;
       padding: 100px 72px;
-      background: linear-gradient(135deg, #0f1e28 0%, #1a2e3b 50%, #0d2233 100%);
+      background: linear-gradient(135deg, #0a1520 0%, #0f1e28 30%, #1a2e3b 60%, #0d2233 100%);
       overflow: hidden;
     }
-    /* Animated mesh background */
     .todo-section::before {
-      content: '';
-      position: absolute; inset: 0;
+      content: ''; position: absolute; inset: 0;
       background:
-        radial-gradient(ellipse at 10% 50%, rgba(62,198,224,0.12) 0%, transparent 50%),
-        radial-gradient(ellipse at 90% 20%, rgba(126,221,212,0.1) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 90%, rgba(150,100,220,0.08) 0%, transparent 40%);
+        radial-gradient(ellipse at 5%  50%, rgba(62,198,224,0.1)   0%, transparent 45%),
+        radial-gradient(ellipse at 95% 15%, rgba(126,221,212,0.08)  0%, transparent 45%),
+        radial-gradient(ellipse at 50% 95%, rgba(150,100,220,0.07)  0%, transparent 40%),
+        radial-gradient(ellipse at 80% 55%, rgba(34,214,94,0.05)    0%, transparent 35%),
+        radial-gradient(ellipse at 20% 80%, rgba(240,160,80,0.05)   0%, transparent 35%);
       pointer-events: none;
     }
-    /* Grid lines */
     .todo-section::after {
-      content: '';
-      position: absolute; inset: 0;
+      content: ''; position: absolute; inset: 0;
       background-image:
-        linear-gradient(rgba(62,198,224,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(62,198,224,0.04) 1px, transparent 1px);
-      background-size: 60px 60px;
+        linear-gradient(rgba(62,198,224,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(62,198,224,0.035) 1px, transparent 1px);
+      background-size: 56px 56px;
       pointer-events: none;
     }
-    .todo-header { position: relative; z-index: 1; margin-bottom: 64px; }
-    .todo-badge {
+
+    /* New section divider inside todo */
+    .inner-section-break {
+      position: relative; z-index: 1;
+      margin: 80px 0 56px;
+      padding-top: 72px;
+      border-top: 1px solid rgba(62,198,224,0.12);
+    }
+    .inner-section-badge {
       display: inline-flex; align-items: center; gap: 10px;
       background: linear-gradient(135deg, rgba(62,198,224,0.15), rgba(126,221,212,0.1));
       border: 1px solid rgba(62,198,224,0.3); border-radius: 30px;
@@ -172,156 +178,124 @@
       font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
       color: var(--accent);
     }
-    .todo-badge-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
-    .todo-title {
+    .inner-section-badge-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse2 2s infinite; }
+    @keyframes pulse2 { 0%,100%{opacity:1;}50%{opacity:.4;} }
+    .inner-section-title {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 900;
-      color: white; line-height: 1.1; margin-bottom: 16px;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 900; color: white; line-height: 1.1; margin-bottom: 14px;
     }
-    .todo-title em { font-family: 'Cormorant Garamond', serif; font-style: italic; background: linear-gradient(120deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .todo-sub { color: rgba(255,255,255,0.45); font-size: 1rem; max-width: 520px; line-height: 1.75; }
+    .inner-section-title em {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      background: linear-gradient(120deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .inner-section-sub { color: rgba(255,255,255,0.42); font-size: .95rem; max-width: 520px; line-height: 1.7; }
 
-    /* 5 task cards in a stunning layout */
-    .todo-grid {
+    .batch-divider {
       position: relative; z-index: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto auto auto;
-      gap: 24px;
+      display: flex; align-items: center; gap: 20px;
+      margin: 56px 0 36px;
     }
-    /* S1 spans full width at top */
+    .batch-divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(62,198,224,0.2), transparent); }
+    .batch-divider-label {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(62,198,224,0.2);
+      border-radius: 30px; padding: 7px 20px;
+      font-size: 0.68rem; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(62,198,224,0.65);
+      backdrop-filter: blur(10px);
+    }
+    .batch-divider-label .bdot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); animation: blink 1.5s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1;}50%{opacity:0.3;} }
+
+    .todo-header { position: relative; z-index: 1; margin-bottom: 64px; }
+    .todo-badge { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, rgba(62,198,224,0.15), rgba(126,221,212,0.1)); border: 1px solid rgba(62,198,224,0.3); border-radius: 30px; padding: 8px 20px; margin-bottom: 20px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+    .todo-badge-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+    .todo-title { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 900; color: white; line-height: 1.1; margin-bottom: 16px; }
+    .todo-title em { font-family: 'Cormorant Garamond', serif; font-style: italic; background: linear-gradient(120deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .todo-sub { color: rgba(255,255,255,0.42); font-size: 1rem; max-width: 580px; line-height: 1.75; }
+
+    .todo-count-strip {
+      position: relative; z-index: 1;
+      display: flex; gap: 20px; margin-bottom: 48px; flex-wrap: wrap;
+    }
+    .tcs { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 14px 22px; text-align: center; flex: 1; min-width: 100px; }
+    .tcs-num { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; color: white; line-height: 1; }
+    .tcs-lbl { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-top: 4px; }
+
+    .todo-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
     .todo-card-featured { grid-column: 1 / -1; }
 
     .todo-card {
-      position: relative;
-      border-radius: 24px;
-      padding: 36px 36px 32px;
-      text-decoration: none;
-      display: flex; flex-direction: column;
-      overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      cursor: pointer;
-    }
-    .todo-card::before {
-      content: ''; position: absolute; inset: 0; border-radius: 24px;
-      background: inherit; z-index: 0;
-      transition: opacity 0.3s;
+      position: relative; border-radius: 22px; padding: 32px 32px 28px;
+      text-decoration: none; display: flex; flex-direction: column; overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); cursor: pointer;
     }
     .todo-card > * { position: relative; z-index: 1; }
-    .todo-card:hover { transform: translateY(-8px) scale(1.01); }
+    .todo-card:hover { transform: translateY(-7px) scale(1.01); }
 
-    /* S1 — Cyan deep */
-    .tc-s1 {
-      background: linear-gradient(135deg, rgba(62,198,224,0.12) 0%, rgba(30,70,100,0.6) 100%);
-      border: 1px solid rgba(62,198,224,0.25);
-      box-shadow: 0 8px 40px rgba(62,198,224,0.15), inset 0 1px 0 rgba(62,198,224,0.2);
-    }
-    .tc-s1:hover { box-shadow: 0 24px 64px rgba(62,198,224,0.3), inset 0 1px 0 rgba(62,198,224,0.3); border-color: rgba(62,198,224,0.5); }
+    .tc-s1 { background: linear-gradient(135deg, rgba(62,198,224,0.13), rgba(20,55,80,0.65)); border: 1px solid rgba(62,198,224,0.22); box-shadow: 0 6px 36px rgba(62,198,224,0.12), inset 0 1px 0 rgba(62,198,224,0.18); }
+    .tc-s1:hover { box-shadow: 0 22px 60px rgba(62,198,224,0.28); border-color: rgba(62,198,224,0.48); }
+    .tc-c1 { background: linear-gradient(135deg, rgba(67,201,160,0.13), rgba(15,55,45,0.65)); border: 1px solid rgba(67,201,160,0.22); box-shadow: 0 6px 36px rgba(67,201,160,0.1), inset 0 1px 0 rgba(67,201,160,0.15); }
+    .tc-c1:hover { box-shadow: 0 22px 60px rgba(67,201,160,0.26); border-color: rgba(67,201,160,0.48); }
+    .tc-c2 { background: linear-gradient(135deg, rgba(150,100,220,0.13), rgba(35,18,65,0.65)); border: 1px solid rgba(150,100,220,0.22); box-shadow: 0 6px 36px rgba(150,100,220,0.1), inset 0 1px 0 rgba(150,100,220,0.15); }
+    .tc-c2:hover { box-shadow: 0 22px 60px rgba(150,100,220,0.26); border-color: rgba(150,100,220,0.48); }
+    .tc-t1 { background: linear-gradient(135deg, rgba(240,160,80,0.13), rgba(55,30,8,0.65)); border: 1px solid rgba(240,160,80,0.22); box-shadow: 0 6px 36px rgba(240,160,80,0.1), inset 0 1px 0 rgba(240,160,80,0.15); }
+    .tc-t1:hover { box-shadow: 0 22px 60px rgba(240,160,80,0.26); border-color: rgba(240,160,80,0.48); }
+    .tc-p1 { background: linear-gradient(135deg, rgba(224,92,110,0.13), rgba(55,12,22,0.65)); border: 1px solid rgba(224,92,110,0.22); box-shadow: 0 6px 36px rgba(224,92,110,0.1), inset 0 1px 0 rgba(224,92,110,0.15); }
+    .tc-p1:hover { box-shadow: 0 22px 60px rgba(224,92,110,0.26); border-color: rgba(224,92,110,0.48); }
+    .tc-s2 { background: linear-gradient(135deg, rgba(34,214,94,0.13), rgba(5,40,15,0.65)); border: 1px solid rgba(34,214,94,0.22); box-shadow: 0 6px 36px rgba(34,214,94,0.1), inset 0 1px 0 rgba(34,214,94,0.15); }
+    .tc-s2:hover { box-shadow: 0 22px 60px rgba(34,214,94,0.26); border-color: rgba(34,214,94,0.48); }
+    .tc-c3 { background: linear-gradient(135deg, rgba(240,192,64,0.13), rgba(50,38,5,0.65)); border: 1px solid rgba(240,192,64,0.22); box-shadow: 0 6px 36px rgba(240,192,64,0.1), inset 0 1px 0 rgba(240,192,64,0.15); }
+    .tc-c3:hover { box-shadow: 0 22px 60px rgba(240,192,64,0.26); border-color: rgba(240,192,64,0.48); }
+    .tc-c4 { background: linear-gradient(135deg, rgba(96,200,248,0.13), rgba(5,22,40,0.65)); border: 1px solid rgba(96,200,248,0.22); box-shadow: 0 6px 36px rgba(96,200,248,0.1), inset 0 1px 0 rgba(96,200,248,0.15); }
+    .tc-c4:hover { box-shadow: 0 22px 60px rgba(96,200,248,0.26); border-color: rgba(96,200,248,0.48); }
+    .tc-t2 { background: linear-gradient(135deg, rgba(224,64,160,0.13), rgba(40,5,30,0.65)); border: 1px solid rgba(224,64,160,0.22); box-shadow: 0 6px 36px rgba(224,64,160,0.1), inset 0 1px 0 rgba(224,64,160,0.15); }
+    .tc-t2:hover { box-shadow: 0 22px 60px rgba(224,64,160,0.26); border-color: rgba(224,64,160,0.48); }
+    .tc-p2 { background: linear-gradient(135deg, rgba(200,48,48,0.13), rgba(40,5,5,0.65)); border: 1px solid rgba(200,48,48,0.22); box-shadow: 0 6px 36px rgba(200,48,48,0.1), inset 0 1px 0 rgba(200,48,48,0.15); }
+    .tc-p2:hover { box-shadow: 0 22px 60px rgba(200,48,48,0.26); border-color: rgba(200,48,48,0.48); }
 
-    /* C1 — Teal */
-    .tc-c1 {
-      background: linear-gradient(135deg, rgba(67,201,160,0.12) 0%, rgba(20,60,50,0.6) 100%);
-      border: 1px solid rgba(67,201,160,0.25);
-      box-shadow: 0 8px 40px rgba(67,201,160,0.12), inset 0 1px 0 rgba(67,201,160,0.15);
-    }
-    .tc-c1:hover { box-shadow: 0 24px 64px rgba(67,201,160,0.28), inset 0 1px 0 rgba(67,201,160,0.3); border-color: rgba(67,201,160,0.5); }
+    .todo-tag { font-size: 0.63rem; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; padding: 4px 11px; border-radius: 20px; }
+    .tag-s1  { background: rgba(62,198,224,0.18); color: #3ec6e0; border: 1px solid rgba(62,198,224,0.28); }
+    .tag-c1  { background: rgba(67,201,160,0.18); color: #43c9a0; border: 1px solid rgba(67,201,160,0.28); }
+    .tag-c2  { background: rgba(150,100,220,0.18); color: #b890f0; border: 1px solid rgba(150,100,220,0.28); }
+    .tag-t1  { background: rgba(240,160,80,0.18);  color: #f0a050; border: 1px solid rgba(240,160,80,0.28); }
+    .tag-p1  { background: rgba(224,92,110,0.18);  color: #f08090; border: 1px solid rgba(224,92,110,0.28); }
+    .tag-s2  { background: rgba(34,214,94,0.18);   color: #22d65e; border: 1px solid rgba(34,214,94,0.28); }
+    .tag-c3  { background: rgba(240,192,64,0.18);  color: #f0c040; border: 1px solid rgba(240,192,64,0.28); }
+    .tag-c4  { background: rgba(96,200,248,0.18);  color: #60c8f8; border: 1px solid rgba(96,200,248,0.28); }
+    .tag-t2  { background: rgba(224,64,160,0.18);  color: #e040a0; border: 1px solid rgba(224,64,160,0.28); }
+    .tag-p2  { background: rgba(200,48,48,0.18);   color: #e86060; border: 1px solid rgba(200,48,48,0.28); }
 
-    /* C2 — Purple */
-    .tc-c2 {
-      background: linear-gradient(135deg, rgba(150,100,220,0.12) 0%, rgba(40,20,70,0.6) 100%);
-      border: 1px solid rgba(150,100,220,0.25);
-      box-shadow: 0 8px 40px rgba(150,100,220,0.12), inset 0 1px 0 rgba(150,100,220,0.15);
-    }
-    .tc-c2:hover { box-shadow: 0 24px 64px rgba(150,100,220,0.28), inset 0 1px 0 rgba(150,100,220,0.3); border-color: rgba(150,100,220,0.5); }
-
-    /* T1 — Orange/amber */
-    .tc-t1 {
-      background: linear-gradient(135deg, rgba(240,160,80,0.12) 0%, rgba(60,35,10,0.6) 100%);
-      border: 1px solid rgba(240,160,80,0.25);
-      box-shadow: 0 8px 40px rgba(240,160,80,0.12), inset 0 1px 0 rgba(240,160,80,0.15);
-    }
-    .tc-t1:hover { box-shadow: 0 24px 64px rgba(240,160,80,0.28), inset 0 1px 0 rgba(240,160,80,0.3); border-color: rgba(240,160,80,0.5); }
-
-    /* P1 — Rose */
-    .tc-p1 {
-      background: linear-gradient(135deg, rgba(224,92,110,0.12) 0%, rgba(60,15,25,0.6) 100%);
-      border: 1px solid rgba(224,92,110,0.25);
-      box-shadow: 0 8px 40px rgba(224,92,110,0.12), inset 0 1px 0 rgba(224,92,110,0.15);
-    }
-    .tc-p1:hover { box-shadow: 0 24px 64px rgba(224,92,110,0.28), inset 0 1px 0 rgba(224,92,110,0.3); border-color: rgba(224,92,110,0.5); }
-
-    .todo-card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; }
-    .todo-tag {
-      font-size: 0.65rem; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase;
-      padding: 4px 12px; border-radius: 20px;
-    }
-    .tag-s1 { background: rgba(62,198,224,0.18); color: #3ec6e0; border: 1px solid rgba(62,198,224,0.3); }
-    .tag-c1 { background: rgba(67,201,160,0.18); color: #43c9a0; border: 1px solid rgba(67,201,160,0.3); }
-    .tag-c2 { background: rgba(150,100,220,0.18); color: #b890f0; border: 1px solid rgba(150,100,220,0.3); }
-    .tag-t1 { background: rgba(240,160,80,0.18); color: #f0a050; border: 1px solid rgba(240,160,80,0.3); }
-    .tag-p1 { background: rgba(224,92,110,0.18); color: #f08090; border: 1px solid rgba(224,92,110,0.3); }
-
-    .todo-task-id {
-      font-family: 'Playfair Display', serif; font-size: 0.75rem; font-weight: 700;
-      color: rgba(255,255,255,0.25); letter-spacing: 0.1em;
-    }
-    .todo-icon-wrap {
-      width: 56px; height: 56px; border-radius: 18px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.6rem; margin-bottom: 16px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      backdrop-filter: blur(10px);
-    }
-    .todo-card-title {
-      font-family: 'Playfair Display', serif; font-weight: 900; color: white;
-      line-height: 1.2; margin-bottom: 10px;
-    }
-    .todo-card-featured .todo-card-title { font-size: 1.5rem; }
-    .todo-card .todo-card-title { font-size: 1.15rem; }
-    .todo-card-desc { font-size: 0.84rem; color: rgba(255,255,255,0.5); line-height: 1.65; flex: 1; margin-bottom: 24px; }
+    .todo-card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 18px; }
+    .todo-task-id { font-family: 'Playfair Display', serif; font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.22); letter-spacing: 0.1em; }
+    .todo-icon-wrap { width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 14px; background: rgba(255,255,255,0.055); border: 1px solid rgba(255,255,255,0.09); backdrop-filter: blur(10px); }
+    .todo-card-title { font-family: 'Playfair Display', serif; font-weight: 900; color: white; line-height: 1.2; margin-bottom: 9px; font-size: 1.1rem; }
+    .todo-card-featured .todo-card-title { font-size: 1.45rem; }
+    .todo-card-desc { font-size: 0.83rem; color: rgba(255,255,255,0.47); line-height: 1.65; flex: 1; margin-bottom: 22px; }
     .todo-card-footer { display: flex; align-items: center; justify-content: space-between; }
-    .todo-card-type { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
-    .todo-arrow {
-      width: 40px; height: 40px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; color: white;
-      transition: transform 0.3s;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(255,255,255,0.08);
-    }
+    .todo-card-type { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.28); }
+    .todo-arrow { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; color: white; transition: transform 0.3s; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.07); }
     .todo-card:hover .todo-arrow { transform: translateX(5px) rotate(-10deg); background: rgba(255,255,255,0.15); }
 
-    /* Featured card extra layout */
-    .tc-s1.todo-card-featured { display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center; padding: 44px 48px; }
+    .tc-s1.todo-card-featured { display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center; padding: 42px 46px; }
     .tc-s1.todo-card-featured .todo-card-body { display: flex; flex-direction: column; }
-    .tc-s1.todo-card-featured .todo-deco {
-      width: 160px; height: 160px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(62,198,224,0.2) 0%, transparent 70%);
-      border: 1px solid rgba(62,198,224,0.2);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 4rem;
-      animation: rotateSlow 20s linear infinite;
-      flex-shrink: 0;
-    }
-
-    /* Glowing number badges */
-    .todo-number {
-      position: absolute; top: 20px; right: 20px;
-      font-family: 'Playfair Display', serif; font-size: 5rem; font-weight: 900;
-      color: rgba(255,255,255,0.04); line-height: 1; pointer-events: none;
-      letter-spacing: -0.05em;
-    }
+    .tc-s1.todo-card-featured .todo-deco { width: 150px; height: 150px; border-radius: 50%; background: radial-gradient(circle, rgba(62,198,224,0.18) 0%, transparent 70%); border: 1px solid rgba(62,198,224,0.18); display: flex; align-items: center; justify-content: center; font-size: 3.8rem; animation: rotateSlow 20s linear infinite; flex-shrink: 0; }
+    .tc-p2.todo-card-featured { display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center; padding: 42px 46px; }
+    .tc-p2.todo-card-featured .todo-card-body { display: flex; flex-direction: column; }
+    .tc-p2.todo-card-featured .todo-deco { width: 150px; height: 150px; border-radius: 50%; background: radial-gradient(circle, rgba(200,48,48,0.18) 0%, transparent 70%); border: 1px solid rgba(200,48,48,0.18); display: flex; align-items: center; justify-content: center; font-size: 3.8rem; animation: rotateSlow 25s linear infinite reverse; flex-shrink: 0; }
+    .todo-number { position: absolute; top: 16px; right: 20px; font-family: 'Playfair Display', serif; font-size: 4.5rem; font-weight: 900; color: rgba(255,255,255,0.035); line-height: 1; pointer-events: none; letter-spacing: -0.05em; }
 
     .wave-divider { height: 60px; background: linear-gradient(180deg, transparent, rgba(62,198,224,0.05)); }
     .alert { padding: 14px 24px; border-radius: 14px; margin: 20px 64px; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; animation: fadeUp 0.4s ease; }
-    .alert-info { background: rgba(62,198,224,0.12); border: 1px solid rgba(62,198,224,0.3); color: var(--silver-dark); }
-    .alert-error { background: rgba(224,92,110,0.1); border: 1px solid rgba(224,92,110,0.3); color: #c04050; }
+    .alert-info  { background: rgba(62,198,224,0.12); border: 1px solid rgba(62,198,224,0.3); color: var(--silver-dark); }
+    .alert-error { background: rgba(224,92,110,0.1);  border: 1px solid rgba(224,92,110,0.3); color: #c04050; }
 
     footer { position: relative; z-index: 1; background: var(--deep); color: rgba(255,255,255,0.7); padding: 56px 72px 36px; margin-top: 0; }
     .footer-top { display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); }
     .footer-brand { flex: 2; min-width: 220px; }
-    .footer-col { flex: 1; min-width: 160px; }
+    .footer-col { flex: 1; min-width: 150px; }
     footer h4 { font-family: 'Playfair Display', serif; color: white; font-size: 1rem; margin-bottom: 16px; }
     footer a { display: block; color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.88rem; padding: 4px 0; transition: color 0.2s; }
     footer a:hover { color: var(--accent); }
@@ -331,24 +305,25 @@
     .footer-logo span { color: var(--accent); }
 
     @keyframes fadeUp { from { opacity:0;transform:translateY(22px); } to { opacity:1;transform:translateY(0); } }
-    .portal-card:nth-child(1) { animation-delay:0.05s; } .portal-card:nth-child(2) { animation-delay:0.1s; } .portal-card:nth-child(3) { animation-delay:0.15s; } .portal-card:nth-child(4) { animation-delay:0.2s; } .portal-card:nth-child(5) { animation-delay:0.25s; } .portal-card:nth-child(6) { animation-delay:0.3s; } .portal-card:nth-child(7) { animation-delay:0.35s; } .portal-card:nth-child(8) { animation-delay:0.4s; } .portal-card:nth-child(9) { animation-delay:0.45s; } .portal-card:nth-child(10) { animation-delay:0.5s; } .portal-card:nth-child(11) { animation-delay:0.55s; } .portal-card:nth-child(12) { animation-delay:0.6s; }
+    .portal-card:nth-child(1){animation-delay:.05s} .portal-card:nth-child(2){animation-delay:.1s} .portal-card:nth-child(3){animation-delay:.15s} .portal-card:nth-child(4){animation-delay:.2s} .portal-card:nth-child(5){animation-delay:.25s} .portal-card:nth-child(6){animation-delay:.3s} .portal-card:nth-child(7){animation-delay:.35s} .portal-card:nth-child(8){animation-delay:.4s} .portal-card:nth-child(9){animation-delay:.45s} .portal-card:nth-child(10){animation-delay:.5s} .portal-card:nth-child(11){animation-delay:.55s} .portal-card:nth-child(12){animation-delay:.6s}
     .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     .todo-card { animation: fadeUp 0.6s ease both; }
-    .todo-card:nth-child(1) { animation-delay:0.1s; } .todo-card:nth-child(2) { animation-delay:0.2s; } .todo-card:nth-child(3) { animation-delay:0.3s; } .todo-card:nth-child(4) { animation-delay:0.35s; } .todo-card:nth-child(5) { animation-delay:0.4s; }
+    .todo-card:nth-child(1){animation-delay:.08s} .todo-card:nth-child(2){animation-delay:.16s} .todo-card:nth-child(3){animation-delay:.24s} .todo-card:nth-child(4){animation-delay:.3s} .todo-card:nth-child(5){animation-delay:.36s} .todo-card:nth-child(6){animation-delay:.42s} .todo-card:nth-child(7){animation-delay:.48s} .todo-card:nth-child(8){animation-delay:.54s} .todo-card:nth-child(9){animation-delay:.6s} .todo-card:nth-child(10){animation-delay:.66s}
 
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; } .hero-right { display: none; } .hero-left { padding: 60px 24px 40px; }
-      nav { padding: 0 20px; } section { padding: 50px 24px; } .stats-strip { padding: 0 24px; }
+      nav { padding: 0 20px; } section { padding: 50px 24px; }
       .stats-row { flex-wrap: wrap; } .services-row { grid-template-columns: 1fr; }
       footer { padding: 40px 24px 24px; } .todo-section { padding: 60px 24px; }
-      .todo-grid { grid-template-columns: 1fr; } .todo-card-featured { grid-column: 1; }
-      .tc-s1.todo-card-featured { grid-template-columns: 1fr; } .tc-s1.todo-card-featured .todo-deco { display: none; }
+      .todo-grid { grid-template-columns: 1fr; } .todo-card-featured, .tc-p2.todo-card-featured { grid-column: 1; grid-template-columns: 1fr; }
+      .tc-s1.todo-card-featured .todo-deco, .tc-p2.todo-card-featured .todo-deco { display: none; }
     }
   </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
   <a href="/" class="nav-brand">
     <svg class="hospital-logo-badge" viewBox="0 0 60 60" fill="none">
@@ -402,27 +377,17 @@
     <div class="hero-circle-1"></div><div class="hero-circle-2"></div>
     <img src="{{ url_for('static', filename='preview.webp') }}" alt="Nurse caring for patient" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
     <div style="position:relative;z-index:2;width:100%;height:100%;pointer-events:none;">
-      <div class="scene-chip" style="pointer-events:all;position:absolute;bottom:32px;left:32px;animation:chipFloat1 5s ease-in-out infinite;">
+      <div class="scene-chip" style="pointer-events:all;position:absolute;bottom:32px;left:32px;">
         <div class="chip-icon" style="background:rgba(67,201,160,0.12);">💊</div>
         <div><div class="chip-text-main">Medication Given</div><div class="chip-text-sub">10 mins ago · On Schedule</div></div>
       </div>
-      <div class="scene-chip" style="position:absolute;top:32px;right:32px;animation:chipFloat2 6s ease-in-out infinite 1s;">
+      <div class="scene-chip" style="position:absolute;top:32px;right:32px;">
         <div class="chip-icon" style="background:rgba(62,198,224,0.12);">❤️</div>
         <div><div class="chip-text-main">HR: 72 bpm</div><div class="chip-text-sub">Normal Range</div></div>
       </div>
     </div>
   </div>
 </section>
-<style>
-@keyframes chipFloat1 {
-  0%, 100% { transform: translateY(0) rotate(-2deg); }
-  50%       { transform: translateY(-8px) rotate(0deg); }
-}
-@keyframes chipFloat2 {
-  0%, 100% { transform: translateY(0) rotate(1deg); }
-  50%       { transform: translateY(-6px) rotate(-1deg); }
-}
-</style>
 
 <!-- STATS -->
 <section style="padding-top:40px;padding-bottom:20px;">
@@ -477,30 +442,48 @@
 
 <div class="wave-divider"></div>
 
-<!-- ════════════════════════════════════════════════
-     TO DO SECTION
-════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════════════
+     ADVANCED ANALYSIS — Tasks 1–5 (Batch 1)
+══════════════════════════════════════════════════ -->
 <div class="todo-section">
+
+  <!-- Header — Advanced Analysis -->
   <div class="todo-header reveal">
     <div class="todo-badge"><div class="todo-badge-dot"></div>Database Operations</div>
-    <h2 class="todo-title">Advanced <em>To Do</em> Tasks</h2>
-    <p class="todo-sub">Five carefully crafted database operations — from simple queries to complex joins, triggers, and stored procedures. Each task reveals the full power of the Silver Care data model.</p>
+    <h2 class="todo-title">Advanced <em>Analysis</em></h2>
+    <p class="todo-sub">Five carefully crafted database operations — simple queries, complex joins, a trigger and a stored procedure. Each task reveals the full power of the Silver Care data model.</p>
+  </div>
+
+  <!-- Count strip -->
+  <div class="todo-count-strip reveal">
+    <div class="tcs"><div class="tcs-num">5</div><div class="tcs-lbl">Tasks</div></div>
+    <div class="tcs"><div class="tcs-num">2</div><div class="tcs-lbl">SQL Queries</div></div>
+    <div class="tcs"><div class="tcs-num">2</div><div class="tcs-lbl">Complex Queries</div></div>
+    <div class="tcs"><div class="tcs-num">1</div><div class="tcs-lbl">Trigger</div></div>
+    <div class="tcs"><div class="tcs-num">1</div><div class="tcs-lbl">Procedure</div></div>
+  </div>
+
+  <!-- Batch 1 divider — clean, no label text -->
+  <div class="batch-divider reveal">
+    <div class="batch-divider-line"></div>
+    <div class="batch-divider-label"><div class="bdot"></div>Tasks 01 – 05</div>
+    <div class="batch-divider-line"></div>
   </div>
 
   <div class="todo-grid">
 
-    <!-- S1 — Featured full-width -->
+    <!-- Task 1 — S1 featured -->
     <a href="/s1" class="todo-card tc-s1 todo-card-featured">
       <div class="todo-card-body">
         <div class="todo-card-top">
           <span class="todo-tag tag-s1">Simple Query</span>
-          <span class="todo-task-id">Task S1</span>
+          <span class="todo-task-id">Task 01</span>
         </div>
         <div class="todo-icon-wrap">🔍</div>
         <div class="todo-card-title">Active Cardiology Specialists</div>
         <div class="todo-card-desc">Retrieve the ID, name, qualification and specialization of all currently active doctors in the Cardiology department. A clean, targeted lookup that powers the specialist directory.</div>
         <div class="todo-card-footer">
-          <span class="todo-card-type">SELECT · WHERE · FILTER</span>
+          <span class="todo-card-type">SELECT · WHERE · IsActive = true</span>
           <div class="todo-arrow">→</div>
         </div>
       </div>
@@ -508,68 +491,131 @@
       <span class="todo-number">01</span>
     </a>
 
-    <!-- C1 -->
+    <!-- Task 2 — C1 -->
     <a href="/c1" class="todo-card tc-c1">
-      <div class="todo-card-top">
-        <span class="todo-tag tag-c1">Complex Query</span>
-        <span class="todo-task-id">Task C1</span>
-      </div>
+      <div class="todo-card-top"><span class="todo-tag tag-c1">Complex Query</span><span class="todo-task-id">Task 02</span></div>
       <div class="todo-icon-wrap">📊</div>
       <div class="todo-card-title">Patients with Total Visits &amp; Total Amount Billed</div>
-      <div class="todo-card-desc">Find every patient along with a count of their total hospital visits and the cumulative amount billed across all history records. Aggregated with JOIN, GROUP BY &amp; HAVING.</div>
-      <div class="todo-card-footer">
-        <span class="todo-card-type">JOIN · GROUP BY · HAVING · SUM</span>
-        <div class="todo-arrow">→</div>
-      </div>
+      <div class="todo-card-desc">Every patient ranked by cumulative billing across all history records — aggregated with JOIN, GROUP BY &amp; HAVING.</div>
+      <div class="todo-card-footer"><span class="todo-card-type">JOIN · GROUP BY · HAVING · SUM</span><div class="todo-arrow">→</div></div>
       <span class="todo-number">02</span>
     </a>
 
-    <!-- C2 -->
+    <!-- Task 3 — C2 -->
     <a href="/c2" class="todo-card tc-c2">
-      <div class="todo-card-top">
-        <span class="todo-tag tag-c2">Complex Query</span>
-        <span class="todo-task-id">Task C2</span>
-      </div>
+      <div class="todo-card-top"><span class="todo-tag tag-c2">Complex Query</span><span class="todo-task-id">Task 03</span></div>
       <div class="todo-icon-wrap">💊</div>
       <div class="todo-card-title">Amoxicillin Prescriptions &amp; Prescribing Doctors</div>
-      <div class="todo-card-desc">Identify all patients prescribed Amoxicillin, the doctor who wrote the prescription, and the visit date. Achieved through a 4-table chain join across patients, prescriptions, doctors and medications.</div>
-      <div class="todo-card-footer">
-        <span class="todo-card-type">4-TABLE JOIN · MEDICATION FILTER</span>
-        <div class="todo-arrow">→</div>
-      </div>
+      <div class="todo-card-desc">4-table chain join — patients, prescriptions, doctors and medications — filtered to Amoxicillin, sorted by recency.</div>
+      <div class="todo-card-footer"><span class="todo-card-type">4-TABLE JOIN · MEDICATION FILTER</span><div class="todo-arrow">→</div></div>
       <span class="todo-number">03</span>
     </a>
 
-    <!-- T1 -->
+    <!-- Task 4 — T1 -->
     <a href="/t1" class="todo-card tc-t1">
-      <div class="todo-card-top">
-        <span class="todo-tag tag-t1">Trigger</span>
-        <span class="todo-task-id">Task T1</span>
-      </div>
+      <div class="todo-card-top"><span class="todo-tag tag-t1">Trigger</span><span class="todo-task-id">Task 04</span></div>
       <div class="todo-icon-wrap">⚡</div>
       <div class="todo-card-title">Auto-Validate Patient History on Insert</div>
-      <div class="todo-card-desc">A BEFORE INSERT trigger on the PatientHistory table — automatically defaults visit_date to today when not provided, and raises an exception if BillAmount is negative.</div>
-      <div class="todo-card-footer">
-        <span class="todo-card-type">TRIGGER · BEFORE INSERT · VALIDATE</span>
-        <div class="todo-arrow">→</div>
-      </div>
+      <div class="todo-card-desc">BEFORE INSERT trigger — auto-defaults visit_date to today if null, rejects negative BillAmounts at DB level.</div>
+      <div class="todo-card-footer"><span class="todo-card-type">TRIGGER · BEFORE INSERT · VALIDATE</span><div class="todo-arrow">→</div></div>
       <span class="todo-number">04</span>
     </a>
 
-    <!-- P1 -->
+    <!-- Task 5 — P1 -->
     <a href="/p1" class="todo-card tc-p1">
-      <div class="todo-card-top">
-        <span class="todo-tag tag-p1">Procedure</span>
-        <span class="todo-task-id">Task P1</span>
-      </div>
+      <div class="todo-card-top"><span class="todo-tag tag-p1">Procedure</span><span class="todo-task-id">Task 05</span></div>
       <div class="todo-icon-wrap">⚙️</div>
       <div class="todo-card-title">Deactivate a Doctor by ID</div>
-      <div class="todo-card-desc">A stored procedure that sets a doctor's status to Inactive using their unique ID — with built-in row-count validation to confirm whether the operation succeeded or the ID wasn't found.</div>
-      <div class="todo-card-footer">
-        <span class="todo-card-type">PROCEDURE · UPDATE · ROW COUNT</span>
-        <div class="todo-arrow">→</div>
-      </div>
+      <div class="todo-card-desc">Stored procedure — sets IsActive = false using doctor ID, with row-count validation to confirm success or flag not-found.</div>
+      <div class="todo-card-footer"><span class="todo-card-type">PROCEDURE · UPDATE · ROW COUNT</span><div class="todo-arrow">→</div></div>
       <span class="todo-number">05</span>
+    </a>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       NEW LEVEL TO-DO TASKS — Batch 2, Tasks 6–10
+  ══════════════════════════════════════════════════ -->
+  <div class="inner-section-break reveal">
+    <div class="inner-section-badge"><div class="inner-section-badge-dot"></div>Next Level</div>
+    <h2 class="inner-section-title">New Level <em>To-Do Tasks</em></h2>
+    <p class="inner-section-sub">Five more advanced database operations — deeper joins, subqueries, repeat-frequency analysis, and a full stored procedure. Built to push the Silver Care data model to its limits.</p>
+  </div>
+
+  <!-- Batch 2 count strip -->
+  <div class="todo-count-strip reveal" style="margin-top:0;">
+    <div class="tcs"><div class="tcs-num">5</div><div class="tcs-lbl">Tasks</div></div>
+    <div class="tcs"><div class="tcs-num">2</div><div class="tcs-lbl">SQL Queries</div></div>
+    <div class="tcs"><div class="tcs-num">2</div><div class="tcs-lbl">Complex Queries</div></div>
+    <div class="tcs"><div class="tcs-num">0</div><div class="tcs-lbl">Triggers</div></div>
+    <div class="tcs"><div class="tcs-num">1</div><div class="tcs-lbl">Procedure</div></div>
+  </div>
+
+  <div class="batch-divider reveal">
+    <div class="batch-divider-line"></div>
+    <div class="batch-divider-label"><div class="bdot"></div>Tasks 06 – 10</div>
+    <div class="batch-divider-line"></div>
+  </div>
+
+  <div class="todo-grid">
+
+    <!-- Task 6 — S2 -->
+    <a href="/s2" class="todo-card tc-s2">
+      <div class="todo-card-top"><span class="todo-tag tag-s2">Simple Query</span><span class="todo-task-id">Task 06</span></div>
+      <div class="todo-icon-wrap">💸</div>
+      <div class="todo-card-title">Patients Who Spent Over ₹1,000 on Medicines</div>
+      <div class="todo-card-desc">Identifies all patients whose medicine costs exceed ₹1,000, ranked highest first — a fast, targeted billing audit query.</div>
+      <div class="todo-card-footer"><span class="todo-card-type">SELECT · WHERE · ORDER BY DESC</span><div class="todo-arrow">→</div></div>
+      <span class="todo-number">06</span>
+    </a>
+
+    <!-- Task 7 — C3 -->
+    <a href="/c3" class="todo-card tc-c3">
+      <div class="todo-card-top"><span class="todo-tag tag-c3">Complex Query</span><span class="todo-task-id">Task 07</span></div>
+      <div class="todo-icon-wrap">🏆</div>
+      <div class="todo-card-title">Top 10 Most-Visiting Patients &amp; Total Spending</div>
+      <div class="todo-card-desc">Ranks the top 10 patients by visit count alongside their total cumulative spend — using correlated subquery, GROUP BY and LIMIT 10.</div>
+      <div class="todo-card-footer"><span class="todo-card-type">GROUP BY · SUBQUERY · LIMIT 10</span><div class="todo-arrow">→</div></div>
+      <span class="todo-number">07</span>
+    </a>
+
+    <!-- Task 8 — C4 -->
+    <a href="/c4" class="todo-card tc-c4">
+      <div class="todo-card-top"><span class="todo-tag tag-c4">Complex Query</span><span class="todo-task-id">Task 08</span></div>
+      <div class="todo-icon-wrap">🔄</div>
+      <div class="todo-card-title">Doctor Repeat-Patient Frequency Analysis</div>
+      <div class="todo-card-desc">Calculates total visits, unique patients and average visits-per-patient for every doctor — LEFT JOIN + NULLIF division guard.</div>
+      <div class="todo-card-footer"><span class="todo-card-type">LEFT JOIN · GROUP BY · NULLIF · ROUND</span><div class="todo-arrow">→</div></div>
+      <span class="todo-number">08</span>
+    </a>
+
+    <!-- Task 9 — T2 -->
+    <a href="/t2" class="todo-card tc-t2">
+      <div class="todo-card-top"><span class="todo-tag tag-t2">Simple Query</span><span class="todo-task-id">Task 09</span></div>
+      <div class="todo-icon-wrap">💗</div>
+      <div class="todo-card-title">Patients Who Visited the Same Doctor at Least Twice</div>
+      <div class="todo-card-desc">Reveals loyal patient–doctor pairs — grouped by both names, filtered with HAVING COUNT ≥ 2, sorted by repeat frequency.</div>
+      <div class="todo-card-footer"><span class="todo-card-type">GROUP BY · HAVING COUNT ≥ 2</span><div class="todo-arrow">→</div></div>
+      <span class="todo-number">09</span>
+    </a>
+
+    <!-- Task 10 — P2 featured -->
+    <a href="/p2" class="todo-card tc-p2 todo-card-featured">
+      <div class="todo-card-body">
+        <div class="todo-card-top">
+          <span class="todo-tag tag-p2">Procedure</span>
+          <span class="todo-task-id">Task 10</span>
+        </div>
+        <div class="todo-icon-wrap">🚨</div>
+        <div class="todo-card-title">Doctors with No Appointments in the Last Year</div>
+        <div class="todo-card-desc">Mirrors an Oracle CURSOR procedure — adapted to PostgreSQL. Uses NOT EXISTS with a 12-month interval to surface every doctor who hasn't seen a patient in over a year, including those who never have.</div>
+        <div class="todo-card-footer">
+          <span class="todo-card-type">PROCEDURE · NOT EXISTS · INTERVAL '12 months'</span>
+          <div class="todo-arrow">→</div>
+        </div>
+      </div>
+      <div class="todo-deco">⏰</div>
+      <span class="todo-number">10</span>
     </a>
 
   </div>
@@ -590,6 +636,7 @@
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
   <div class="footer-top">
     <div class="footer-brand">
@@ -608,9 +655,32 @@
       </div>
       <p style="font-size:0.88rem;max-width:280px;line-height:1.7;">Compassionate, advanced healthcare for every individual. Trusted by thousands across the region.</p>
     </div>
-    <div class="footer-col"><h4>Patient Portal</h4><a href="/patientform">Register Patient</a><a href="/patientdisplay">View Patients</a><a href="/patienthistoryform">Add History</a><a href="/prescriptionform">New Prescription</a></div>
-    <div class="footer-col"><h4>Administration</h4><a href="/userform">User Management</a><a href="/doctorform">Doctor Registration</a><a href="/costsform">Billing Entry</a><a href="/database">Database</a></div>
-    <div class="footer-col"><h4>To Do Tasks</h4><a href="/s1">S1 — Cardiology Query</a><a href="/c1">C1 — Patient Billing</a><a href="/c2">C2 — Amoxicillin</a><a href="/t1">T1 — Trigger</a><a href="/p1">P1 — Procedure</a></div>
+    <div class="footer-col">
+      <h4>Patient Portal</h4>
+      <a href="/patientform">Register Patient</a><a href="/patientdisplay">View Patients</a>
+      <a href="/patienthistoryform">Add History</a><a href="/prescriptionform">New Prescription</a>
+    </div>
+    <div class="footer-col">
+      <h4>Administration</h4>
+      <a href="/userform">User Management</a><a href="/doctorform">Doctor Registration</a>
+      <a href="/costsform">Billing Entry</a><a href="/database">Database</a>
+    </div>
+    <div class="footer-col">
+      <h4>Advanced Analysis</h4>
+      <a href="/s1">01 — Active Cardiology Doctors</a>
+      <a href="/c1">02 — Patient Visit &amp; Billing</a>
+      <a href="/c2">03 — Amoxicillin Prescriptions</a>
+      <a href="/t1">04 — PatientHistory Trigger</a>
+      <a href="/p1">05 — Deactivate Doctor</a>
+    </div>
+    <div class="footer-col">
+      <h4>New Level To-Do Tasks</h4>
+      <a href="/s2">06 — High Medicine Spenders</a>
+      <a href="/c3">07 — Top 10 Patients</a>
+      <a href="/c4">08 — Doctor Repeat Rate</a>
+      <a href="/t2">09 — Loyal Patient–Doctor Pairs</a>
+      <a href="/p2">10 — Inactive Doctors (1yr+)</a>
+    </div>
   </div>
   <div class="footer-bottom">
     <span>© 2026 Silver Care Hospital. All rights reserved.</span>
@@ -620,14 +690,17 @@
 
 <script>
   const revealEls = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver(entries => { entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);} }); }, { threshold: 0.12 });
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
   revealEls.forEach(el => observer.observe(el));
+
   const stats = document.querySelectorAll('.stat-number');
   const sObs = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if(entry.isIntersecting){
-        const el = entry.target; const target = el.textContent;
-        const num = parseFloat(target.replace(/[^0-9.]/g,'')); const suffix = target.replace(/[0-9.]/g,'');
+        const el = entry.target, target = el.textContent;
+        const num = parseFloat(target.replace(/[^0-9.]/g,'')), suffix = target.replace(/[0-9.]/g,'');
         let start = 0; const dur = 1500;
         const step = ts => { if(!start) start=ts; const p=Math.min((ts-start)/dur,1); const e=1-Math.pow(1-p,3); el.textContent=Math.floor(e*num)+suffix; if(p<1) requestAnimationFrame(step); else el.textContent=target; };
         requestAnimationFrame(step); sObs.unobserve(el);

@@ -1,268 +1,100 @@
 <!DOCTYPE html>
-<!-- Medication Display -->
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-<title>Medication Details</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-
+<title>Medication Details — Silver Care</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+:root{ --deep:#1a2e3b;--accent:#3ec6e0;--accent2:#7eddd4;--silver-dark:#6a8fa8;--text:#1a2e3b;--muted:#5a7a90; }
+*{ box-sizing:border-box;margin:0;padding:0; }
+body{ font-family:'Nunito',sans-serif;min-height:100vh;background:linear-gradient(135deg,#e8f4fb 0%,#f0f8ff 40%,#daf0f5 100%);color:var(--text);overflow-x:hidden;position:relative; }
+body::before{ content:'';position:fixed;top:-120px;right:-120px;width:520px;height:520px;background:radial-gradient(circle,rgba(62,198,224,0.18) 0%,transparent 70%);border-radius:50%;pointer-events:none;z-index:0; }
+body::after{ content:'';position:fixed;bottom:-100px;left:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(126,221,212,0.15) 0%,transparent 70%);border-radius:50%;pointer-events:none;z-index:0; }
+nav{ position:sticky;top:0;z-index:100;height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(255,255,255,0.75);backdrop-filter:blur(18px);border-bottom:1px solid rgba(184,201,217,0.4);box-shadow:0 2px 20px rgba(30,70,100,0.07); }
+.brand{ font-family:'Playfair Display',serif;font-weight:900;font-size:1.25rem;background:linear-gradient(90deg,var(--deep),var(--silver-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none; }
+.back{ font-family:'DM Mono',monospace;font-size:.78rem;padding:8px 20px;border-radius:999px;border:1.5px solid rgba(62,198,224,0.35);text-decoration:none;color:var(--silver-dark);background:rgba(62,198,224,0.06);transition:all .25s; }
+.back:hover{ background:rgba(62,198,224,0.14);border-color:var(--accent);color:var(--deep); }
 
-:root{
---bg:#e0f8f7;
---card:#ffffff;
---border:#7dddd8;
---cyan:#06b6d4;
---cyan-dark:#0891b2;
---text:#0c2d3a;
---muted:#4a9baa;
-}
+.header{ position:relative;z-index:1;max-width:960px;margin:auto;padding:60px 48px 28px; }
+.header-eyebrow{ font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--silver-dark);margin-bottom:14px;display:flex;align-items:center;gap:12px; }
+.header-eyebrow::before{ content:'';display:block;width:28px;height:1.5px;background:linear-gradient(90deg,var(--accent),var(--accent2)); }
+.header h1{ font-family:'Playfair Display',serif;font-size:clamp(2.4rem,5vw,4rem);font-weight:900;color:var(--deep);letter-spacing:-0.02em;line-height:1; }
+.header h1 em{ font-family:'Cormorant Garamond',serif;font-style:italic;background:linear-gradient(120deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+.search-area{ position:relative;z-index:1;max-width:960px;margin:0 auto 24px;padding:0 48px; }
+.search-wrap{ position:relative;max-width:360px; }
+.search-wrap svg{ position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none; }
+.search-wrap input{ width:100%;padding:12px 14px 12px 44px;border-radius:14px;border:1.5px solid rgba(62,198,224,0.22);background:rgba(255,255,255,0.7);font-family:'Nunito',sans-serif;font-size:.92rem;color:var(--text);outline:none;transition:all .25s; }
+.search-wrap input::placeholder{ color:var(--muted); }
+.search-wrap input:focus{ border-color:var(--accent);background:#fff;box-shadow:0 0 0 4px rgba(62,198,224,0.1); }
 
-body{
-font-family:'Outfit',sans-serif;
-background:var(--bg);
-min-height:100vh;
-}
-
-/* dotted background */
-
-body::before{
-content:'';
-position:fixed;
-inset:0;
-background-image:radial-gradient(circle,rgba(10,191,176,.2) 1px,transparent 1px);
-background-size:32px 32px;
-pointer-events:none;
-}
-
-/* NAVBAR */
-
-nav{
-height:70px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:0 40px;
-border-bottom:1px solid var(--border);
-background:rgba(255,255,255,.7);
-backdrop-filter:blur(10px);
-}
-
-.brand{
-font-family:'Space Grotesk',sans-serif;
-font-size:1.3rem;
-font-weight:700;
-color:var(--cyan-dark);
-text-decoration:none;
-}
-
-.back{
-font-family:'JetBrains Mono',monospace;
-font-size:.8rem;
-padding:8px 16px;
-border-radius:8px;
-border:1px solid var(--border);
-text-decoration:none;
-color:var(--text);
-background:white;
-transition:.2s;
-}
-
-.back:hover{
-background:var(--cyan);
-color:white;
-}
-
-/* HEADER */
-
-.header{
-max-width:900px;
-margin:auto;
-padding:50px 20px 20px;
-}
-
-.header h1{
-font-family:'Space Grotesk',sans-serif;
-font-size:2.6rem;
-
-background:linear-gradient(135deg,var(--text),var(--cyan));
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-
-/* SEARCH */
-
-.search-box{
-margin-top:20px;
-}
-
-.search-box input{
-padding:10px 14px;
-width:260px;
-border-radius:8px;
-border:1px solid var(--border);
-font-family:'Outfit',sans-serif;
-}
-
-/* TABLE CARD */
-
-.table-card{
-max-width:900px;
-margin:auto;
-margin-top:20px;
-
-background:var(--card);
-border-radius:16px;
-border:1px solid var(--border);
-
-box-shadow:0 10px 40px rgba(6,182,212,.15);
-
-overflow:hidden;
-}
-
-/* TABLE */
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-thead{
-background:#f2ffff;
-}
-
-th{
-font-family:'JetBrains Mono',monospace;
-font-size:.75rem;
-letter-spacing:.06em;
-color:var(--muted);
-text-transform:uppercase;
-padding:14px;
-text-align:left;
-}
-
-td{
-padding:14px;
-border-top:1px solid var(--border);
-font-size:.9rem;
-}
-
-tbody tr:hover{
-background:#f5ffff;
-}
-
-/* EMPTY MESSAGE */
-
-.empty{
-padding:30px;
-text-align:center;
-color:var(--muted);
-font-size:.95rem;
-}
-
+.table-wrap{ position:relative;z-index:1;max-width:960px;margin:0 auto 60px;padding:0 48px; }
+.table-inner{ background:rgba(255,255,255,0.95);border-radius:24px;border:1px solid rgba(184,201,217,0.35);box-shadow:0 8px 50px rgba(30,70,100,0.1),inset 0 1px 0 #fff;overflow:hidden; }
+.table-top{ padding:22px 28px;background:linear-gradient(135deg,var(--deep),#264a60);display:flex;align-items:center;justify-content:space-between; }
+.table-title{ font-family:'Playfair Display',serif;font-weight:700;color:#fff;font-size:.95rem;display:flex;align-items:center;gap:10px; }
+.table-title::before{ content:'';width:8px;height:8px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent);animation:blink 2s infinite; }
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.4;}}
+table{ width:100%;border-collapse:collapse; }
+thead{ background:linear-gradient(135deg,#f0feff,#e8f6fb);border-bottom:2px solid rgba(62,198,224,0.12); }
+th{ font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:16px 24px;text-align:left; }
+tbody tr{ border-bottom:1px solid rgba(62,198,224,0.07);transition:all .2s; }
+tbody tr:last-child{ border-bottom:none; }
+tbody tr:hover{ background:rgba(62,198,224,0.04);transform:translateX(3px); }
+td{ padding:15px 24px;font-size:.9rem;color:var(--text);vertical-align:middle; }
+.rx-num{ font-family:'DM Mono',monospace;font-size:.82rem;background:rgba(62,198,224,0.08);color:#1a5060;padding:4px 10px;border-radius:8px;border:1px solid rgba(62,198,224,0.18);display:inline-block; }
+.med-name{ font-weight:600;color:var(--text);display:flex;align-items:center;gap:8px; }
+.med-name::before{ content:'💊';font-size:.85rem; }
+.dosage-chip{ font-family:'DM Mono',monospace;font-size:.8rem;color:#1a5060;background:rgba(62,198,224,0.07);padding:4px 10px;border-radius:8px;border:1px solid rgba(62,198,224,0.15);display:inline-block; }
+.empty{ padding:60px 30px;text-align:center;color:var(--muted); }
 </style>
-
 <script>
-
 function searchMedication(){
-
-let input=document.getElementById("search").value.toLowerCase();
-let rows=document.querySelectorAll("tbody tr");
-
-rows.forEach(row=>{
-
-let text=row.innerText.toLowerCase();
-
-if(text.includes(input))
-row.style.display="";
-else
-row.style.display="none";
-
-});
-
+  let input=document.getElementById("search").value.toLowerCase();
+  let rows=document.querySelectorAll("tbody tr");
+  rows.forEach(row=>{ let text=row.innerText.toLowerCase(); row.style.display=text.includes(input)?"":"none"; });
 }
-
 </script>
-
 </head>
-
-
 <body>
-
 <nav>
-
-<a class="brand" href="/">✦ Silver HealthCare</a>
-
-<a class="back" href="/">← Back to Menu</a>
-
+  <a class="brand" href="/">Silver Care</a>
+  <a class="back" href="/">← Back to Menu</a>
 </nav>
 
-
 <div class="header">
-
-<h1>Medication Details</h1>
-
-<div class="search-box">
-<input type="text" id="search" onkeyup="searchMedication()" placeholder="Search medication...">
+  <p class="header-eyebrow">Pharmacy Module</p>
+  <h1>Medication <em>Details</em></h1>
 </div>
 
+<div class="search-area">
+  <div class="search-wrap">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input type="text" id="search" onkeyup="searchMedication()" placeholder="Search medication…">
+  </div>
 </div>
 
-
-<div class="table-card">
-
-{% if data and data|length > 0 %}
-
-<table>
-
-<thead>
-
-<tr>
-<th>Prescription Number</th>
-<th>Medication</th>
-<th>Dosage</th>
-</tr>
-
-</thead>
-
-<tbody>
-
-{% for row in data %}
-
-<tr>
-
-<td>{{ row[0] }}</td>
-<td>{{ row[1] }}</td>
-<td>{{ row[2] }}</td>
-
-</tr>
-
-{% endfor %}
-
-</tbody>
-
-</table>
-
-{% else %}
-
-<div class="empty">
-No medication records found.
+<div class="table-wrap">
+  <div class="table-inner">
+    <div class="table-top"><div class="table-title">Medication Records</div></div>
+    {% if data and data|length > 0 %}
+    <table>
+      <thead><tr><th>Prescription No.</th><th>Medication</th><th>Dosage</th></tr></thead>
+      <tbody>
+        {% for row in data %}
+        <tr>
+          <td><span class="rx-num">{{ row[0] }}</span></td>
+          <td><span class="med-name">{{ row[1] }}</span></td>
+          <td><span class="dosage-chip">{{ row[2] }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty">No medication records found.</div>
+    {% endif %}
+  </div>
 </div>
-
-{% endif %}
-
-</div>
-
 </body>
-
 </html>

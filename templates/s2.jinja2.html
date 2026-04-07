@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>S2 — High Medicine Spenders · Silver Care</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--g:#22d65e;--g2:#5ef08a;--g3:#b8f5cc;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#051208 0%,#081a0e 60%,#051208 100%);min-height:100vh;color:#c8f0d4;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(34,214,94,0.1) 0%,transparent 55%),radial-gradient(ellipse at 80% 70%,rgba(94,240,138,0.06) 0%,transparent 50%);pointer-events:none;z-index:0;}
+    body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(34,214,94,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(34,214,94,0.04) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0;}
+
+    nav{position:sticky;top:0;z-index:100;background:rgba(5,18,8,0.93);backdrop-filter:blur(20px);border-bottom:1px solid rgba(34,214,94,0.15);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:64px;}
+    .brand{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:white;text-decoration:none;}
+    .back{display:inline-flex;align-items:center;gap:8px;color:rgba(34,214,94,0.7);text-decoration:none;font-size:0.85rem;font-weight:600;padding:8px 16px;border-radius:10px;border:1px solid rgba(34,214,94,0.2);transition:all 0.2s;}
+    .back:hover{background:rgba(34,214,94,0.1);color:var(--g2);border-color:rgba(34,214,94,0.4);}
+
+    main{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:60px 40px 80px;}
+
+    .page-hero{margin-bottom:48px;animation:fadeUp 0.7s ease both;}
+    .chip{display:inline-flex;align-items:center;gap:8px;background:rgba(34,214,94,0.1);border:1px solid rgba(34,214,94,0.3);border-radius:30px;padding:6px 16px;font-size:0.7rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--g);margin-bottom:20px;}
+    .chip-dot{width:6px;height:6px;background:var(--g);border-radius:50%;animation:blink 1.5s ease-in-out infinite;}
+    @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+    h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:white;line-height:1.1;margin-bottom:14px;}
+    h1 span{background:linear-gradient(120deg,var(--g),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .desc{color:rgba(200,240,212,0.5);font-size:1rem;line-height:1.75;max-width:580px;}
+
+    /* Threshold hero banner */
+    .threshold-banner{display:flex;align-items:center;gap:28px;background:linear-gradient(135deg,rgba(34,214,94,0.08),rgba(94,240,138,0.04));border:1px solid rgba(34,214,94,0.2);border-radius:22px;padding:28px 36px;margin-bottom:40px;position:relative;overflow:hidden;animation:fadeUp 0.7s 0.05s ease both;}
+    .threshold-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--g),var(--g2));}
+    .threshold-icon{font-size:3.5rem;flex-shrink:0;}
+    .threshold-text{flex:1;}
+    .threshold-label{font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(34,214,94,0.5);margin-bottom:6px;}
+    .threshold-value{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;background:linear-gradient(120deg,var(--g),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+    .threshold-sub{font-size:0.85rem;color:rgba(200,240,212,0.45);margin-top:4px;}
+    .threshold-count{text-align:right;}
+    .tc-num{font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;color:white;line-height:1;}
+    .tc-lbl{font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(200,240,212,0.35);}
+
+    .sql-box{background:rgba(34,214,94,0.04);border:1px solid rgba(34,214,94,0.14);border-radius:18px;padding:24px 28px;margin-bottom:40px;position:relative;overflow:hidden;animation:fadeUp 0.7s 0.1s ease both;}
+    .sql-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--g),var(--g2));}
+    .sql-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+    .sql-lbl{font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(34,214,94,0.4);}
+    .sql-tag{background:rgba(34,214,94,0.1);border:1px solid rgba(34,214,94,0.2);border-radius:8px;padding:3px 10px;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--g);}
+    pre{font-family:'JetBrains Mono',monospace;font-size:0.86rem;line-height:1.9;color:#88c898;}
+    .kw{color:#22d65e;} .tbl{color:#5ef08a;} .num{color:#f0e060;} .cmt{color:rgba(136,200,152,0.3);}
+
+    .results-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;animation:fadeUp 0.7s 0.2s ease both;}
+    .results-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:white;}
+    .results-badge{background:rgba(34,214,94,0.1);border:1px solid rgba(34,214,94,0.2);border-radius:20px;padding:5px 14px;font-size:0.78rem;font-weight:700;color:var(--g);}
+
+    /* Big spend cards */
+    .spend-list{display:flex;flex-direction:column;gap:14px;animation:fadeUp 0.7s 0.25s ease both;}
+    .spend-row{display:flex;align-items:center;gap:20px;background:rgba(34,214,94,0.04);border:1px solid rgba(34,214,94,0.1);border-radius:16px;padding:20px 24px;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);position:relative;overflow:hidden;}
+    .spend-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--g),var(--g2));opacity:0;transition:opacity 0.3s;}
+    .spend-row:hover{transform:translateX(6px);border-color:rgba(34,214,94,0.3);background:rgba(34,214,94,0.07);}
+    .spend-row:hover::before{opacity:1;}
+    .spend-rank{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:rgba(34,214,94,0.25);width:36px;flex-shrink:0;text-align:center;}
+    .spend-rank.top{color:rgba(240,224,80,0.6);}
+    .spend-avatar{width:44px;height:44px;border-radius:14px;background:rgba(34,214,94,0.1);border:1px solid rgba(34,214,94,0.15);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+    .spend-info{flex:1;}
+    .spend-name{font-weight:700;color:white;font-size:1rem;margin-bottom:2px;}
+    .spend-label{font-size:0.72rem;color:rgba(200,240,212,0.4);font-weight:600;letter-spacing:0.06em;text-transform:uppercase;}
+    .spend-amount{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;background:linear-gradient(120deg,var(--g),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex-shrink:0;}
+    .spend-bar-wrap{width:120px;flex-shrink:0;}
+    .spend-bar-bg{height:5px;background:rgba(34,214,94,0.08);border-radius:5px;overflow:hidden;}
+    .spend-bar-fill{height:100%;background:linear-gradient(90deg,var(--g),var(--g2));border-radius:5px;transition:width 1.2s cubic-bezier(0.22,1,0.36,1);}
+    .spend-pct{font-size:0.68rem;color:rgba(200,240,212,0.4);font-weight:700;text-align:right;margin-bottom:4px;}
+
+    .empty{text-align:center;padding:80px 40px;color:rgba(200,240,212,0.35);}
+    .err{background:rgba(224,92,110,0.08);border:1px solid rgba(224,92,110,0.2);border-radius:14px;padding:18px 22px;color:#f08090;font-family:'JetBrains Mono',monospace;font-size:0.84rem;margin-bottom:32px;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+    @media(max-width:768px){nav{padding:0 20px;}main{padding:40px 20px;}.threshold-banner{flex-direction:column;gap:16px;}.spend-bar-wrap{display:none;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="brand">Silver Care Hospital</a>
+  <a href="/" class="back">← Back to Portal</a>
+</nav>
+<main>
+  <div class="page-hero">
+    <div class="chip"><div class="chip-dot"></div>Simple Query · Task S2</div>
+    <h1>High <span>Medicine</span><br/>Spenders</h1>
+    <p class="desc">Identifies all patients whose medicine costs exceed ₹1,000 — ranked by spend. Helps flag high-cost pharmaceutical usage patterns across the hospital.</p>
+  </div>
+
+  <div class="threshold-banner">
+    <div class="threshold-icon">💊</div>
+    <div class="threshold-text">
+      <div class="threshold-label">Spend Threshold</div>
+      <div class="threshold-value">₹ 1,000+</div>
+      <div class="threshold-sub">medicine_cost &gt; 1000 · ORDER BY medicine_cost DESC</div>
+    </div>
+    <div class="threshold-count">
+      <div class="tc-num">{{ data|length }}</div>
+      <div class="tc-lbl">Patients Found</div>
+    </div>
+  </div>
+
+  <div class="sql-box">
+    <div class="sql-top"><span class="sql-lbl">SQL Query</span><span class="sql-tag">Simple SELECT · WHERE</span></div>
+    <pre><span class="kw">SELECT</span> patient_name, medicine_cost
+<span class="kw">FROM</span>   <span class="tbl">costs</span>
+<span class="kw">WHERE</span>  medicine_cost &gt; <span class="num">1000</span>
+<span class="kw">ORDER BY</span> medicine_cost <span class="kw">DESC</span>;
+<span class="cmt">-- Filter: medicine_cost > 1000 · Sorted highest first</span></pre>
+  </div>
+
+  {% if error %}<div class="err">⚠ {{ error }}</div>{% endif %}
+
+  {% set max_val = data[0][1] if data else 1 %}
+
+  <div class="results-hdr">
+    <div class="results-title">Results</div>
+    <div class="results-badge">{{ data|length }} Patient{% if data|length != 1 %}s{% endif %}</div>
+  </div>
+
+  {% if data %}
+  <div class="spend-list">
+    {% for row in data %}
+    {% set pct = (row[1] / max_val * 100) | round(1) %}
+    <div class="spend-row">
+      <div class="spend-rank {% if loop.index <= 3 %}top{% endif %}">#{{ loop.index }}</div>
+      <div class="spend-avatar">🧑</div>
+      <div class="spend-info">
+        <div class="spend-name">{{ row[0] }}</div>
+        <div class="spend-label">Patient · Medicine Cost</div>
+      </div>
+      <div class="spend-bar-wrap">
+        <div class="spend-pct">{{ pct }}%</div>
+        <div class="spend-bar-bg"><div class="spend-bar-fill" style="width:{{ pct }}%"></div></div>
+      </div>
+      <div class="spend-amount">₹{{ "{:,}".format(row[1]) }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty">No patients found with medicine costs exceeding ₹1,000.</div>
+  {% endif %}
+</main>
+</body>
+</html>
