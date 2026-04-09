@@ -5,11 +5,10 @@
   <title>T1 — PatientHistory Trigger · Silver Care</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
   <style>
-    :root{--a:#f0a050;--a2:#f8c87a;--a3:#fde4a8;}
+    :root{--a:#f0a050;--a2:#f8c87a;--a3:#fde4a8;--green:#43c9a0;--red:#e05c6e;}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#1a0f00 0%,#251500 60%,#1a0f00 100%);min-height:100vh;color:#f0e0c0;overflow-x:hidden;}
     body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 25% 35%,rgba(240,160,80,0.1) 0%,transparent 55%),radial-gradient(ellipse at 75% 65%,rgba(248,200,122,0.06) 0%,transparent 50%);pointer-events:none;z-index:0;}
-    /* Lightning bolt pattern */
     body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(240,160,80,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(240,160,80,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
 
     nav{position:sticky;top:0;z-index:100;background:rgba(26,15,0,0.93);backdrop-filter:blur(20px);border-bottom:1px solid rgba(240,160,80,0.15);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:64px;}
@@ -26,6 +25,18 @@
     h1 span{background:linear-gradient(120deg,var(--a),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
     .desc{color:rgba(240,224,192,0.5);font-size:1rem;line-height:1.75;max-width:600px;}
 
+    /* Status Badge */
+    .status-banner{display:flex;align-items:center;gap:14px;padding:16px 22px;border-radius:16px;margin-bottom:40px;animation:fadeUp 0.7s 0.02s ease both;font-weight:700;font-size:0.9rem;}
+    .status-banner.active{background:rgba(67,201,160,0.08);border:1px solid rgba(67,201,160,0.3);color:#7eddd4;}
+    .status-banner.inactive{background:rgba(224,92,110,0.07);border:1px solid rgba(224,92,110,0.25);color:#f08090;}
+    .status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+    .status-banner.active .status-dot{background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite;}
+    .status-banner.inactive .status-dot{background:var(--red);}
+    .status-label{flex:1;}
+    .status-meta{font-size:0.75rem;font-weight:400;opacity:0.6;margin-left:auto;}
+
+    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
     /* How it works */
     .rules-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px;animation:fadeUp 0.7s 0.05s ease both;}
     .rule-card{background:rgba(240,160,80,0.05);border:1px solid rgba(240,160,80,0.15);border-radius:18px;padding:24px 22px;transition:all 0.3s ease;}
@@ -35,31 +46,69 @@
     .rule-desc{font-size:0.84rem;color:rgba(240,224,192,0.5);line-height:1.6;}
     .rule-tag{display:inline-block;margin-top:10px;background:rgba(240,160,80,0.12);border:1px solid rgba(240,160,80,0.2);border-radius:8px;padding:3px 10px;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--a);}
 
-    .sql-box{background:rgba(240,160,80,0.04);border:1px solid rgba(240,160,80,0.15);border-radius:20px;padding:28px 32px;margin-bottom:40px;position:relative;overflow:hidden;animation:fadeUp 0.7s 0.1s ease both;}
+    /* SQL tabs */
+    .sql-tabs{display:flex;gap:8px;margin-bottom:0;animation:fadeUp 0.7s 0.08s ease both;}
+    .sql-tab{padding:9px 20px;border-radius:12px 12px 0 0;font-size:0.78rem;font-weight:700;letter-spacing:0.05em;cursor:pointer;border:1px solid rgba(240,160,80,0.15);border-bottom:none;background:rgba(240,160,80,0.03);color:rgba(240,224,192,0.35);transition:all 0.2s;}
+    .sql-tab.active{background:rgba(240,160,80,0.08);color:var(--a);border-color:rgba(240,160,80,0.25);}
+    .sql-tab.undeploy-tab.active{background:rgba(224,92,110,0.07);color:#f08090;border-color:rgba(224,92,110,0.25);}
+
+    .sql-box{background:rgba(240,160,80,0.04);border:1px solid rgba(240,160,80,0.15);border-radius:0 18px 18px 18px;padding:28px 32px;margin-bottom:40px;position:relative;overflow:hidden;animation:fadeUp 0.7s 0.1s ease both;}
     .sql-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--a),var(--a2));}
+    .sql-box.undeploy-sql::before{background:linear-gradient(90deg,var(--red),#f08090);}
     .sql-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
     .sql-lbl{font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(240,160,80,0.45);}
     .sql-tag{background:rgba(240,160,80,0.1);border:1px solid rgba(240,160,80,0.2);border-radius:8px;padding:3px 10px;font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--a);}
+    .sql-tag.danger{background:rgba(224,92,110,0.1);border-color:rgba(224,92,110,0.2);color:#f08090;}
     pre{font-family:'JetBrains Mono',monospace;font-size:0.82rem;line-height:1.9;color:#d4b080;overflow-x:auto;}
-    .kw{color:#f0a050;} .fn{color:#f8c87a;} .tbl{color:#fde4a8;} .str{color:#a0d8a0;} .cmt{color:rgba(212,176,128,0.3);}
 
-    /* Deploy section */
-    .deploy-section{background:linear-gradient(135deg,rgba(240,160,80,0.08),rgba(248,200,122,0.04));border:1px solid rgba(240,160,80,0.2);border-radius:24px;padding:40px 40px;animation:fadeUp 0.7s 0.2s ease both;position:relative;overflow:hidden;}
-    .deploy-section::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--a),var(--a2));}
-    .deploy-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:white;margin-bottom:8px;}
-    .deploy-sub{font-size:0.88rem;color:rgba(240,224,192,0.45);margin-bottom:28px;line-height:1.6;}
+    [data-panel]{display:none;}
+    [data-panel].visible{display:block;}
+
+    /* Action panels */
+    .action-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;animation:fadeUp 0.7s 0.2s ease both;}
+    .action-card{border-radius:24px;padding:36px 32px;position:relative;overflow:hidden;}
+    .action-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+    .action-card.deploy-card{background:linear-gradient(135deg,rgba(240,160,80,0.08),rgba(248,200,122,0.04));border:1px solid rgba(240,160,80,0.2);}
+    .action-card.deploy-card::before{background:linear-gradient(90deg,var(--a),var(--a2));}
+    .action-card.undeploy-card{background:linear-gradient(135deg,rgba(224,92,110,0.07),rgba(240,128,144,0.03));border:1px solid rgba(224,92,110,0.2);}
+    .action-card.undeploy-card::before{background:linear-gradient(90deg,var(--red),#f08090);}
+
+    .action-icon{font-size:2rem;margin-bottom:12px;display:block;}
+    .action-title{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:900;color:white;margin-bottom:6px;}
+    .action-sub{font-size:0.83rem;color:rgba(240,224,192,0.4);margin-bottom:24px;line-height:1.6;}
 
     /* Status messages */
-    .msg-success{background:rgba(67,201,160,0.1);border:1px solid rgba(67,201,160,0.3);border-radius:16px;padding:18px 24px;color:#7eddd4;display:flex;align-items:center;gap:12px;margin-bottom:24px;font-weight:600;}
-    .msg-error{background:rgba(224,92,110,0.08);border:1px solid rgba(224,92,110,0.25);border-radius:16px;padding:18px 24px;color:#f08090;display:flex;align-items:center;gap:12px;margin-bottom:24px;font-size:0.88rem;}
+    .msg-success{background:rgba(67,201,160,0.1);border:1px solid rgba(67,201,160,0.3);border-radius:14px;padding:16px 20px;color:#7eddd4;display:flex;align-items:center;gap:10px;margin-bottom:20px;font-weight:600;font-size:0.9rem;}
+    .msg-undeploy{background:rgba(224,92,110,0.08);border:1px solid rgba(224,92,110,0.25);border-radius:14px;padding:16px 20px;color:#f08090;display:flex;align-items:center;gap:10px;margin-bottom:20px;font-weight:600;font-size:0.9rem;}
+    .msg-error{background:rgba(224,92,110,0.08);border:1px solid rgba(224,92,110,0.25);border-radius:14px;padding:16px 20px;color:#f08090;display:flex;align-items:flex-start;gap:10px;margin-bottom:20px;font-size:0.88rem;}
 
-    .deploy-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--a),var(--a2));color:#1a0f00;padding:16px 40px;border-radius:50px;font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;border:none;cursor:pointer;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 8px 32px rgba(240,160,80,0.3);}
-    .deploy-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 16px 48px rgba(240,160,80,0.45);}
+    .deploy-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--a),var(--a2));color:#1a0f00;padding:14px 32px;border-radius:50px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.95rem;border:none;cursor:pointer;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 8px 28px rgba(240,160,80,0.3);}
+    .deploy-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 16px 44px rgba(240,160,80,0.45);}
     .deploy-btn:active{transform:translateY(0) scale(0.98);}
-    .warning-note{display:flex;align-items:flex-start;gap:10px;margin-top:20px;padding:14px 18px;background:rgba(240,160,80,0.06);border-radius:12px;border:1px solid rgba(240,160,80,0.12);font-size:0.82rem;color:rgba(240,224,192,0.45);line-height:1.6;}
+
+    .undeploy-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--red),#f08090);color:white;padding:14px 32px;border-radius:50px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.95rem;border:none;cursor:pointer;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 8px 28px rgba(224,92,110,0.25);}
+    .undeploy-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 16px 44px rgba(224,92,110,0.4);}
+    .undeploy-btn:active{transform:translateY(0) scale(0.98);}
+
+    .confirm-wrap{display:none;margin-top:16px;padding:16px 18px;background:rgba(224,92,110,0.06);border:1px solid rgba(224,92,110,0.2);border-radius:14px;}
+    .confirm-wrap.show{display:block;}
+    .confirm-text{font-size:0.83rem;color:rgba(240,128,144,0.8);margin-bottom:14px;line-height:1.6;}
+    .confirm-btns{display:flex;gap:10px;}
+    .confirm-yes{background:var(--red);color:white;padding:9px 22px;border-radius:30px;font-family:'Nunito',sans-serif;font-weight:800;font-size:0.85rem;border:none;cursor:pointer;transition:all 0.2s;}
+    .confirm-yes:hover{background:#c94058;}
+    .confirm-cancel{background:transparent;color:rgba(240,224,192,0.4);padding:9px 18px;border-radius:30px;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.85rem;border:1px solid rgba(240,224,192,0.15);cursor:pointer;transition:all 0.2s;}
+    .confirm-cancel:hover{color:rgba(240,224,192,0.7);border-color:rgba(240,224,192,0.3);}
+
+    .warning-note{display:flex;align-items:flex-start;gap:10px;margin-top:18px;padding:12px 16px;background:rgba(240,160,80,0.06);border-radius:10px;border:1px solid rgba(240,160,80,0.12);font-size:0.79rem;color:rgba(240,224,192,0.4);line-height:1.6;}
+    .danger-note{display:flex;align-items:flex-start;gap:10px;margin-top:18px;padding:12px 16px;background:rgba(224,92,110,0.05);border-radius:10px;border:1px solid rgba(224,92,110,0.15);font-size:0.79rem;color:rgba(240,128,144,0.55);line-height:1.6;}
 
     @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-    @media(max-width:768px){nav{padding:0 20px;}main{padding:40px 20px;}.rules-row{grid-template-columns:1fr;}}
+    @media(max-width:768px){
+      nav{padding:0 20px;}
+      main{padding:40px 20px;}
+      .rules-row,.action-grid{grid-template-columns:1fr;}
+      .sql-box{border-radius:18px;}
+    }
   </style>
 </head>
 <body>
@@ -72,6 +121,19 @@
     <div class="chip"><span class="chip-bolt">⚡</span>Trigger · Task T1</div>
     <h1>Auto-Validate<br/><span>Patient History</span><br/>on Insert</h1>
     <p class="desc">A PostgreSQL BEFORE INSERT trigger that automatically defaults the visit date to today when omitted, and raises an exception if the bill amount is negative — enforcing data integrity at the database level.</p>
+  </div>
+
+  <!-- Live Status Banner -->
+  <div class="status-banner {{ 'active' if trigger_active else 'inactive' }}">
+    <div class="status-dot"></div>
+    <span class="status-label">
+      {% if trigger_active %}
+        Trigger <strong>trg_patienthistory_defaults</strong> is currently active on <strong>patienthistory</strong>
+      {% else %}
+        Trigger <strong>trg_patienthistory_defaults</strong> is not deployed — data integrity rules are inactive
+      {% endif %}
+    </span>
+    <span class="status-meta">Live DB Status</span>
   </div>
 
   <div class="rules-row">
@@ -89,30 +151,107 @@
     </div>
   </div>
 
-  <div class="sql-box">
-    <div class="sql-top"><span class="sql-lbl">Trigger SQL — PostgreSQL</span><span class="sql-tag">BEFORE INSERT</span></div>
-    <pre>{{ sql_shown }}</pre>
+  <!-- SQL Viewer Tabs -->
+  <div class="sql-tabs">
+    <div class="sql-tab active" onclick="switchTab('deploy-sql', this)">Deploy SQL</div>
+    <div class="sql-tab undeploy-tab" onclick="switchTab('undeploy-sql', this)">Undeploy SQL</div>
   </div>
 
-  <div class="deploy-section">
-    <div class="deploy-title">⚡ Install Trigger on Database</div>
-    <div class="deploy-sub">Click the button below to install this trigger directly on your PostgreSQL database. It will create the trigger function and bind it to the patienthistory table.</div>
-
-    {% if message %}
-    <div class="msg-success">✅ {{ message }}</div>
-    {% endif %}
-    {% if error %}
-    <div class="msg-error">⚠️ {{ error }}</div>
-    {% endif %}
-
-    <form method="POST" action="/t1">
-      <button type="submit" class="deploy-btn">⚡ Deploy Trigger Now</button>
-    </form>
-
-    <div class="warning-note">
-      ⚠️ <span>This will create or replace the trigger function <code>fn_patienthistory_defaults</code> and bind it to the <code>patienthistory</code> table. Safe to run multiple times — uses <code>CREATE OR REPLACE</code>.</span>
+  <div id="deploy-sql" data-panel class="visible">
+    <div class="sql-box">
+      <div class="sql-top"><span class="sql-lbl">Deploy · PostgreSQL</span><span class="sql-tag">BEFORE INSERT</span></div>
+      <pre>{{ deploy_sql }}</pre>
     </div>
   </div>
+
+  <div id="undeploy-sql" data-panel>
+    <div class="sql-box undeploy-sql">
+      <div class="sql-top"><span class="sql-lbl">Undeploy · PostgreSQL</span><span class="sql-tag danger">DROP TRIGGER</span></div>
+      <pre>{{ undeploy_sql }}</pre>
+    </div>
+  </div>
+
+  <!-- Action Cards -->
+  <div class="action-grid">
+
+    <!-- Deploy Card -->
+    <div class="action-card deploy-card">
+      <span class="action-icon">⚡</span>
+      <div class="action-title">Install Trigger</div>
+      <div class="action-sub">Creates or replaces the trigger function and binds it to the patienthistory table. Safe to run multiple times.</div>
+
+      {% if message and message[0] == 'deploy_ok' %}
+      <div class="msg-success">✅ {{ message[1] }}</div>
+      {% endif %}
+      {% if error and error[0] == 'deploy' %}
+      <div class="msg-error">⚠️ {{ error[1] }}</div>
+      {% endif %}
+
+      <form method="POST" action="/t1">
+        <input type="hidden" name="action" value="deploy"/>
+        <button type="submit" class="deploy-btn">⚡ Deploy Trigger</button>
+      </form>
+
+      <div class="warning-note">
+        ⚠️ <span>Uses <code>CREATE OR REPLACE</code> — safe to run multiple times without side effects.</span>
+      </div>
+    </div>
+
+    <!-- Undeploy Card -->
+    <div class="action-card undeploy-card">
+      <span class="action-icon">🗑️</span>
+      <div class="action-title">Remove Trigger</div>
+      <div class="action-sub">Drops the trigger and its backing function from the database. Inserts will no longer be validated automatically.</div>
+
+      {% if message and message[0] == 'undeploy_ok' %}
+      <div class="msg-undeploy">🗑️ {{ message[1] }}</div>
+      {% endif %}
+      {% if error and error[0] == 'undeploy' %}
+      <div class="msg-error">⚠️ {{ error[1] }}</div>
+      {% endif %}
+
+      <button type="button" class="undeploy-btn" onclick="toggleConfirm()">🗑️ Undeploy Trigger</button>
+
+      <div class="confirm-wrap" id="confirmBox">
+        <div class="confirm-text">
+          This will drop <code>trg_patienthistory_defaults</code> and <code>fn_patienthistory_defaults()</code> from the database. New inserts to patienthistory will no longer be auto-validated. Continue?
+        </div>
+        <div class="confirm-btns">
+          <form method="POST" action="/t1" style="display:inline;">
+            <input type="hidden" name="action" value="undeploy"/>
+            <button type="submit" class="confirm-yes">Yes, Remove It</button>
+          </form>
+          <button type="button" class="confirm-cancel" onclick="toggleConfirm()">Cancel</button>
+        </div>
+      </div>
+
+      <div class="danger-note">
+        ⚠️ <span>After undeploying, bill amounts and visit dates will no longer be enforced at the DB level until re-deployed.</span>
+      </div>
+    </div>
+
+  </div>
 </main>
+
+<script>
+  function switchTab(panelId, tabEl) {
+    document.querySelectorAll('[data-panel]').forEach(p => p.classList.remove('visible'));
+    document.querySelectorAll('.sql-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(panelId).classList.add('visible');
+    tabEl.classList.add('active');
+  }
+
+  function toggleConfirm() {
+    const box = document.getElementById('confirmBox');
+    box.classList.toggle('show');
+  }
+
+  // Auto-open confirm box if undeploy error occurred
+  {% if error and error[0] == 'undeploy' %}
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('confirmBox').classList.add('show');
+  });
+  {% endif %}
+</script>
 </body>
 </html>

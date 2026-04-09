@@ -12,30 +12,10 @@
       --white: #f7fbfe; --card-bg: rgba(255,255,255,0.82);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: linear-gradient(135deg, #e8f4fb 0%, #f0f8ff 40%, #daf0f5 100%);
-      min-height: 100vh; color: var(--deep); overflow-x: hidden;
-    }
-    body::before {
-      content: ''; position: fixed; top: -120px; right: -120px; width: 520px; height: 520px;
-      background: radial-gradient(circle, rgba(62,198,224,0.18) 0%, transparent 70%);
-      border-radius: 50%; pointer-events: none; z-index: 0;
-    }
-    body::after {
-      content: ''; position: fixed; bottom: -100px; left: -80px; width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(126,221,212,0.15) 0%, transparent 70%);
-      border-radius: 50%; pointer-events: none; z-index: 0;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(255,255,255,0.75); backdrop-filter: blur(18px);
-      border-bottom: 1px solid rgba(184,201,217,0.4); padding: 0 48px;
-      display: flex; align-items: center; justify-content: space-between; height: 70px;
-      box-shadow: 0 2px 20px rgba(30,70,100,0.07);
-    }
+    body { font-family: 'Nunito', sans-serif; background: linear-gradient(135deg, #e8f4fb 0%, #f0f8ff 40%, #daf0f5 100%); min-height: 100vh; color: var(--deep); overflow-x: hidden; }
+    body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 520px; height: 520px; background: radial-gradient(circle, rgba(62,198,224,0.18) 0%, transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+    body::after { content: ''; position: fixed; bottom: -100px; left: -80px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(126,221,212,0.15) 0%, transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.75); backdrop-filter: blur(18px); border-bottom: 1px solid rgba(184,201,217,0.4); padding: 0 48px; display: flex; align-items: center; justify-content: space-between; height: 70px; box-shadow: 0 2px 20px rgba(30,70,100,0.07); }
     .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
     .hospital-logo-badge { width: 48px; height: 48px; filter: drop-shadow(0 4px 12px rgba(62,198,224,0.35)); flex-shrink: 0; }
     .nav-brand-text { display: flex; flex-direction: column; line-height: 1.1; }
@@ -61,8 +41,6 @@
     .btn-ghost:hover { background: rgba(62,198,224,0.15); border-color: var(--accent); transform: translateY(-1px); }
     .btn-sm { padding: 8px 18px !important; font-size: 0.82rem !important; }
     .btn-lg { padding: 18px 44px !important; font-size: 1rem !important; }
-
-    /* ── HERO ── */
     .hero { position: relative; z-index: 1; min-height: 92vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; overflow: hidden; }
     .particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
     .particle { position: absolute; border-radius: 50%; animation: floatUp linear infinite; opacity: 0; }
@@ -75,7 +53,6 @@
     .particle:nth-child(7) { width:6px;height:6px;left:35%;background:rgba(62,198,224,0.5);animation-duration:12s;animation-delay:0.5s; }
     .particle:nth-child(8) { width:3px;height:3px;left:55%;background:rgba(126,221,212,0.5);animation-duration:8s;animation-delay:2.5s; }
     @keyframes floatUp { 0% { bottom:-20px;opacity:0;transform:translateX(0) scale(0); } 10% { opacity:0.8;transform:scale(1); } 90% { opacity:0.5; } 100% { bottom:105%;opacity:0;transform:translateX(30px) scale(0.5); } }
-
     .hero-left { position: relative; z-index: 1; padding: 80px 64px 60px 72px; animation: heroSlideIn 1s cubic-bezier(0.22,1,0.36,1) both; }
     @keyframes heroSlideIn { from { opacity:0;transform:translateX(-40px); } to { opacity:1;transform:translateX(0); } }
     .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(62,198,224,0.15), rgba(126,221,212,0.15)); border: 1px solid rgba(62,198,224,0.3); border-radius: 30px; padding: 6px 18px; font-size: 0.78rem; font-weight: 700; color: var(--silver-dark); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 28px; }
@@ -88,7 +65,6 @@
     .trust-row { display: flex; align-items: center; gap: 20px; padding-top: 32px; border-top: 1px solid rgba(184,201,217,0.4); }
     .trust-item { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; font-weight: 700; color: var(--silver-dark); }
     .trust-icon { width: 32px; height: 32px; background: linear-gradient(135deg, rgba(62,198,224,0.12), rgba(126,221,212,0.12)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; border: 1px solid rgba(62,198,224,0.2); }
-
     .hero-right { position: relative; height: 100%; min-height: 92vh; background: linear-gradient(135deg, rgba(220,232,240,0.7) 0%, rgba(184,201,217,0.4) 100%); clip-path: polygon(8% 0%, 100% 0%, 100% 100%, 0% 100%); display: flex; align-items: center; justify-content: center; overflow: hidden; animation: heroRightIn 1.1s cubic-bezier(0.22,1,0.36,1) 0.2s both; }
     @keyframes heroRightIn { from { opacity:0;transform:translateX(40px); } to { opacity:1;transform:translateX(0); } }
     .hero-right::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 20%, rgba(62,198,224,0.12) 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(126,221,212,0.1) 0%, transparent 60%); pointer-events: none; }
@@ -100,15 +76,12 @@
     .chip-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
     .chip-text-main { font-size: 0.82rem; font-weight: 700; color: var(--deep); }
     .chip-text-sub { font-size: 0.7rem; color: var(--silver-dark); }
-
-    /* ── SECTIONS ── */
     section { position: relative; z-index: 1; padding: 80px 72px; }
     .section-label { display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--silver-dark); margin-bottom: 12px; }
     .section-label::before, .section-label::after { content: ''; display: inline-block; width: 24px; height: 1.5px; background: var(--accent); }
     .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.9rem,3vw,2.6rem); font-weight: 900; color: var(--deep); margin-bottom: 16px; }
     .section-title em { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--silver-dark); }
     .section-sub { color: #5a7a90; font-size: 1rem; max-width: 560px; line-height: 1.7; margin-bottom: 48px; }
-
     .stats-row { display: flex; gap: 0; background: var(--card-bg); backdrop-filter: blur(16px); border: 1px solid rgba(184,201,217,0.3); border-radius: 24px; box-shadow: 0 8px 40px rgba(30,70,100,0.1); overflow: hidden; }
     .stat-card { flex: 1; padding: 32px 24px; text-align: center; position: relative; transition: background 0.3s; }
     .stat-card:not(:last-child)::after { content: ''; position: absolute; right: 0; top: 20%; bottom: 20%; width: 1px; background: rgba(184,201,217,0.4); }
@@ -116,7 +89,6 @@
     .stat-number { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 900; background: linear-gradient(120deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
     .stat-label { font-size: 0.78rem; color: #6a8aa0; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 6px; }
     .stat-icon { font-size: 1.4rem; margin-bottom: 8px; display: block; }
-
     .services-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
     .service-card { background: var(--card-bg); border: 1px solid rgba(184,201,217,0.3); border-radius: 24px; padding: 36px 28px; backdrop-filter: blur(12px); box-shadow: 0 4px 24px rgba(30,70,100,0.08); transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); position: relative; overflow: hidden; }
     .service-card::after { content: ''; position: absolute; bottom: 0; right: 0; width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle, rgba(62,198,224,0.08), transparent 70%); transform: translate(30px,30px); }
@@ -124,7 +96,6 @@
     .service-card-icon { width: 60px; height: 60px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 20px; background: linear-gradient(135deg, rgba(62,198,224,0.1), rgba(126,221,212,0.1)); border: 1px solid rgba(62,198,224,0.15); }
     .service-card h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--deep); margin-bottom: 10px; }
     .service-card p { font-size: 0.88rem; color: #6a8aa0; line-height: 1.65; }
-
     .portal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 20px; }
     .portal-card { background: var(--card-bg); border: 1px solid rgba(184,201,217,0.35); border-radius: 20px; padding: 28px 24px; text-decoration: none; display: flex; flex-direction: column; gap: 14px; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 4px 20px rgba(30,70,100,0.07); backdrop-filter: blur(10px); position: relative; overflow: hidden; animation: fadeUp 0.6s ease both; }
     .portal-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); opacity: 0; transition: opacity 0.3s; }
@@ -136,105 +107,36 @@
     .card-arrow { align-self: flex-end; width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.9rem; transition: transform 0.3s; }
     .portal-card:hover .card-arrow { transform: translateX(4px) rotate(-10deg); }
     .ic-blue { background: rgba(62,198,224,0.12); } .ic-teal { background: rgba(67,201,160,0.12); } .ic-purple { background: rgba(150,100,220,0.12); } .ic-orange { background: rgba(255,160,80,0.12); } .ic-rose { background: rgba(224,92,110,0.12); } .ic-sky { background: rgba(100,180,230,0.12); }
-
-    /* ════ TODO SECTION ════ */
-    .todo-section {
-      position: relative; z-index: 1;
-      padding: 100px 72px;
-      background: linear-gradient(135deg, #0a1520 0%, #0f1e28 30%, #1a2e3b 60%, #0d2233 100%);
-      overflow: hidden;
-    }
-    .todo-section::before {
-      content: ''; position: absolute; inset: 0;
-      background:
-        radial-gradient(ellipse at 5%  50%, rgba(62,198,224,0.1)   0%, transparent 45%),
-        radial-gradient(ellipse at 95% 15%, rgba(126,221,212,0.08)  0%, transparent 45%),
-        radial-gradient(ellipse at 50% 95%, rgba(150,100,220,0.07)  0%, transparent 40%),
-        radial-gradient(ellipse at 80% 55%, rgba(34,214,94,0.05)    0%, transparent 35%),
-        radial-gradient(ellipse at 20% 80%, rgba(240,160,80,0.05)   0%, transparent 35%);
-      pointer-events: none;
-    }
-    .todo-section::after {
-      content: ''; position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(62,198,224,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(62,198,224,0.035) 1px, transparent 1px);
-      background-size: 56px 56px;
-      pointer-events: none;
-    }
-
-    /* New section divider inside todo */
-    .inner-section-break {
-      position: relative; z-index: 1;
-      margin: 80px 0 56px;
-      padding-top: 72px;
-      border-top: 1px solid rgba(62,198,224,0.12);
-    }
-    .inner-section-badge {
-      display: inline-flex; align-items: center; gap: 10px;
-      background: linear-gradient(135deg, rgba(62,198,224,0.15), rgba(126,221,212,0.1));
-      border: 1px solid rgba(62,198,224,0.3); border-radius: 30px;
-      padding: 8px 20px; margin-bottom: 20px;
-      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--accent);
-    }
+    .todo-section { position: relative; z-index: 1; padding: 100px 72px; background: linear-gradient(135deg, #0a1520 0%, #0f1e28 30%, #1a2e3b 60%, #0d2233 100%); overflow: hidden; }
+    .todo-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 5% 50%, rgba(62,198,224,0.1) 0%, transparent 45%), radial-gradient(ellipse at 95% 15%, rgba(126,221,212,0.08) 0%, transparent 45%), radial-gradient(ellipse at 50% 95%, rgba(150,100,220,0.07) 0%, transparent 40%), radial-gradient(ellipse at 80% 55%, rgba(34,214,94,0.05) 0%, transparent 35%), radial-gradient(ellipse at 20% 80%, rgba(240,160,80,0.05) 0%, transparent 35%); pointer-events: none; }
+    .todo-section::after { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(62,198,224,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(62,198,224,0.035) 1px, transparent 1px); background-size: 56px 56px; pointer-events: none; }
+    .inner-section-break { position: relative; z-index: 1; margin: 80px 0 56px; padding-top: 72px; border-top: 1px solid rgba(62,198,224,0.12); }
+    .inner-section-badge { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, rgba(62,198,224,0.15), rgba(126,221,212,0.1)); border: 1px solid rgba(62,198,224,0.3); border-radius: 30px; padding: 8px 20px; margin-bottom: 20px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
     .inner-section-badge-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse2 2s infinite; }
     @keyframes pulse2 { 0%,100%{opacity:1;}50%{opacity:.4;} }
-    .inner-section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.8rem, 3vw, 2.8rem);
-      font-weight: 900; color: white; line-height: 1.1; margin-bottom: 14px;
-    }
-    .inner-section-title em {
-      font-family: 'Cormorant Garamond', serif; font-style: italic;
-      background: linear-gradient(120deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
+    .inner-section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 900; color: white; line-height: 1.1; margin-bottom: 14px; }
+    .inner-section-title em { font-family: 'Cormorant Garamond', serif; font-style: italic; background: linear-gradient(120deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .inner-section-sub { color: rgba(255,255,255,0.42); font-size: .95rem; max-width: 520px; line-height: 1.7; }
-
-    .batch-divider {
-      position: relative; z-index: 1;
-      display: flex; align-items: center; gap: 20px;
-      margin: 56px 0 36px;
-    }
+    .batch-divider { position: relative; z-index: 1; display: flex; align-items: center; gap: 20px; margin: 56px 0 36px; }
     .batch-divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(62,198,224,0.2), transparent); }
-    .batch-divider-label {
-      display: inline-flex; align-items: center; gap: 10px;
-      background: rgba(255,255,255,0.04); border: 1px solid rgba(62,198,224,0.2);
-      border-radius: 30px; padding: 7px 20px;
-      font-size: 0.68rem; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase;
-      color: rgba(62,198,224,0.65);
-      backdrop-filter: blur(10px);
-    }
+    .batch-divider-label { display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(62,198,224,0.2); border-radius: 30px; padding: 7px 20px; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(62,198,224,0.65); backdrop-filter: blur(10px); }
     .batch-divider-label .bdot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); animation: blink 1.5s ease-in-out infinite; }
     @keyframes blink { 0%,100%{opacity:1;}50%{opacity:0.3;} }
-
     .todo-header { position: relative; z-index: 1; margin-bottom: 64px; }
     .todo-badge { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, rgba(62,198,224,0.15), rgba(126,221,212,0.1)); border: 1px solid rgba(62,198,224,0.3); border-radius: 30px; padding: 8px 20px; margin-bottom: 20px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
     .todo-badge-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
     .todo-title { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 900; color: white; line-height: 1.1; margin-bottom: 16px; }
     .todo-title em { font-family: 'Cormorant Garamond', serif; font-style: italic; background: linear-gradient(120deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .todo-sub { color: rgba(255,255,255,0.42); font-size: 1rem; max-width: 580px; line-height: 1.75; }
-
-    .todo-count-strip {
-      position: relative; z-index: 1;
-      display: flex; gap: 20px; margin-bottom: 48px; flex-wrap: wrap;
-    }
+    .todo-count-strip { position: relative; z-index: 1; display: flex; gap: 20px; margin-bottom: 48px; flex-wrap: wrap; }
     .tcs { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 14px 22px; text-align: center; flex: 1; min-width: 100px; }
     .tcs-num { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; color: white; line-height: 1; }
     .tcs-lbl { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-top: 4px; }
-
     .todo-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
     .todo-card-featured { grid-column: 1 / -1; }
-
-    .todo-card {
-      position: relative; border-radius: 22px; padding: 32px 32px 28px;
-      text-decoration: none; display: flex; flex-direction: column; overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); cursor: pointer;
-    }
+    .todo-card { position: relative; border-radius: 22px; padding: 32px 32px 28px; text-decoration: none; display: flex; flex-direction: column; overflow: hidden; transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); cursor: pointer; }
     .todo-card > * { position: relative; z-index: 1; }
     .todo-card:hover { transform: translateY(-7px) scale(1.01); }
-
     .tc-s1 { background: linear-gradient(135deg, rgba(62,198,224,0.13), rgba(20,55,80,0.65)); border: 1px solid rgba(62,198,224,0.22); box-shadow: 0 6px 36px rgba(62,198,224,0.12), inset 0 1px 0 rgba(62,198,224,0.18); }
     .tc-s1:hover { box-shadow: 0 22px 60px rgba(62,198,224,0.28); border-color: rgba(62,198,224,0.48); }
     .tc-c1 { background: linear-gradient(135deg, rgba(67,201,160,0.13), rgba(15,55,45,0.65)); border: 1px solid rgba(67,201,160,0.22); box-shadow: 0 6px 36px rgba(67,201,160,0.1), inset 0 1px 0 rgba(67,201,160,0.15); }
@@ -255,7 +157,11 @@
     .tc-t2:hover { box-shadow: 0 22px 60px rgba(224,64,160,0.26); border-color: rgba(224,64,160,0.48); }
     .tc-p2 { background: linear-gradient(135deg, rgba(200,48,48,0.13), rgba(40,5,5,0.65)); border: 1px solid rgba(200,48,48,0.22); box-shadow: 0 6px 36px rgba(200,48,48,0.1), inset 0 1px 0 rgba(200,48,48,0.15); }
     .tc-p2:hover { box-shadow: 0 22px 60px rgba(200,48,48,0.26); border-color: rgba(200,48,48,0.48); }
-
+    /* ── NEW: Cursor card styles ── */
+    .tc-cr1 { background: linear-gradient(135deg, rgba(62,198,224,0.13), rgba(20,55,80,0.65)); border: 1px solid rgba(62,198,224,0.22); box-shadow: 0 6px 36px rgba(62,198,224,0.12), inset 0 1px 0 rgba(62,198,224,0.18); }
+    .tc-cr1:hover { box-shadow: 0 22px 60px rgba(62,198,224,0.28); border-color: rgba(62,198,224,0.48); }
+    .tc-cr2 { background: linear-gradient(135deg, rgba(240,192,64,0.13), rgba(50,38,5,0.65)); border: 1px solid rgba(240,192,64,0.22); box-shadow: 0 6px 36px rgba(240,192,64,0.1), inset 0 1px 0 rgba(240,192,64,0.15); }
+    .tc-cr2:hover { box-shadow: 0 22px 60px rgba(240,192,64,0.26); border-color: rgba(240,192,64,0.48); }
     .todo-tag { font-size: 0.63rem; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; padding: 4px 11px; border-radius: 20px; }
     .tag-s1  { background: rgba(62,198,224,0.18); color: #3ec6e0; border: 1px solid rgba(62,198,224,0.28); }
     .tag-c1  { background: rgba(67,201,160,0.18); color: #43c9a0; border: 1px solid rgba(67,201,160,0.28); }
@@ -267,7 +173,8 @@
     .tag-c4  { background: rgba(96,200,248,0.18);  color: #60c8f8; border: 1px solid rgba(96,200,248,0.28); }
     .tag-t2  { background: rgba(224,64,160,0.18);  color: #e040a0; border: 1px solid rgba(224,64,160,0.28); }
     .tag-p2  { background: rgba(200,48,48,0.18);   color: #e86060; border: 1px solid rgba(200,48,48,0.28); }
-
+    .tag-cr1 { background: rgba(62,198,224,0.18);  color: #3ec6e0; border: 1px solid rgba(62,198,224,0.28); }
+    .tag-cr2 { background: rgba(240,192,64,0.18);  color: #b07800; border: 1px solid rgba(240,192,64,0.28); }
     .todo-card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 18px; }
     .todo-task-id { font-family: 'Playfair Display', serif; font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.22); letter-spacing: 0.1em; }
     .todo-icon-wrap { width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 14px; background: rgba(255,255,255,0.055); border: 1px solid rgba(255,255,255,0.09); backdrop-filter: blur(10px); }
@@ -278,7 +185,6 @@
     .todo-card-type { font-size: 0.67rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.28); }
     .todo-arrow { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; color: white; transition: transform 0.3s; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.07); }
     .todo-card:hover .todo-arrow { transform: translateX(5px) rotate(-10deg); background: rgba(255,255,255,0.15); }
-
     .tc-s1.todo-card-featured { display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center; padding: 42px 46px; }
     .tc-s1.todo-card-featured .todo-card-body { display: flex; flex-direction: column; }
     .tc-s1.todo-card-featured .todo-deco { width: 150px; height: 150px; border-radius: 50%; background: radial-gradient(circle, rgba(62,198,224,0.18) 0%, transparent 70%); border: 1px solid rgba(62,198,224,0.18); display: flex; align-items: center; justify-content: center; font-size: 3.8rem; animation: rotateSlow 20s linear infinite; flex-shrink: 0; }
@@ -286,12 +192,10 @@
     .tc-p2.todo-card-featured .todo-card-body { display: flex; flex-direction: column; }
     .tc-p2.todo-card-featured .todo-deco { width: 150px; height: 150px; border-radius: 50%; background: radial-gradient(circle, rgba(200,48,48,0.18) 0%, transparent 70%); border: 1px solid rgba(200,48,48,0.18); display: flex; align-items: center; justify-content: center; font-size: 3.8rem; animation: rotateSlow 25s linear infinite reverse; flex-shrink: 0; }
     .todo-number { position: absolute; top: 16px; right: 20px; font-family: 'Playfair Display', serif; font-size: 4.5rem; font-weight: 900; color: rgba(255,255,255,0.035); line-height: 1; pointer-events: none; letter-spacing: -0.05em; }
-
     .wave-divider { height: 60px; background: linear-gradient(180deg, transparent, rgba(62,198,224,0.05)); }
     .alert { padding: 14px 24px; border-radius: 14px; margin: 20px 64px; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; animation: fadeUp 0.4s ease; }
     .alert-info  { background: rgba(62,198,224,0.12); border: 1px solid rgba(62,198,224,0.3); color: var(--silver-dark); }
     .alert-error { background: rgba(224,92,110,0.1);  border: 1px solid rgba(224,92,110,0.3); color: #c04050; }
-
     footer { position: relative; z-index: 1; background: var(--deep); color: rgba(255,255,255,0.7); padding: 56px 72px 36px; margin-top: 0; }
     .footer-top { display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); }
     .footer-brand { flex: 2; min-width: 220px; }
@@ -303,14 +207,18 @@
     .footer-logo-area { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
     .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; color: white; }
     .footer-logo span { color: var(--accent); }
-
     @keyframes fadeUp { from { opacity:0;transform:translateY(22px); } to { opacity:1;transform:translateY(0); } }
     .portal-card:nth-child(1){animation-delay:.05s} .portal-card:nth-child(2){animation-delay:.1s} .portal-card:nth-child(3){animation-delay:.15s} .portal-card:nth-child(4){animation-delay:.2s} .portal-card:nth-child(5){animation-delay:.25s} .portal-card:nth-child(6){animation-delay:.3s} .portal-card:nth-child(7){animation-delay:.35s} .portal-card:nth-child(8){animation-delay:.4s} .portal-card:nth-child(9){animation-delay:.45s} .portal-card:nth-child(10){animation-delay:.5s} .portal-card:nth-child(11){animation-delay:.55s} .portal-card:nth-child(12){animation-delay:.6s}
     .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     .todo-card { animation: fadeUp 0.6s ease both; }
     .todo-card:nth-child(1){animation-delay:.08s} .todo-card:nth-child(2){animation-delay:.16s} .todo-card:nth-child(3){animation-delay:.24s} .todo-card:nth-child(4){animation-delay:.3s} .todo-card:nth-child(5){animation-delay:.36s} .todo-card:nth-child(6){animation-delay:.42s} .todo-card:nth-child(7){animation-delay:.48s} .todo-card:nth-child(8){animation-delay:.54s} .todo-card:nth-child(9){animation-delay:.6s} .todo-card:nth-child(10){animation-delay:.66s}
-
+    .tc-t3 { background: linear-gradient(135deg, rgba(67,201,160,0.13), rgba(15,55,45,0.65)); border: 1px solid rgba(67,201,160,0.22); box-shadow: 0 6px 36px rgba(67,201,160,0.1), inset 0 1px 0 rgba(67,201,160,0.15); }
+    .tc-t3:hover { box-shadow: 0 22px 60px rgba(67,201,160,0.26); border-color: rgba(67,201,160,0.48); }
+    .tc-t4 { background: linear-gradient(135deg, rgba(150,100,220,0.13), rgba(35,18,65,0.65)); border: 1px solid rgba(150,100,220,0.22); box-shadow: 0 6px 36px rgba(150,100,220,0.1), inset 0 1px 0 rgba(150,100,220,0.15); }
+    .tc-t4:hover { box-shadow: 0 22px 60px rgba(150,100,220,0.26); border-color: rgba(150,100,220,0.48); }
+    .tag-t3 { background: rgba(67,201,160,0.18); color: #43c9a0; border: 1px solid rgba(67,201,160,0.28); }
+    .tag-t4 { background: rgba(150,100,220,0.18); color: #b890f0; border: 1px solid rgba(150,100,220,0.28); }
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; } .hero-right { display: none; } .hero-left { padding: 60px 24px 40px; }
       nav { padding: 0 20px; } section { padding: 50px 24px; }
@@ -323,7 +231,6 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a href="/" class="nav-brand">
     <svg class="hospital-logo-badge" viewBox="0 0 60 60" fill="none">
@@ -352,7 +259,6 @@
   {% endfor %}{% endif %}
 {% endwith %}
 
-<!-- HERO -->
 <section class="hero" style="padding:0;">
   <div class="particles">
     <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
@@ -389,7 +295,6 @@
   </div>
 </section>
 
-<!-- STATS -->
 <section style="padding-top:40px;padding-bottom:20px;">
   <div class="stats-row reveal">
     <div class="stat-card"><span class="stat-icon">🏥</span><div class="stat-number">12k+</div><div class="stat-label">Patients Treated</div></div>
@@ -399,7 +304,6 @@
   </div>
 </section>
 
-<!-- SERVICES -->
 <section class="reveal" style="padding-top:60px;">
   <div class="section-label">Our Specialities</div>
   <h2 class="section-title">Care You Can <em>Trust</em></h2>
@@ -413,7 +317,6 @@
 
 <div class="wave-divider"></div>
 
-<!-- PORTAL -->
 <section class="reveal">
   <div class="section-label">System Portal</div>
   <h2 class="section-title">Hospital <em>Management</em> Portal</h2>
@@ -443,30 +346,29 @@
 <div class="wave-divider"></div>
 
 <!-- ══════════════════════════════════════════════════
-     ADVANCED ANALYSIS — Tasks 1–5 (Batch 1)
+     ADVANCED ANALYSIS — Batch 1 (Tasks 01–05 + CR1)
 ══════════════════════════════════════════════════ -->
 <div class="todo-section">
 
-  <!-- Header — Advanced Analysis -->
   <div class="todo-header reveal">
     <div class="todo-badge"><div class="todo-badge-dot"></div>Database Operations</div>
     <h2 class="todo-title">Advanced <em>Analysis</em></h2>
-    <p class="todo-sub">Five carefully crafted database operations — simple queries, complex joins, a trigger and a stored procedure. Each task reveals the full power of the Silver Care data model.</p>
+    <p class="todo-sub">Seven carefully crafted database operations — simple queries, complex joins, triggers, a stored procedure and a cursor. Each task reveals the full power of the Silver Care data model.</p>
   </div>
 
-  <!-- Count strip -->
+  <!-- Batch 1 count strip — now 6 tasks including CR1 -->
   <div class="todo-count-strip reveal">
-    <div class="tcs"><div class="tcs-num">5</div><div class="tcs-lbl">Tasks</div></div>
+    <div class="tcs"><div class="tcs-num">7</div><div class="tcs-lbl">Tasks</div></div>
     <div class="tcs"><div class="tcs-num">2</div><div class="tcs-lbl">SQL Queries</div></div>
     <div class="tcs"><div class="tcs-num">2</div><div class="tcs-lbl">Complex Queries</div></div>
-    <div class="tcs"><div class="tcs-num">1</div><div class="tcs-lbl">Trigger</div></div>
+    <div class="tcs"><div class="tcs-num">2</div><div class="tcs-lbl">Triggers</div></div>
     <div class="tcs"><div class="tcs-num">1</div><div class="tcs-lbl">Procedure</div></div>
+    <div class="tcs"><div class="tcs-num">1</div><div class="tcs-lbl">Cursor</div></div>
   </div>
 
-  <!-- Batch 1 divider — clean, no label text -->
   <div class="batch-divider reveal">
     <div class="batch-divider-line"></div>
-    <div class="batch-divider-label"><div class="bdot"></div>Tasks 01 – 05</div>
+    <div class="batch-divider-label"><div class="bdot"></div>Tasks 01 – 05, CR1, T3</div>
     <div class="batch-divider-line"></div>
   </div>
 
@@ -531,29 +433,51 @@
       <span class="todo-number">05</span>
     </a>
 
+    <!-- Task CR1 — Cursor (Batch 1) -->
+    <a href="/cr1" class="todo-card tc-cr1">
+      <div class="todo-card-top"><span class="todo-tag tag-11">Cursor</span><span class="todo-task-id">Task 11</span></div>
+      <div class="todo-icon-wrap">🔬</div>
+      <div class="todo-card-title">Doctors by Average Patient Age</div>
+      <div class="todo-card-desc">PL/pgSQL cursor — iterates over doctors whose average patient age exceeds a given threshold, ranked by descending average age.</div>
+      <div class="todo-card-footer"><span class="todo-card-type">CURSOR · AVG · HAVING · JOIN</span><div class="todo-arrow">→</div></div>
+      <span class="todo-number">11</span>
+    </a>
+
+
+    <!-- Task T3 — Trigger 3 (Batch 1) -->
+    <a href="/t3" class="todo-card tc-t3">
+      <div class="todo-card-top"><span class="todo-tag tag-t3">Trigger</span><span class="todo-task-id">Task 13</span></div>
+      <div class="todo-icon-wrap">💰</div>
+      <div class="todo-card-title">Auto-Update Patient Total Cost</div>
+      <div class="todo-card-desc">AFTER INSERT trigger on costs — automatically increments each patient's total_cost in the patients table whenever a new billing record is added.</div>
+      <div class="todo-card-footer"><span class="todo-card-type">TRIGGER · AFTER INSERT · UPDATE patients</span><div class="todo-arrow">→</div></div>
+      <span class="todo-number">13</span>
+    </a>
+
   </div>
 
   <!-- ══════════════════════════════════════════════════
-       NEW LEVEL TO-DO TASKS — Batch 2, Tasks 6–10
+       NEW LEVEL TO-DO TASKS — Batch 2 (Tasks 06–10 + CR2)
   ══════════════════════════════════════════════════ -->
   <div class="inner-section-break reveal">
     <div class="inner-section-badge"><div class="inner-section-badge-dot"></div>Next Level</div>
     <h2 class="inner-section-title">New Level <em>To-Do Tasks</em></h2>
-    <p class="inner-section-sub">Five more advanced database operations — deeper joins, subqueries, repeat-frequency analysis, and a full stored procedure. Built to push the Silver Care data model to its limits.</p>
+    <p class="inner-section-sub">Seven more advanced database operations — deeper joins, subqueries, repeat-frequency analysis, a trigger, a stored procedure and a cursor. Built to push the Silver Care data model to its limits.</p>
   </div>
 
-  <!-- Batch 2 count strip -->
+  <!-- Batch 2 count strip — now 6 tasks including CR2 -->
   <div class="todo-count-strip reveal" style="margin-top:0;">
-    <div class="tcs"><div class="tcs-num">5</div><div class="tcs-lbl">Tasks</div></div>
+    <div class="tcs"><div class="tcs-num">7</div><div class="tcs-lbl">Tasks</div></div>
     <div class="tcs"><div class="tcs-num">2</div><div class="tcs-lbl">SQL Queries</div></div>
     <div class="tcs"><div class="tcs-num">2</div><div class="tcs-lbl">Complex Queries</div></div>
-    <div class="tcs"><div class="tcs-num">0</div><div class="tcs-lbl">Triggers</div></div>
+    <div class="tcs"><div class="tcs-num">1</div><div class="tcs-lbl">Trigger</div></div>
     <div class="tcs"><div class="tcs-num">1</div><div class="tcs-lbl">Procedure</div></div>
+    <div class="tcs"><div class="tcs-num">1</div><div class="tcs-lbl">Cursor</div></div>
   </div>
 
   <div class="batch-divider reveal">
     <div class="batch-divider-line"></div>
-    <div class="batch-divider-label"><div class="bdot"></div>Tasks 06 – 10</div>
+    <div class="batch-divider-label"><div class="bdot"></div>Tasks 06 – 10, CR2, T4</div>
     <div class="batch-divider-line"></div>
   </div>
 
@@ -597,6 +521,27 @@
       <div class="todo-card-desc">Reveals loyal patient–doctor pairs — grouped by both names, filtered with HAVING COUNT ≥ 2, sorted by repeat frequency.</div>
       <div class="todo-card-footer"><span class="todo-card-type">GROUP BY · HAVING COUNT ≥ 2</span><div class="todo-arrow">→</div></div>
       <span class="todo-number">09</span>
+    </a>
+
+    <!-- Task CR2 — Cursor (Batch 2) -->
+    <a href="/cr2" class="todo-card tc-cr2">
+      <div class="todo-card-top"><span class="todo-tag tag-12">Cursor</span><span class="todo-task-id">Task 12</span></div>
+      <div class="todo-icon-wrap">💰</div>
+      <div class="todo-card-title">High Cost Patients</div>
+      <div class="todo-card-desc">PL/pgSQL cursor — surfaces all patients whose total billing (medicine + doctor fee + admission) exceeds ₹5,000, grouped and filtered with HAVING.</div>
+      <div class="todo-card-footer"><span class="todo-card-type">CURSOR · SUM · HAVING · JOIN</span><div class="todo-arrow">→</div></div>
+      <span class="todo-number">12</span>
+    </a>
+
+
+    <!-- Task T4 — Trigger 4 (Batch 2) -->
+    <a href="/t4" class="todo-card tc-t4">
+      <div class="todo-card-top"><span class="todo-tag tag-t4">Trigger</span><span class="todo-task-id">Task 14</span></div>
+      <div class="todo-icon-wrap">🏷️</div>
+      <div class="todo-card-title">Auto-Classify Treatment Type</div>
+      <div class="todo-card-desc">BEFORE INSERT OR UPDATE trigger on patienthistory — inspects treatment text and auto-assigns treatment_type: Cardiology, Neurology, Dermatology, Pediatrics, Orthopedics, or General.</div>
+      <div class="todo-card-footer"><span class="todo-card-type">TRIGGER · BEFORE INSERT OR UPDATE · LIKE</span><div class="todo-arrow">→</div></div>
+      <span class="todo-number">14</span>
     </a>
 
     <!-- Task 10 — P2 featured -->
@@ -672,6 +617,8 @@
       <a href="/c2">03 — Amoxicillin Prescriptions</a>
       <a href="/t1">04 — PatientHistory Trigger</a>
       <a href="/p1">05 — Deactivate Doctor</a>
+      <a href="/cr1">11 — Doctors by Avg Patient Age</a>
+      <a href="/t3">13 — Auto-Update Total Cost</a>
     </div>
     <div class="footer-col">
       <h4>New Level To-Do Tasks</h4>
@@ -680,6 +627,8 @@
       <a href="/c4">08 — Doctor Repeat Rate</a>
       <a href="/t2">09 — Loyal Patient–Doctor Pairs</a>
       <a href="/p2">10 — Inactive Doctors (1yr+)</a>
+      <a href="/cr2">12 — High Cost Patients</a>
+      <a href="/t4">14 — Auto-Classify Treatment</a>
     </div>
   </div>
   <div class="footer-bottom">

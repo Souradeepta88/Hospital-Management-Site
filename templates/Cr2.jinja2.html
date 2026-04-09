@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CR2 — High Cost Patients | Silver Care</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@1,400;1,600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --silver: #b8c9d9; --silver-light: #dce8f0; --silver-dark: #6a8fa8;
+      --deep: #1a2e3b; --accent: #3ec6e0; --accent2: #7eddd4;
+      --white: #f7fbfe; --card-bg: rgba(255,255,255,0.82);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #e8f4fb 0%, #f0f8ff 40%, #daf0f5 100%);
+      min-height: 100vh; color: var(--deep);
+    }
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.75); backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(184,201,217,0.4); padding: 0 48px;
+      display: flex; align-items: center; justify-content: space-between; height: 70px;
+      box-shadow: 0 2px 20px rgba(30,70,100,0.07);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+    .nav-brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+    .brand-main { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 900; background: linear-gradient(90deg, var(--deep), var(--silver-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .brand-sub { font-size: 0.68rem; font-weight: 600; color: var(--silver-dark); letter-spacing: 0.18em; text-transform: uppercase; }
+    .nav-links { display: flex; align-items: center; gap: 6px; list-style: none; }
+    .nav-links a { text-decoration: none; font-size: 0.88rem; font-weight: 600; color: var(--deep); padding: 6px 14px; border-radius: 20px; transition: all 0.2s; }
+    .nav-links a:hover { background: rgba(62,198,224,0.12); color: var(--silver-dark); }
+    .btn-nav { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white !important; padding: 8px 20px !important; border-radius: 50px; box-shadow: 0 4px 14px rgba(62,198,224,0.35); }
+
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: 56px 32px 80px; }
+
+    /* ── HEADER ── */
+    .task-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, rgba(200,48,48,0.15), rgba(180,30,30,0.08));
+      border: 1px solid rgba(200,48,48,0.3); border-radius: 30px;
+      padding: 6px 18px; margin-bottom: 18px;
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase;
+      color: #a02828;
+    }
+    .task-badge-dot { width: 7px; height: 7px; background: #e06060; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(200,48,48,0.6);}50%{box-shadow:0 0 0 6px rgba(200,48,48,0);} }
+    .page-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem,4vw,2.9rem); font-weight: 900; color: var(--deep); line-height: 1.1; margin-bottom: 12px; }
+    .page-title em { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--silver-dark); }
+    .page-desc { color: #5a7a90; font-size: 1rem; line-height: 1.75; max-width: 640px; }
+
+    /* ── SQL BLOCK ── */
+    .sql-card {
+      background: #0f1e28; border-radius: 18px; padding: 28px 32px;
+      margin: 32px 0; border: 1px solid rgba(200,48,48,0.18);
+      box-shadow: 0 8px 36px rgba(10,20,30,0.18);
+    }
+    .sql-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .sql-label { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(200,100,100,0.75); }
+    .sql-dots { display: flex; gap: 6px; }
+    .sql-dot { width: 10px; height: 10px; border-radius: 50%; }
+    pre {
+      font-family: 'Courier New', monospace; font-size: 0.84rem; line-height: 1.7;
+      color: #c8dce8; white-space: pre-wrap; word-break: break-word;
+    }
+
+    /* ── SUMMARY STRIP ── */
+    .summary-strip {
+      display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap;
+    }
+    .sum-card {
+      flex: 1; min-width: 140px;
+      background: var(--card-bg); backdrop-filter: blur(12px);
+      border: 1px solid rgba(184,201,217,0.35); border-radius: 16px;
+      padding: 20px 22px; box-shadow: 0 4px 18px rgba(30,70,100,0.07);
+      text-align: center;
+    }
+    .sum-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; background: linear-gradient(120deg, #e06060, #c03030); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+    .sum-lbl { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #6a8aa0; margin-top: 5px; }
+
+    /* ── RESULTS ── */
+    .results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+    .results-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--deep); }
+    .results-count {
+      background: linear-gradient(135deg, rgba(200,48,48,0.12), rgba(180,30,30,0.08));
+      border: 1px solid rgba(200,48,48,0.25); border-radius: 20px;
+      padding: 5px 16px; font-size: 0.78rem; font-weight: 700; color: #a02828;
+    }
+    .table-wrap {
+      background: var(--card-bg); backdrop-filter: blur(16px);
+      border: 1px solid rgba(184,201,217,0.35); border-radius: 20px;
+      overflow: hidden; box-shadow: 0 4px 24px rgba(30,70,100,0.08);
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: linear-gradient(135deg, rgba(200,48,48,0.08), rgba(180,30,30,0.04)); }
+    thead th {
+      padding: 14px 20px; text-align: left;
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--silver-dark); border-bottom: 1px solid rgba(184,201,217,0.3);
+    }
+    tbody tr { border-bottom: 1px solid rgba(184,201,217,0.2); transition: background 0.2s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(200,48,48,0.04); }
+    tbody td { padding: 14px 20px; font-size: 0.92rem; color: var(--deep); }
+
+    .rank-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(200,48,48,0.15), rgba(180,30,30,0.08));
+      border: 1px solid rgba(200,48,48,0.25);
+      font-size: 0.75rem; font-weight: 800; color: #a02828;
+    }
+    .rank-badge.gold   { background: linear-gradient(135deg,rgba(255,215,0,0.25),rgba(200,160,0,0.15)); border-color: rgba(255,200,0,0.4); color: #a07800; }
+    .rank-badge.silver { background: linear-gradient(135deg,rgba(200,210,220,0.3),rgba(160,180,200,0.2)); border-color: rgba(180,200,220,0.5); color: #607080; }
+    .rank-badge.bronze { background: linear-gradient(135deg,rgba(205,127,50,0.25),rgba(180,100,30,0.15)); border-color: rgba(200,130,60,0.4); color: #905018; }
+
+    .cost-pill {
+      display: inline-block; padding: 4px 14px; border-radius: 20px;
+      font-size: 0.85rem; font-weight: 700;
+    }
+    .cost-pill.extreme { background: rgba(200,48,48,0.15); color: #a02020; border: 1px solid rgba(200,48,48,0.3); }
+    .cost-pill.high    { background: rgba(240,120,60,0.12); color: #a04010; border: 1px solid rgba(240,120,60,0.25); }
+    .cost-pill.medium  { background: rgba(240,192,64,0.12); color: #806000; border: 1px solid rgba(240,192,64,0.25); }
+
+    .bar-wrap { display: flex; align-items: center; gap: 10px; }
+    .bar-bg { flex: 1; height: 6px; background: rgba(184,201,217,0.3); border-radius: 10px; overflow: hidden; min-width: 80px; }
+    .bar-fill { height: 100%; border-radius: 10px; background: linear-gradient(90deg, #e06060, #c03030); transition: width 0.8s cubic-bezier(0.22,1,0.36,1); }
+
+    /* ── EMPTY / ERROR ── */
+    .state-card {
+      background: var(--card-bg); border-radius: 20px; padding: 52px 32px;
+      text-align: center; border: 1px solid rgba(184,201,217,0.35);
+      box-shadow: 0 4px 24px rgba(30,70,100,0.07);
+    }
+    .state-icon { font-size: 3rem; margin-bottom: 14px; display: block; }
+    .state-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--deep); margin-bottom: 8px; }
+    .state-sub { color: #6a8aa0; font-size: 0.92rem; }
+    .error-card { border-color: rgba(224,92,110,0.3); background: rgba(255,240,242,0.85); }
+    .error-card .state-title { color: #b03040; }
+
+    .back-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 32px; color: var(--silver-dark); text-decoration: none; font-size: 0.88rem; font-weight: 600; transition: color 0.2s; }
+    .back-link:hover { color: var(--accent); }
+
+    @media (max-width: 700px) { nav { padding: 0 16px; } .page-wrap { padding: 32px 16px 60px; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">
+    <svg width="44" height="44" viewBox="0 0 60 60" fill="none">
+      <circle cx="30" cy="30" r="29" fill="url(#nOG)"/><circle cx="30" cy="30" r="26" fill="url(#nIG)"/>
+      <rect x="26" y="14" width="8" height="32" rx="2.5" fill="white"/><rect x="14" y="26" width="32" height="8" rx="2.5" fill="white"/>
+      <defs>
+        <linearGradient id="nOG" x1="0" y1="0" x2="60" y2="60"><stop offset="0%" stop-color="#c8d4dc"/><stop offset="100%" stop-color="#4a6478"/></linearGradient>
+        <linearGradient id="nIG" x1="0" y1="0" x2="60" y2="60"><stop offset="0%" stop-color="#b0bec8"/><stop offset="100%" stop-color="#4a6478"/></linearGradient>
+      </defs>
+    </svg>
+    <div class="nav-brand-text"><span class="brand-main">Silver Care</span><span class="brand-sub">Hospital &amp; Medical Centre</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/database" class="btn-nav">Database ↗</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-header" style="margin-bottom:32px;">
+    <div class="task-badge"><div class="task-badge-dot"></div>Cursor · Task CR2 · Batch 2</div>
+    <h1 class="page-title">High <em>Cost Patients</em></h1>
+    <p class="page-desc">
+      Adapted from an Oracle PL/SQL cursor procedure — surfaces every patient whose combined total costs
+      (admission + medicine + doctor fee) exceed ₹5,000, ranked from highest to lowest spend.
+    </p>
+  </div>
+
+  <!-- SQL -->
+  <div class="sql-card">
+    <div class="sql-card-top">
+      <span class="sql-label">PostgreSQL — Cursor Adaptation</span>
+      <div class="sql-dots">
+        <div class="sql-dot" style="background:#e06060;"></div>
+        <div class="sql-dot" style="background:#e0c060;"></div>
+        <div class="sql-dot" style="background:#60c060;"></div>
+      </div>
+    </div>
+    <pre>{% for line in sql_shown.splitlines() %}<span>{{ line }}</span>
+{% endfor %}</pre>
+  </div>
+
+  {% if error %}
+  <div class="state-card error-card">
+    <span class="state-icon">⚠️</span>
+    <div class="state-title">Query Error</div>
+    <p class="state-sub">{{ error }}</p>
+  </div>
+
+  {% elif data %}
+
+  <!-- Summary strip -->
+  {% set max_cost = data[0][1] | int %}
+  {% set total_flagged = data | length %}
+  {% set grand = namespace(v=0) %}
+  {% for row in data %}{% set grand.v = grand.v + (row[1] | int) %}{% endfor %}
+
+  <div class="summary-strip">
+    <div class="sum-card">
+      <div class="sum-num">{{ total_flagged }}</div>
+      <div class="sum-lbl">Flagged Patients</div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-num">₹{{ '{:,}'.format(grand.v) }}</div>
+      <div class="sum-lbl">Combined Total Cost</div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-num">₹{{ '{:,}'.format(max_cost) }}</div>
+      <div class="sum-lbl">Highest Single Bill</div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-num">&gt;₹2k</div>
+      <div class="sum-lbl">Threshold Applied</div>
+    </div>
+  </div>
+
+  <div class="results-header">
+    <div class="results-title">Patients with Total Cost &gt; ₹2,000</div>
+    <div class="results-count">{{ total_flagged }} patient{{ 's' if total_flagged != 1 else '' }} flagged</div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Patient Name</th>
+          <th>Total Cost (₹)</th>
+          <th>Cost Tier</th>
+          <th>Relative Spend</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in data %}
+        {% set cost = row[1] | int %}
+        {% set pct = ((cost / max_cost) * 100) | int if max_cost > 0 else 0 %}
+        <tr>
+          <td>
+            {% if loop.index == 1 %}
+              <div class="rank-badge gold">🥇</div>
+            {% elif loop.index == 2 %}
+              <div class="rank-badge silver">🥈</div>
+            {% elif loop.index == 3 %}
+              <div class="rank-badge bronze">🥉</div>
+            {% else %}
+              <div class="rank-badge">{{ loop.index }}</div>
+            {% endif %}
+          </td>
+          <td><strong>{{ row[0] }}</strong></td>
+          <td>
+            {% if cost >= 4000 %}
+              <span class="cost-pill extreme">₹{{ '{:,}'.format(cost) }}</span>
+            {% elif cost >= 3000 %}
+              <span class="cost-pill high">₹{{ '{:,}'.format(cost) }}</span>
+            {% else %}
+              <span class="cost-pill medium">₹{{ '{:,}'.format(cost) }}</span>
+            {% endif %}
+          </td>
+          <td style="font-size:0.82rem;color:#6a8aa0;">
+            {% if cost >= 4000 %}Critical
+            {% elif cost >= 3000 %}High
+            {% else %}Moderate{% endif %}
+          </td>
+          <td>
+            <div class="bar-wrap">
+              <div class="bar-bg"><div class="bar-fill" style="width:{{ pct }}%;"></div></div>
+              <span style="font-size:0.75rem;color:#6a8aa0;min-width:34px;">{{ pct }}%</span>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% else %}
+  <div class="state-card">
+    <span class="state-icon">💰</span>
+    <div class="state-title">No High-Cost Patients Found</div>
+    <p class="state-sub">No patients currently have a total combined cost exceeding ₹5,000. Add cost records to see results here.</p>
+  </div>
+  {% endif %}
+
+  <a href="/" class="back-link">← Back to Home</a>
+</div>
+
+</body>
+</html>

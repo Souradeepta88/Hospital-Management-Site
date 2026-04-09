@@ -5,110 +5,38 @@
 <title>Doctor Records — Silver Care</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{
-  --silver:#b8c9d9;--silver-light:#dce8f0;--silver-dark:#6a8fa8;
-  --deep:#1a2e3b;--accent:#3ec6e0;--accent2:#7eddd4;
-  --white:#f7fbfe;--card-bg:rgba(255,255,255,0.88);
-  --text:#1a2e3b;--muted:#5a7a90;
-}
+:root{ --silver:#b8c9d9;--silver-light:#dce8f0;--silver-dark:#6a8fa8;--deep:#1a2e3b;--accent:#3ec6e0;--accent2:#7eddd4;--white:#f7fbfe;--card-bg:rgba(255,255,255,0.88);--text:#1a2e3b;--muted:#5a7a90;--danger:#ff4757;--danger2:#ff6b81; }
 *{ box-sizing:border-box;margin:0;padding:0; }
-body{
-  font-family:'Nunito',sans-serif;min-height:100vh;
-  background:linear-gradient(135deg,#e8f4fb 0%,#f0f8ff 40%,#daf0f5 100%);
-  color:var(--text);overflow-x:hidden;position:relative;
-}
-body::before{
-  content:'';position:fixed;top:-120px;right:-120px;width:520px;height:520px;
-  background:radial-gradient(circle,rgba(62,198,224,0.18) 0%,transparent 70%);
-  border-radius:50%;pointer-events:none;z-index:0;
-}
-body::after{
-  content:'';position:fixed;bottom:-100px;left:-80px;width:400px;height:400px;
-  background:radial-gradient(circle,rgba(126,221,212,0.15) 0%,transparent 70%);
-  border-radius:50%;pointer-events:none;z-index:0;
-}
-nav{
-  position:sticky;top:0;z-index:100;height:70px;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 48px;background:rgba(255,255,255,0.75);backdrop-filter:blur(18px);
-  border-bottom:1px solid rgba(184,201,217,0.4);
-  box-shadow:0 2px 20px rgba(30,70,100,0.07);
-}
-.brand{
-  font-family:'Playfair Display',serif;font-weight:900;font-size:1.25rem;
-  background:linear-gradient(90deg,var(--deep),var(--silver-dark));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  text-decoration:none;
-}
-.back{
-  font-family:'DM Mono',monospace;font-size:.78rem;padding:8px 20px;
-  border-radius:999px;border:1.5px solid rgba(62,198,224,0.35);
-  text-decoration:none;color:var(--silver-dark);background:rgba(62,198,224,0.06);transition:all .25s;
-}
+body{ font-family:'Nunito',sans-serif;min-height:100vh;background:linear-gradient(135deg,#e8f4fb 0%,#f0f8ff 40%,#daf0f5 100%);color:var(--text);overflow-x:hidden;position:relative; }
+body::before{ content:'';position:fixed;top:-120px;right:-120px;width:520px;height:520px;background:radial-gradient(circle,rgba(62,198,224,0.18) 0%,transparent 70%);border-radius:50%;pointer-events:none;z-index:0; }
+body::after{ content:'';position:fixed;bottom:-100px;left:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(126,221,212,0.15) 0%,transparent 70%);border-radius:50%;pointer-events:none;z-index:0; }
+nav{ position:sticky;top:0;z-index:100;height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(255,255,255,0.75);backdrop-filter:blur(18px);border-bottom:1px solid rgba(184,201,217,0.4);box-shadow:0 2px 20px rgba(30,70,100,0.07); }
+.brand{ font-family:'Playfair Display',serif;font-weight:900;font-size:1.25rem;background:linear-gradient(90deg,var(--deep),var(--silver-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none; }
+.back{ font-family:'DM Mono',monospace;font-size:.78rem;padding:8px 20px;border-radius:999px;border:1.5px solid rgba(62,198,224,0.35);text-decoration:none;color:var(--silver-dark);background:rgba(62,198,224,0.06);transition:all .25s; }
 .back:hover{ background:rgba(62,198,224,0.14);border-color:var(--accent);color:var(--deep); }
-
-.page-header{
-  position:relative;z-index:1;max-width:1280px;margin:auto;
-  padding:60px 48px 28px;display:flex;align-items:flex-end;justify-content:space-between;
-  flex-wrap:wrap;gap:20px;
-}
-.header-text h1{
-  font-family:'Playfair Display',serif;font-size:clamp(2.4rem,5vw,4rem);font-weight:900;
-  color:var(--deep);letter-spacing:-0.02em;line-height:1;
-}
-.header-text h1 em{
-  font-family:'Cormorant Garamond',serif;font-style:italic;
-  background:linear-gradient(120deg,var(--accent),var(--accent2));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
+.page-header{ position:relative;z-index:1;max-width:1280px;margin:auto;padding:60px 48px 28px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:20px; }
+.header-text h1{ font-family:'Playfair Display',serif;font-size:clamp(2.4rem,5vw,4rem);font-weight:900;color:var(--deep);letter-spacing:-0.02em;line-height:1; }
+.header-text h1 em{ font-family:'Cormorant Garamond',serif;font-style:italic;background:linear-gradient(120deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
 .header-text p{ margin-top:10px;color:var(--muted);font-size:.95rem; }
-.header-meta{
-  font-family:'DM Mono',monospace;font-size:.8rem;color:var(--muted);
-  background:rgba(62,198,224,0.08);border:1px solid rgba(62,198,224,0.2);
-  padding:10px 20px;border-radius:12px;
-}
-
-.toolbar{
-  position:relative;z-index:1;max-width:1280px;margin:0 auto 20px;
-  padding:0 48px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
-}
+.header-meta{ font-family:'DM Mono',monospace;font-size:.8rem;color:var(--muted);background:rgba(62,198,224,0.08);border:1px solid rgba(62,198,224,0.2);padding:10px 20px;border-radius:12px; }
+.toolbar{ position:relative;z-index:1;max-width:1280px;margin:0 auto 20px;padding:0 48px;display:flex;align-items:center;gap:12px;flex-wrap:wrap; }
 .search-wrap{ position:relative;flex:1;max-width:340px; }
 .search-wrap svg{ position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none; }
-.search-wrap input{
-  width:100%;padding:11px 14px 11px 42px;border-radius:12px;
-  border:1.5px solid rgba(62,198,224,0.22);background:rgba(255,255,255,0.7);
-  font-family:'Nunito',sans-serif;font-size:.9rem;color:var(--text);
-  outline:none;transition:all .25s;backdrop-filter:blur(8px);
-}
+.search-wrap input{ width:100%;padding:11px 14px 11px 42px;border-radius:12px;border:1.5px solid rgba(62,198,224,0.22);background:rgba(255,255,255,0.7);font-family:'Nunito',sans-serif;font-size:.9rem;color:var(--text);outline:none;transition:all .25s;backdrop-filter:blur(8px); }
 .search-wrap input::placeholder{ color:var(--muted); }
 .search-wrap input:focus{ border-color:var(--accent);background:#fff;box-shadow:0 0 0 4px rgba(62,198,224,0.1); }
-.filter-select{
-  padding:11px 16px;border-radius:12px;
-  border:1.5px solid rgba(62,198,224,0.22);background:rgba(255,255,255,0.7);
-  font-family:'Nunito',sans-serif;font-size:.88rem;color:var(--text);
-  outline:none;cursor:pointer;transition:all .25s;
-}
-.filter-select:focus{ border-color:var(--accent); }
-.count-pill{
-  margin-left:auto;background:rgba(62,198,224,0.1);border:1px solid rgba(62,198,224,0.25);
-  color:var(--silver-dark);font-family:'DM Mono',monospace;font-size:.75rem;
-  padding:8px 18px;border-radius:999px;
-}
-
+.filter-select{ padding:11px 16px;border-radius:12px;border:1.5px solid rgba(62,198,224,0.22);background:rgba(255,255,255,0.7);font-family:'Nunito',sans-serif;font-size:.88rem;color:var(--text);outline:none;cursor:pointer;transition:all .25s; }
+.count-pill{ margin-left:auto;background:rgba(62,198,224,0.1);border:1px solid rgba(62,198,224,0.25);color:var(--silver-dark);font-family:'DM Mono',monospace;font-size:.75rem;padding:8px 18px;border-radius:999px; }
 .table-card{ position:relative;z-index:1;max-width:1280px;margin:0 auto 60px;padding:0 48px; }
-.table-inner{
-  background:rgba(255,255,255,0.95);border-radius:24px;
-  border:1px solid rgba(184,201,217,0.35);
-  box-shadow:0 8px 50px rgba(30,70,100,0.1),inset 0 1px 0 rgba(255,255,255,0.9);
-  overflow:hidden;
-}
+.table-inner{ background:rgba(255,255,255,0.95);border-radius:24px;border:1px solid rgba(184,201,217,0.35);box-shadow:0 8px 50px rgba(30,70,100,0.1),inset 0 1px 0 rgba(255,255,255,0.9);overflow:hidden; }
+.tbl-top{ padding:20px 28px;background:linear-gradient(135deg,var(--deep),#264a60);display:flex;align-items:center;justify-content:space-between; }
+.tbl-title{ font-family:'Playfair Display',serif;font-weight:700;color:#fff;font-size:.95rem;display:flex;align-items:center;gap:10px; }
+.tbl-title::before{ content:'';width:8px;height:8px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent);animation:blink 2s infinite; }
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.4;}}
+.hint-badge{ font-family:'DM Mono',monospace;font-size:.65rem;color:rgba(255,255,255,0.4);padding:4px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:999px; }
 table{ width:100%;border-collapse:collapse; }
 thead{ background:linear-gradient(135deg,var(--deep),#264a60); }
-th{
-  font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.1em;
-  color:rgba(255,255,255,0.65);text-transform:uppercase;
-  padding:16px 20px;text-align:left;cursor:pointer;user-select:none;transition:.15s;
-}
+th{ font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.1em;color:rgba(255,255,255,0.65);text-transform:uppercase;padding:16px 20px;text-align:left;cursor:pointer;user-select:none;transition:.15s; }
 th:hover{ color:var(--accent); }
 th.sorted{ color:var(--accent); }
 th .sort-icon{ opacity:.4;margin-left:4px; }
@@ -116,33 +44,12 @@ th.sorted .sort-icon{ opacity:1; }
 td{ padding:15px 20px;border-top:1px solid rgba(62,198,224,0.07);font-size:.88rem;color:var(--text);vertical-align:middle; }
 tbody tr{ transition:all .2s; }
 tbody tr:hover{ background:rgba(62,198,224,0.04);transform:translateX(2px); }
-
-.avatar{
-  width:36px;height:36px;border-radius:10px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:#fff;font-weight:700;font-size:.85rem;
-  display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;
-  box-shadow:0 4px 12px rgba(62,198,224,0.3);
-}
+.avatar{ width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:700;font-size:.85rem;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px rgba(62,198,224,0.3); }
 .user-cell{ display:flex;align-items:center;gap:10px; }
-.qual-pill{
-  display:inline-block;padding:3px 10px;border-radius:6px;font-size:.75rem;
-  font-family:'DM Mono',monospace;background:rgba(62,198,224,0.08);
-  color:var(--muted);border:1px solid rgba(62,198,224,0.18);
-}
-.spec-tag{
-  display:inline-block;padding:4px 12px;border-radius:999px;font-size:.78rem;font-weight:600;
-  background:rgba(62,198,224,0.08);color:#1a5060;border:1px solid rgba(62,198,224,0.18);
-}
-.time-chip{
-  font-family:'DM Mono',monospace;font-size:.78rem;color:var(--muted);
-  background:rgba(62,198,224,0.06);padding:3px 9px;border-radius:6px;border:1px solid rgba(62,198,224,0.12);
-}
-.age-badge{
-  display:inline-flex;align-items:center;justify-content:center;
-  min-width:36px;padding:3px 8px;border-radius:8px;font-size:.82rem;font-weight:600;
-  background:rgba(62,198,224,0.07);color:#1a5060;border:1px solid rgba(62,198,224,0.13);
-}
+.qual-pill{ display:inline-block;padding:3px 10px;border-radius:6px;font-size:.75rem;font-family:'DM Mono',monospace;background:rgba(62,198,224,0.08);color:var(--muted);border:1px solid rgba(62,198,224,0.18); }
+.spec-tag{ display:inline-block;padding:4px 12px;border-radius:999px;font-size:.78rem;font-weight:600;background:rgba(62,198,224,0.08);color:#1a5060;border:1px solid rgba(62,198,224,0.18); }
+.time-chip{ font-family:'DM Mono',monospace;font-size:.78rem;color:var(--muted);background:rgba(62,198,224,0.06);padding:3px 9px;border-radius:6px;border:1px solid rgba(62,198,224,0.12); }
+.age-badge{ display:inline-flex;align-items:center;justify-content:center;min-width:36px;padding:3px 8px;border-radius:8px;font-size:.82rem;font-weight:600;background:rgba(62,198,224,0.07);color:#1a5060;border:1px solid rgba(62,198,224,0.13); }
 .badge{ display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:.74rem;font-weight:600; }
 .badge::before{ content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0; }
 .active{ background:#dcfce7;color:#166534;border:1px solid #bbf7d0; }
@@ -153,8 +60,26 @@ tbody tr:hover{ background:rgba(62,198,224,0.04);transform:translateX(2px); }
 .phone-cell{ font-family:'DM Mono',monospace;font-size:.8rem; }
 .email-cell{ font-size:.82rem;color:var(--muted); }
 .empty{ padding:60px 30px;text-align:center;color:var(--muted); }
-.empty-icon{ font-size:2.5rem;margin-bottom:12px;opacity:.4; }
 .no-match{ display:none;padding:40px;text-align:center;color:var(--muted);font-size:.9rem; }
+/* delete */
+.del-cell{ width:52px;text-align:center;padding:10px 12px; }
+.del-btn{ width:34px;height:34px;border-radius:10px;background:rgba(255,71,87,0.07);border:1.5px solid rgba(255,71,87,0.15);color:var(--danger);font-size:.9rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden; }
+.del-btn:hover{ background:rgba(255,71,87,0.14);border-color:rgba(255,71,87,0.4);transform:scale(1.1);box-shadow:0 4px 14px rgba(255,71,87,0.2); }
+/* modal */
+.modal-overlay{ position:fixed;inset:0;z-index:200;background:rgba(10,20,30,0.6);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s; }
+.modal-overlay.active{ opacity:1;pointer-events:all; }
+.modal{ background:linear-gradient(135deg,#fff 0%,#f0f8ff 100%);border-radius:24px;padding:36px 40px;max-width:420px;width:90%;border:1px solid rgba(255,71,87,0.15);box-shadow:0 30px 80px rgba(255,71,87,0.15),0 8px 30px rgba(0,0,0,0.1);transform:scale(.9) translateY(20px);transition:transform .35s cubic-bezier(.34,1.56,.64,1);text-align:center; }
+.modal-overlay.active .modal{ transform:scale(1) translateY(0); }
+.modal-icon{ width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,rgba(255,71,87,0.1),rgba(255,107,129,0.05));border:2px solid rgba(255,71,87,0.2);display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 20px;animation:iconWiggle .5s .3s ease both; }
+@keyframes iconWiggle{ 0%{transform:rotate(0);} 25%{transform:rotate(-8deg);} 75%{transform:rotate(8deg);} 100%{transform:rotate(0);} }
+.modal h3{ font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:var(--deep);margin-bottom:8px; }
+.modal p{ color:var(--muted);font-size:.9rem;margin-bottom:24px;line-height:1.6; }
+.modal-target{ display:inline-block;font-family:'DM Mono',monospace;font-size:.82rem;background:rgba(255,71,87,0.08);border:1px solid rgba(255,71,87,0.2);color:var(--danger);padding:4px 12px;border-radius:8px;margin-bottom:20px; }
+.modal-btns{ display:flex;gap:12px; }
+.modal-cancel{ flex:1;padding:12px;border-radius:12px;border:1.5px solid rgba(106,143,168,0.25);background:transparent;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:700;color:var(--muted);cursor:pointer;transition:all .2s; }
+.modal-cancel:hover{ background:rgba(106,143,168,0.08);color:var(--deep); }
+.modal-confirm{ flex:1;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--danger),var(--danger2));font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:700;color:#fff;cursor:pointer;transition:all .2s;box-shadow:0 4px 14px rgba(255,71,87,0.3); }
+.modal-confirm:hover{ transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,71,87,0.4); }
 </style>
 </head>
 <body>
@@ -168,16 +93,12 @@ tbody tr:hover{ background:rgba(62,198,224,0.04);transform:translateX(2px); }
     <h1>Doctor <em>Records</em></h1>
     <p>All registered doctors and their details</p>
   </div>
-  <div class="header-meta">
-    {% if data %}{{ data|length }} record{% if data|length != 1 %}s{% endif %}{% endif %}
-  </div>
+  <div class="header-meta">{% if data %}{{ data|length }} record{% if data|length != 1 %}s{% endif %}{% endif %}</div>
 </div>
 
 <div class="toolbar">
   <div class="search-wrap">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-    </svg>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     <input type="text" id="search" onkeyup="filterTable()" placeholder="Search doctors…">
   </div>
   <select class="filter-select" id="statusFilter" onchange="filterTable()">
@@ -187,19 +108,17 @@ tbody tr:hover{ background:rgba(62,198,224,0.04);transform:translateX(2px); }
   </select>
   <select class="filter-select" id="specFilter" onchange="filterTable()">
     <option value="">All specializations</option>
-    {% if data %}
-      {% set specs = [] %}
-      {% for row in data %}{% if row[7] not in specs %}{% set _ = specs.append(row[7]) %}{% endif %}{% endfor %}
-      {% for s in specs | sort %}<option value="{{ s | lower }}">{{ s }}</option>{% endfor %}
-    {% endif %}
+    {% if data %}{% set specs = [] %}{% for row in data %}{% if row[7] not in specs %}{% set _ = specs.append(row[7]) %}{% endif %}{% endfor %}{% for s in specs | sort %}<option value="{{ s | lower }}">{{ s }}</option>{% endfor %}{% endif %}
   </select>
-  <div class="count-pill" id="countPill">
-    {% if data %}{{ data|length }}{% else %}0{% endif %} shown
-  </div>
+  <div class="count-pill" id="countPill">{% if data %}{{ data|length }}{% else %}0{% endif %} shown</div>
 </div>
 
 <div class="table-card">
   <div class="table-inner">
+    <div class="tbl-top">
+      <div class="tbl-title">Doctor Registry</div>
+      <span class="hint-badge">click 🗑 to delete</span>
+    </div>
     {% if data and data|length > 0 %}
     <table id="doctorTable">
       <thead>
@@ -209,10 +128,11 @@ tbody tr:hover{ background:rgba(62,198,224,0.04);transform:translateX(2px); }
           <th onclick="sortTable(2)">Qualification <span class="sort-icon">↕</span></th>
           <th onclick="sortTable(3)">Phone</th>
           <th onclick="sortTable(4)">Email</th>
-          <th onclick="sortTable(5)">Consult Time <span class="sort-icon">↕</span></th>
+          <th onclick="sortTable(5)">Time <span class="sort-icon">↕</span></th>
           <th onclick="sortTable(6)">Age <span class="sort-icon">↕</span></th>
           <th onclick="sortTable(7)">Specialization <span class="sort-icon">↕</span></th>
           <th onclick="sortTable(8)">Status <span class="sort-icon">↕</span></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -226,63 +146,42 @@ tbody tr:hover{ background:rgba(62,198,224,0.04);transform:translateX(2px); }
           <td><span class="time-chip">{{ row[5] }}</span></td>
           <td><span class="age-badge">{{ row[6] }}</span></td>
           <td><span class="spec-tag">{{ row[7] }}</span></td>
-          <td>
-            {% if row[8] == true or row[8] == True %}
-              <span class="badge active">Active</span>
-            {% else %}
-              <span class="badge inactive">Inactive</span>
-            {% endif %}
-          </td>
+          <td>{% if row[8] == true or row[8] == True %}<span class="badge active">Active</span>{% else %}<span class="badge inactive">Inactive</span>{% endif %}</td>
+          <td class="del-cell"><button class="del-btn" onclick="openModal({{ row[0] }}, '{{ row[1] }}', 'doctor')" title="Delete">🗑</button></td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
     <div class="no-match" id="noMatch">No doctors match your search.</div>
     {% else %}
-    <div class="empty"><div class="empty-icon">🩺</div><p>No doctor records found.</p></div>
+    <div class="empty"><div style="font-size:2.5rem;margin-bottom:12px;opacity:.4;">🩺</div><p>No doctor records found.</p></div>
     {% endif %}
   </div>
 </div>
 
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-icon">🗑️</div>
+    <h3>Delete Record?</h3>
+    <p>This action is permanent. If this doctor has related records, deletion will be blocked.</p>
+    <div class="modal-target" id="modal-label">Doctor #0</div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-confirm" id="modal-confirm-btn">Delete</button>
+    </div>
+  </div>
+</div>
+<form id="del-form" method="POST" style="display:none;"></form>
+
 <script>
-let sortDir = {};
-function filterTable() {
-  const search = document.getElementById("search").value.toLowerCase();
-  const statusF = document.getElementById("statusFilter").value;
-  const specF = document.getElementById("specFilter").value;
-  const rows = document.querySelectorAll("#doctorTable tbody tr");
-  let visible = 0;
-  rows.forEach(row => {
-    const text = row.innerText.toLowerCase();
-    const isActive = row.querySelector(".badge")?.classList.contains("active");
-    const spec = row.cells[7]?.innerText.toLowerCase() || "";
-    const matchSearch = text.includes(search);
-    const matchStatus = !statusF || (statusF==="active"&&isActive) || (statusF==="inactive"&&!isActive);
-    const matchSpec = !specF || spec.includes(specF);
-    if(matchSearch&&matchStatus&&matchSpec){ row.style.display=""; visible++; }
-    else{ row.style.display="none"; }
-  });
-  document.getElementById("countPill").textContent = visible + " shown";
-  document.getElementById("noMatch").style.display = visible===0?"block":"none";
-}
-function sortTable(col) {
-  const table = document.getElementById("doctorTable");
-  const tbody = table.querySelector("tbody");
-  const rows = Array.from(tbody.querySelectorAll("tr"));
-  const asc = !sortDir[col]; sortDir={}; sortDir[col]=asc;
-  rows.sort((a,b)=>{
-    const va=a.cells[col].innerText.trim(), vb=b.cells[col].innerText.trim();
-    const na=parseFloat(va), nb=parseFloat(vb);
-    if(!isNaN(na)&&!isNaN(nb)) return asc?na-nb:nb-na;
-    return asc?va.localeCompare(vb):vb.localeCompare(va);
-  });
-  rows.forEach(r=>tbody.appendChild(r));
-  document.querySelectorAll("th").forEach((th,i)=>{
-    th.classList.toggle("sorted",i===col);
-    const icon=th.querySelector(".sort-icon");
-    if(icon) icon.textContent=i===col?(asc?"↑":"↓"):"↕";
-  });
-}
+let currentId=null,currentTable=null;
+function openModal(id,name,table){currentId=id;currentTable=table;document.getElementById('modal-label').textContent=name+' (ID #'+id+')';document.getElementById('modal').classList.add('active');}
+function closeModal(){document.getElementById('modal').classList.remove('active');}
+document.getElementById('modal-confirm-btn').addEventListener('click',function(){var f=document.getElementById('del-form');f.action='/delete/'+currentTable+'/'+currentId;f.submit();});
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+let sortDir={};
+function filterTable(){const search=document.getElementById("search").value.toLowerCase();const statusF=document.getElementById("statusFilter").value;const specF=document.getElementById("specFilter").value;const rows=document.querySelectorAll("#doctorTable tbody tr");let visible=0;rows.forEach(row=>{const text=row.innerText.toLowerCase();const isActive=row.querySelector(".badge")?.classList.contains("active");const spec=row.cells[7]?.innerText.toLowerCase()||"";const m=text.includes(search)&&(!statusF||(statusF==="active"&&isActive)||(statusF==="inactive"&&!isActive))&&(!specF||spec.includes(specF));row.style.display=m?"":"none";if(m)visible++;});document.getElementById("countPill").textContent=visible+" shown";document.getElementById("noMatch").style.display=visible===0?"block":"none";}
+function sortTable(col){const table=document.getElementById("doctorTable");const tbody=table.querySelector("tbody");const rows=Array.from(tbody.querySelectorAll("tr"));const asc=!sortDir[col];sortDir={};sortDir[col]=asc;rows.sort((a,b)=>{const va=a.cells[col].innerText.trim(),vb=b.cells[col].innerText.trim();const na=parseFloat(va),nb=parseFloat(vb);if(!isNaN(na)&&!isNaN(nb))return asc?na-nb:nb-na;return asc?va.localeCompare(vb):vb.localeCompare(va);});rows.forEach(r=>tbody.appendChild(r));document.querySelectorAll("th").forEach((th,i)=>{th.classList.toggle("sorted",i===col);const icon=th.querySelector(".sort-icon");if(icon)icon.textContent=i===col?(asc?"↑":"↓"):"↕";});}
 </script>
 </body>
 </html>

@@ -90,7 +90,7 @@ def database():
 
 
 # ════════════════════════════════════════════════════════════════
-#  TO-DO SECTION  ──  BATCH 1  (S1, C1, C2, T1, P1)
+#  TO-DO SECTION  ──  BATCH 1  (S1, C1, C2, T1, P1, CR1)
 # ════════════════════════════════════════════════════════════════
 
 @app.route("/s1")
@@ -145,10 +145,26 @@ def c2():
     return render_template("c2.jinja2.html", data=data, error=error)
 
 
+def _check_trigger_status():
+    """Returns True if trg_patienthistory_defaults trigger currently exists."""
+    try:
+        rows = DB().select("""
+            SELECT 1
+            FROM information_schema.triggers
+            WHERE trigger_name = 'trg_patienthistory_defaults'
+              AND event_object_table = 'patienthistory';
+        """)
+        return bool(rows)
+    except Exception:
+        return False
+
+
 @app.route("/t1", methods=["GET", "POST"])
 def t1():
     message, error = None, None
-    sql_shown = """\
+    action = request.form.get("action") if request.method == "POST" else None
+
+    deploy_sql = """\
 CREATE OR REPLACE FUNCTION fn_patienthistory_defaults()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -169,37 +185,61 @@ BEFORE INSERT ON patienthistory
 FOR EACH ROW
 EXECUTE FUNCTION fn_patienthistory_defaults();"""
 
+    undeploy_sql = """\
+DROP TRIGGER IF EXISTS trg_patienthistory_defaults ON patienthistory;
+
+DROP FUNCTION IF EXISTS fn_patienthistory_defaults();"""
+
     if request.method == "POST":
-        try:
-            DB().insert("""
-                CREATE TABLE IF NOT EXISTS patienthistory(
-                    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-                    patient_name VARCHAR(50), doctor_name VARCHAR(50), visit_date DATE,
-                    treatment VARCHAR(200), description VARCHAR(500), BillAmount INT,
-                    CONSTRAINT fk_history_patient FOREIGN KEY (patient_name) REFERENCES patients(username) ON DELETE CASCADE,
-                    CONSTRAINT fk_history_doctor  FOREIGN KEY (doctor_name)  REFERENCES doctor(username)  ON DELETE CASCADE
-                );""")
-            DB().insert("""
-                CREATE OR REPLACE FUNCTION fn_patienthistory_defaults()
-                RETURNS TRIGGER AS $$
-                BEGIN
-                    IF NEW.visit_date IS NULL THEN NEW.visit_date := CURRENT_DATE; END IF;
-                    IF NEW.BillAmount < 0 THEN
-                        RAISE EXCEPTION 'BillAmount cannot be negative (got %)', NEW.BillAmount;
-                    END IF;
-                    RETURN NEW;
-                END;
-                $$ LANGUAGE plpgsql;""")
-            DB().insert("DROP TRIGGER IF EXISTS trg_patienthistory_defaults ON patienthistory;")
-            DB().insert("""
-                CREATE TRIGGER trg_patienthistory_defaults
-                BEFORE INSERT ON patienthistory
-                FOR EACH ROW
-                EXECUTE FUNCTION fn_patienthistory_defaults();""")
-            message = "Trigger installed successfully on patienthistory."
-        except Exception as e:
-            error = str(e)
-    return render_template("t1.jinja2.html", sql_shown=sql_shown, message=message, error=error)
+        if action == "deploy":
+            try:
+                DB().insert("""
+                    CREATE TABLE IF NOT EXISTS patienthistory(
+                        id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+                        patient_name VARCHAR(50), doctor_name VARCHAR(50), visit_date DATE,
+                        treatment VARCHAR(200), description VARCHAR(500), BillAmount INT,
+                        CONSTRAINT fk_history_patient FOREIGN KEY (patient_name) REFERENCES patients(username) ON DELETE CASCADE,
+                        CONSTRAINT fk_history_doctor  FOREIGN KEY (doctor_name)  REFERENCES doctor(username)  ON DELETE CASCADE
+                    );""")
+                DB().insert("""
+                    CREATE OR REPLACE FUNCTION fn_patienthistory_defaults()
+                    RETURNS TRIGGER AS $$
+                    BEGIN
+                        IF NEW.visit_date IS NULL THEN NEW.visit_date := CURRENT_DATE; END IF;
+                        IF NEW.BillAmount < 0 THEN
+                            RAISE EXCEPTION 'BillAmount cannot be negative (got %)', NEW.BillAmount;
+                        END IF;
+                        RETURN NEW;
+                    END;
+                    $$ LANGUAGE plpgsql;""")
+                DB().insert("DROP TRIGGER IF EXISTS trg_patienthistory_defaults ON patienthistory;")
+                DB().insert("""
+                    CREATE TRIGGER trg_patienthistory_defaults
+                    BEFORE INSERT ON patienthistory
+                    FOR EACH ROW
+                    EXECUTE FUNCTION fn_patienthistory_defaults();""")
+                message = ("deploy_ok", "Trigger installed successfully on patienthistory.")
+            except Exception as e:
+                error = ("deploy", str(e))
+
+        elif action == "undeploy":
+            try:
+                DB().insert("DROP TRIGGER IF EXISTS trg_patienthistory_defaults ON patienthistory;")
+                DB().insert("DROP FUNCTION IF EXISTS fn_patienthistory_defaults();")
+                message = ("undeploy_ok", "Trigger and function removed successfully from the database.")
+            except Exception as e:
+                error = ("undeploy", str(e))
+
+    trigger_active = _check_trigger_status()
+
+    return render_template(
+        "t1.jinja2.html",
+        deploy_sql=deploy_sql,
+        undeploy_sql=undeploy_sql,
+        message=message,
+        error=error,
+        trigger_active=trigger_active,
+    )
 
 
 @app.route("/p1", methods=["GET", "POST"])
@@ -239,12 +279,67 @@ CALL deactivate_doctor(101);"""
                            message=message, error=error, doctor_id=doctor_id)
 
 
+@app.route("/cr1", methods=["GET", "POST"])
+def cr1():
+    """Cursor 1 — Doctors whose average patient age exceeds a given threshold."""
+    data, error = [], None
+    p_age = None
+    sql_shown = """\
+-- Oracle original (adapted to PostgreSQL):
+-- PROCEDURE doctors_avg_patient_age(p_age NUMBER)
+-- CURSOR c_doc IS
+--     SELECT ph.doctor_name, ROUND(AVG(p.age), 2) AS avg_age
+--     FROM patienthistory ph
+--     JOIN patients p ON ph.patient_name = p.username
+--     GROUP BY ph.doctor_name
+--     HAVING AVG(p.age) > p_age
+--     ORDER BY avg_age DESC;
+
+SELECT
+    ph.doctor_name,
+    ROUND(AVG(p.age), 2) AS avg_age
+FROM patienthistory ph
+JOIN patients p ON ph.patient_name = p.username
+GROUP BY ph.doctor_name
+HAVING AVG(p.age) > :p_age
+ORDER BY avg_age DESC;"""
+
+    default_age = 30
+
+    if request.method == "POST":
+        age_input = request.form.get("p_age", "").strip()
+        try:
+            p_age = int(age_input)
+        except (ValueError, TypeError):
+            error = "Please enter a valid integer age threshold."
+            p_age = default_age
+    else:
+        p_age = default_age
+
+    if error is None:
+        try:
+            data = DB().select(f"""
+                SELECT
+                    ph.doctor_name,
+                    ROUND(AVG(p.age), 2) AS avg_age
+                FROM patienthistory ph
+                JOIN patients p ON ph.patient_name = p.username
+                GROUP BY ph.doctor_name
+                HAVING AVG(p.age) > {int(p_age)}
+                ORDER BY avg_age DESC;
+            """)
+        except Exception as e:
+            error = str(e)
+
+    return render_template("cr1.jinja2.html",
+                           data=data, error=error,
+                           p_age=p_age, sql_shown=sql_shown)
+
+
 # ════════════════════════════════════════════════════════════════
-#  TO-DO SECTION  ──  BATCH 2  (S2, C3, C4, T2, P2)
+#  TO-DO SECTION  ──  BATCH 2  (S2, C3, C4, T2, T3, T4, P2, CR2)
 # ════════════════════════════════════════════════════════════════
 
-# ── S2 : Simple Query ─────────────────────────────────────────
-# Patients who spent more than 1000 on medicines
 @app.route("/s2")
 def s2():
     data, error = [], None
@@ -260,8 +355,6 @@ def s2():
     return render_template("s2.jinja2.html", data=data, error=error)
 
 
-# ── C3 : Complex Query ────────────────────────────────────────
-# Top 10 most-visiting patients with total spending
 @app.route("/c3")
 def c3():
     data, error = [], None
@@ -285,8 +378,6 @@ def c3():
     return render_template("c3.jinja2.html", data=data, error=error)
 
 
-# ── C4 : Complex Query ────────────────────────────────────────
-# How frequently each doctor sees their repeat patients
 @app.route("/c4")
 def c4():
     data, error = [], None
@@ -310,8 +401,6 @@ def c4():
     return render_template("c4.jinja2.html", data=data, error=error)
 
 
-# ── T2 : Simple Query as "Trigger-context" page ───────────────
-# Patients who have visited the same doctor at least twice
 @app.route("/t2")
 def t2():
     data, error = [], None
@@ -331,14 +420,212 @@ def t2():
     return render_template("t2.jinja2.html", data=data, error=error)
 
 
-# ── P2 : Procedure ────────────────────────────────────────────
-# Doctors who haven't had an appointment in 1+ year
+# ── T3 ── Trigger: update total_cost in patient after cost insert ─────────────
+
+def _check_t3_trigger_status():
+    """Returns True if trg_update_total_cost trigger currently exists."""
+    try:
+        rows = DB().select("""
+            SELECT 1
+            FROM information_schema.triggers
+            WHERE trigger_name = 'trg_update_total_cost'
+              AND event_object_table = 'cost';
+        """)
+        return bool(rows)
+    except Exception:
+        return False
+
+
+@app.route("/t3", methods=["GET", "POST"])
+def t3():
+    message, error = None, None
+    action = request.form.get("action") if request.method == "POST" else None
+
+    deploy_sql = """\
+CREATE OR REPLACE FUNCTION update_total_cost()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Update total cost in patient table
+    UPDATE patient
+    SET total_cost = COALESCE(total_cost, 0) + NEW.amount
+    WHERE patient_id = NEW.patient_id;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_update_total_cost ON cost;
+
+CREATE TRIGGER trg_update_total_cost
+AFTER INSERT ON cost
+FOR EACH ROW
+EXECUTE FUNCTION update_total_cost();"""
+
+    undeploy_sql = """\
+DROP TRIGGER IF EXISTS trg_update_total_cost ON cost;
+
+DROP FUNCTION IF EXISTS update_total_cost();"""
+
+    if request.method == "POST":
+        if action == "deploy":
+            try:
+                DB().insert("""
+                    CREATE OR REPLACE FUNCTION update_total_cost()
+                    RETURNS TRIGGER AS $$
+                    BEGIN
+                        UPDATE patient
+                        SET total_cost = COALESCE(total_cost, 0) + NEW.amount
+                        WHERE patient_id = NEW.patient_id;
+                        RETURN NEW;
+                    END;
+                    $$ LANGUAGE plpgsql;""")
+                DB().insert("DROP TRIGGER IF EXISTS trg_update_total_cost ON cost;")
+                DB().insert("""
+                    CREATE TRIGGER trg_update_total_cost
+                    AFTER INSERT ON cost
+                    FOR EACH ROW
+                    EXECUTE FUNCTION update_total_cost();""")
+                message = ("deploy_ok", "Trigger trg_update_total_cost installed successfully on cost.")
+            except Exception as e:
+                error = ("deploy", str(e))
+
+        elif action == "undeploy":
+            try:
+                DB().insert("DROP TRIGGER IF EXISTS trg_update_total_cost ON cost;")
+                DB().insert("DROP FUNCTION IF EXISTS update_total_cost();")
+                message = ("undeploy_ok", "Trigger and function removed successfully from the database.")
+            except Exception as e:
+                error = ("undeploy", str(e))
+
+    trigger_active = _check_t3_trigger_status()
+
+    return render_template(
+        "t3.jinja2.html",
+        deploy_sql=deploy_sql,
+        undeploy_sql=undeploy_sql,
+        message=message,
+        error=error,
+        trigger_active=trigger_active,
+    )
+
+
+# ── T4 ── Trigger: auto-classify treatment_type on patienthistory ─────────────
+
+def _check_t4_trigger_status():
+    """Returns True if trg_treatment_type trigger currently exists."""
+    try:
+        rows = DB().select("""
+            SELECT 1
+            FROM information_schema.triggers
+            WHERE trigger_name = 'trg_treatment_type'
+              AND event_object_table = 'patienthistory';
+        """)
+        return bool(rows)
+    except Exception:
+        return False
+
+
+@app.route("/t4", methods=["GET", "POST"])
+def t4():
+    message, error = None, None
+    action = request.form.get("action") if request.method == "POST" else None
+
+    deploy_sql = """\
+CREATE OR REPLACE FUNCTION fn_treatment_type()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF LOWER(NEW.treatment) LIKE '%cardio%' THEN
+        NEW.treatment_type := 'Cardiology';
+    ELSIF LOWER(NEW.treatment) LIKE '%neuro%' THEN
+        NEW.treatment_type := 'Neurology';
+    ELSIF LOWER(NEW.treatment) LIKE '%skin%'
+       OR LOWER(NEW.treatment) LIKE '%derma%' THEN
+        NEW.treatment_type := 'Dermatology';
+    ELSIF LOWER(NEW.treatment) LIKE '%pediatric%' THEN
+        NEW.treatment_type := 'Pediatrics';
+    ELSIF LOWER(NEW.treatment) LIKE '%ortho%'
+       OR LOWER(NEW.treatment) LIKE '%joint%' THEN
+        NEW.treatment_type := 'Orthopedics';
+    ELSE
+        NEW.treatment_type := 'General';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_treatment_type ON patienthistory;
+
+CREATE TRIGGER trg_treatment_type
+BEFORE INSERT OR UPDATE ON patienthistory
+FOR EACH ROW
+EXECUTE FUNCTION fn_treatment_type();"""
+
+    undeploy_sql = """\
+DROP TRIGGER IF EXISTS trg_treatment_type ON patienthistory;
+
+DROP FUNCTION IF EXISTS fn_treatment_type();"""
+
+    if request.method == "POST":
+        if action == "deploy":
+            try:
+                DB().insert("""
+                    ALTER TABLE patienthistory
+                    ADD COLUMN IF NOT EXISTS treatment_type VARCHAR(50);""")
+                DB().insert("""
+                    CREATE OR REPLACE FUNCTION fn_treatment_type()
+                    RETURNS TRIGGER AS $$
+                    BEGIN
+                        IF LOWER(NEW.treatment) LIKE '%cardio%' THEN
+                            NEW.treatment_type := 'Cardiology';
+                        ELSIF LOWER(NEW.treatment) LIKE '%neuro%' THEN
+                            NEW.treatment_type := 'Neurology';
+                        ELSIF LOWER(NEW.treatment) LIKE '%skin%'
+                           OR LOWER(NEW.treatment) LIKE '%derma%' THEN
+                            NEW.treatment_type := 'Dermatology';
+                        ELSIF LOWER(NEW.treatment) LIKE '%pediatric%' THEN
+                            NEW.treatment_type := 'Pediatrics';
+                        ELSIF LOWER(NEW.treatment) LIKE '%ortho%'
+                           OR LOWER(NEW.treatment) LIKE '%joint%' THEN
+                            NEW.treatment_type := 'Orthopedics';
+                        ELSE
+                            NEW.treatment_type := 'General';
+                        END IF;
+                        RETURN NEW;
+                    END;
+                    $$ LANGUAGE plpgsql;""")
+                DB().insert("DROP TRIGGER IF EXISTS trg_treatment_type ON patienthistory;")
+                DB().insert("""
+                    CREATE TRIGGER trg_treatment_type
+                    BEFORE INSERT OR UPDATE ON patienthistory
+                    FOR EACH ROW
+                    EXECUTE FUNCTION fn_treatment_type();""")
+                message = ("deploy_ok", "Trigger trg_treatment_type installed successfully on patienthistory.")
+            except Exception as e:
+                error = ("deploy", str(e))
+
+        elif action == "undeploy":
+            try:
+                DB().insert("DROP TRIGGER IF EXISTS trg_treatment_type ON patienthistory;")
+                DB().insert("DROP FUNCTION IF EXISTS fn_treatment_type();")
+                message = ("undeploy_ok", "Trigger and function removed successfully from the database.")
+            except Exception as e:
+                error = ("undeploy", str(e))
+
+    trigger_active = _check_t4_trigger_status()
+
+    return render_template(
+        "t4.jinja2.html",
+        deploy_sql=deploy_sql,
+        undeploy_sql=undeploy_sql,
+        message=message,
+        error=error,
+        trigger_active=trigger_active,
+    )
+
+
 @app.route("/p2")
 def p2():
     data, error = [], None
     sql_shown = """\
--- PostgreSQL equivalent of the Oracle procedure
-
 CREATE OR REPLACE PROCEDURE doctors_no_recent_visits()
 LANGUAGE plpgsql AS $$
 DECLARE
@@ -360,7 +647,6 @@ BEGIN
 END;
 $$;
 
--- Call it:
 CALL doctors_no_recent_visits();"""
 
     try:
@@ -382,6 +668,44 @@ CALL doctors_no_recent_visits();"""
     except Exception as e:
         error = str(e)
     return render_template("p2.jinja2.html", data=data, error=error, sql_shown=sql_shown)
+
+
+@app.route("/cr2")
+def cr2():
+    """Cursor 2 — Patients whose total costs across all records exceed ₹5,000."""
+    data, error = [], None
+    sql_shown = """\
+-- Oracle original (adapted to PostgreSQL):
+-- PROCEDURE high_cost_patients()
+-- CURSOR c_pat IS
+--     SELECT p.patient_name, SUM(c.amount) AS total_cost
+--     FROM patient p
+--     JOIN cost c ON p.patient_id = c.patient_id
+--     GROUP BY p.patient_name
+--     HAVING SUM(c.amount) > 2000;
+
+SELECT
+    c.patient_name,
+    SUM(c.admission_cost + c.medicine_cost + c.doctor_fee) AS total_cost
+FROM costs c
+GROUP BY c.patient_name
+HAVING SUM(c.admission_cost + c.medicine_cost + c.doctor_fee) > 2000
+ORDER BY total_cost DESC;"""
+
+    try:
+        data = DB().select("""
+            SELECT
+                c.patient_name,
+                SUM(c.admission_cost + c.medicine_cost + c.doctor_fee) AS total_cost
+            FROM costs c
+            GROUP BY c.patient_name
+            HAVING SUM(c.admission_cost + c.medicine_cost + c.doctor_fee) > 2000
+            ORDER BY total_cost DESC;
+        """)
+    except Exception as e:
+        error = str(e)
+
+    return render_template("cr2.jinja2.html", data=data, error=error, sql_shown=sql_shown)
 
 
 # ════════════════════════════════════════════════════════════════
@@ -652,6 +976,206 @@ def costsform():
 def costsdisplay():
     data = DB().select("SELECT * FROM costs;")
     return render_template("costsdisplay.jinja2.html", data=data)
+
+
+# ════════════════════════════════════════════════════════════════
+#  DELETE ROUTES  ──  with FK dependency checks
+# ════════════════════════════════════════════════════════════════
+
+@app.route("/delete/user/<int:record_id>", methods=["POST"])
+def delete_user(record_id):
+    try:
+        # Check FK dependencies: doctor, patients
+        doctors = DB().select(f"SELECT username FROM doctor WHERE username = (SELECT username FROM users WHERE id = {record_id});")
+        patients = DB().select(f"SELECT username FROM patients WHERE username = (SELECT username FROM users WHERE id = {record_id});")
+        user_row = DB().select(f"SELECT username FROM users WHERE id = {record_id};")
+        username = user_row[0][0] if user_row else f"ID {record_id}"
+
+        deps = []
+        if doctors:
+            deps.append(f"doctor (username: {', '.join(str(d[0]) for d in doctors)})")
+        if patients:
+            deps.append(f"patients (username: {', '.join(str(p[0]) for p in patients)})")
+
+        if deps:
+            return render_template("error9.jinja2.html",
+                record_label=f"User '{username}'",
+                record_id=record_id,
+                parent_table="users",
+                dependencies=deps,
+                fix_urls=[("/doctordisplay", "Doctor Records"), ("/patientdisplay", "Patient Records")],
+                back_url="/userdisplay"
+            )
+
+        DB().insert(f"DELETE FROM users WHERE id = {record_id};")
+        return redirect("/userdisplay")
+    except Exception as e:
+        return render_template("error9.jinja2.html",
+            record_label=f"User ID {record_id}",
+            record_id=record_id,
+            parent_table="users",
+            dependencies=[str(e)],
+            fix_urls=[],
+            back_url="/userdisplay"
+        )
+
+
+@app.route("/delete/doctor/<int:record_id>", methods=["POST"])
+def delete_doctor(record_id):
+    try:
+        doc_row = DB().select(f"SELECT username FROM doctor WHERE id = {record_id};")
+        username = doc_row[0][0] if doc_row else f"ID {record_id}"
+
+        hist = DB().select(f"SELECT COUNT(*) FROM patienthistory WHERE doctor_name = '{username}';")
+        rx   = DB().select(f"SELECT COUNT(*) FROM prescription WHERE doctor_name = '{username}';")
+
+        deps = []
+        if hist and int(hist[0][0]) > 0:
+            deps.append(f"patienthistory ({hist[0][0]} records)")
+        if rx and int(rx[0][0]) > 0:
+            deps.append(f"prescription ({rx[0][0]} records)")
+
+        if deps:
+            return render_template("error9.jinja2.html",
+                record_label=f"Doctor '{username}'",
+                record_id=record_id,
+                parent_table="doctor",
+                dependencies=deps,
+                fix_urls=[("/patienthistorydisplay", "Patient History"), ("/prescriptiondisplay", "Prescriptions")],
+                back_url="/doctordisplay"
+            )
+
+        DB().insert(f"DELETE FROM doctor WHERE id = {record_id};")
+        return redirect("/doctordisplay")
+    except Exception as e:
+        return render_template("error9.jinja2.html",
+            record_label=f"Doctor ID {record_id}",
+            record_id=record_id,
+            parent_table="doctor",
+            dependencies=[str(e)],
+            fix_urls=[],
+            back_url="/doctordisplay"
+        )
+
+
+@app.route("/delete/patient/<int:record_id>", methods=["POST"])
+def delete_patient(record_id):
+    try:
+        pat_row = DB().select(f"SELECT username FROM patients WHERE id = {record_id};")
+        username = pat_row[0][0] if pat_row else f"ID {record_id}"
+
+        hist  = DB().select(f"SELECT COUNT(*) FROM patienthistory WHERE patient_name = '{username}';")
+        rx    = DB().select(f"SELECT COUNT(*) FROM prescription WHERE patient_name = '{username}';")
+        costs = DB().select(f"SELECT COUNT(*) FROM costs WHERE patient_name = '{username}';")
+
+        deps = []
+        if hist  and int(hist[0][0])  > 0: deps.append(f"patienthistory ({hist[0][0]} records)")
+        if rx    and int(rx[0][0])    > 0: deps.append(f"prescription ({rx[0][0]} records)")
+        if costs and int(costs[0][0]) > 0: deps.append(f"costs ({costs[0][0]} records)")
+
+        if deps:
+            return render_template("error9.jinja2.html",
+                record_label=f"Patient '{username}'",
+                record_id=record_id,
+                parent_table="patients",
+                dependencies=deps,
+                fix_urls=[("/patienthistorydisplay","Patient History"),("/prescriptiondisplay","Prescriptions"),("/costsdisplay","Costs")],
+                back_url="/patientdisplay"
+            )
+
+        DB().insert(f"DELETE FROM patients WHERE id = {record_id};")
+        return redirect("/patientdisplay")
+    except Exception as e:
+        return render_template("error9.jinja2.html",
+            record_label=f"Patient ID {record_id}",
+            record_id=record_id,
+            parent_table="patients",
+            dependencies=[str(e)],
+            fix_urls=[],
+            back_url="/patientdisplay"
+        )
+
+
+@app.route("/delete/patienthistory/<int:record_id>", methods=["POST"])
+def delete_patienthistory(record_id):
+    try:
+        DB().insert(f"DELETE FROM patienthistory WHERE id = {record_id};")
+        return redirect("/patienthistorydisplay")
+    except Exception as e:
+        return render_template("error9.jinja2.html",
+            record_label=f"History Record ID {record_id}",
+            record_id=record_id,
+            parent_table="patienthistory",
+            dependencies=[str(e)],
+            fix_urls=[],
+            back_url="/patienthistorydisplay"
+        )
+
+
+@app.route("/delete/prescription/<int:record_id>", methods=["POST"])
+def delete_prescription(record_id):
+    try:
+        rx_row = DB().select(f"SELECT prescription_number FROM prescription WHERE id = {record_id};")
+        rx_num = rx_row[0][0] if rx_row else f"ID {record_id}"
+
+        meds = DB().select(f"SELECT COUNT(*) FROM medication WHERE prescription_number = '{rx_num}';")
+        deps = []
+        if meds and int(meds[0][0]) > 0:
+            deps.append(f"medication ({meds[0][0]} records)")
+
+        if deps:
+            return render_template("error9.jinja2.html",
+                record_label=f"Prescription '{rx_num}'",
+                record_id=record_id,
+                parent_table="prescription",
+                dependencies=deps,
+                fix_urls=[("/medicationdisplay", "Medication Records")],
+                back_url="/prescriptiondisplay"
+            )
+
+        DB().insert(f"DELETE FROM prescription WHERE id = {record_id};")
+        return redirect("/prescriptiondisplay")
+    except Exception as e:
+        return render_template("error9.jinja2.html",
+            record_label=f"Prescription ID {record_id}",
+            record_id=record_id,
+            parent_table="prescription",
+            dependencies=[str(e)],
+            fix_urls=[],
+            back_url="/prescriptiondisplay"
+        )
+
+
+@app.route("/delete/medication/<int:record_id>", methods=["POST"])
+def delete_medication(record_id):
+    try:
+        DB().insert(f"DELETE FROM medication WHERE id = {record_id};")
+        return redirect("/medicationdisplay")
+    except Exception as e:
+        return render_template("error9.jinja2.html",
+            record_label=f"Medication ID {record_id}",
+            record_id=record_id,
+            parent_table="medication",
+            dependencies=[str(e)],
+            fix_urls=[],
+            back_url="/medicationdisplay"
+        )
+
+
+@app.route("/delete/costs/<int:record_id>", methods=["POST"])
+def delete_costs(record_id):
+    try:
+        DB().insert(f"DELETE FROM costs WHERE id = {record_id};")
+        return redirect("/costsdisplay")
+    except Exception as e:
+        return render_template("error9.jinja2.html",
+            record_label=f"Cost Record ID {record_id}",
+            record_id=record_id,
+            parent_table="costs",
+            dependencies=[str(e)],
+            fix_urls=[],
+            back_url="/costsdisplay"
+        )
 
 
 if __name__ == "__main__":

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>T4 — Auto-Classify Treatment Type · Silver Care</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{ --deep:#1a2e3b;--accent:#3ec6e0;--accent2:#7eddd4;--silver-dark:#6a8fa8;--text:#1a2e3b;--muted:#5a7a90;--green:#43c9a0;--red:#e05c6e; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;min-height:100vh;background:linear-gradient(135deg,#e8f4fb 0%,#f0f8ff 40%,#daf0f5 100%);color:var(--text);overflow-x:hidden;position:relative;}
+body::before{content:'';position:fixed;top:-120px;right:-120px;width:520px;height:520px;background:radial-gradient(circle,rgba(62,198,224,0.18) 0%,transparent 70%);border-radius:50%;pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;bottom:-100px;left:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(126,221,212,0.15) 0%,transparent 70%);border-radius:50%;pointer-events:none;z-index:0;}
+nav{position:sticky;top:0;z-index:100;height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(255,255,255,0.75);backdrop-filter:blur(18px);border-bottom:1px solid rgba(184,201,217,0.4);box-shadow:0 2px 20px rgba(30,70,100,0.07);}
+.brand{font-family:'Playfair Display',serif;font-weight:900;font-size:1.25rem;background:linear-gradient(90deg,var(--deep),var(--silver-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;}
+.back{font-family:'DM Mono',monospace;font-size:.78rem;padding:8px 20px;border-radius:999px;border:1.5px solid rgba(62,198,224,0.35);text-decoration:none;color:var(--silver-dark);background:rgba(62,198,224,0.06);transition:all .25s;}
+.back:hover{background:rgba(62,198,224,0.14);border-color:var(--accent);color:var(--deep);}
+main{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:60px 40px 80px;}
+.chip{display:inline-flex;align-items:center;gap:8px;background:rgba(150,100,220,0.1);border:1px solid rgba(150,100,220,0.25);border-radius:30px;padding:6px 16px;font-family:'DM Mono',monospace;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8860cc;margin-bottom:16px;}
+h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:var(--deep);line-height:1.1;margin-bottom:12px;}
+h1 em{font-family:'Cormorant Garamond',serif;font-style:italic;background:linear-gradient(120deg,#b890f0,#8860cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.desc{color:var(--muted);font-size:.95rem;line-height:1.75;max-width:620px;margin-bottom:40px;}
+.status-banner{display:flex;align-items:center;gap:14px;padding:14px 20px;border-radius:14px;margin-bottom:36px;font-weight:700;font-size:.88rem;}
+.status-banner.active{background:rgba(67,201,160,0.08);border:1px solid rgba(67,201,160,0.3);color:#0e7060;}
+.status-banner.inactive{background:rgba(224,92,110,0.07);border:1px solid rgba(224,92,110,0.22);color:#9a1a2a;}
+.sdot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.status-banner.active .sdot{background:var(--green);box-shadow:0 0 7px var(--green);animation:pulse 2s infinite;}
+.status-banner.inactive .sdot{background:var(--red);}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+/* classification mapping table */
+.mapping-table{background:rgba(255,255,255,0.92);border:1px solid rgba(184,201,217,0.35);border-radius:18px;overflow:hidden;margin-bottom:36px;}
+.mapping-header{padding:16px 22px;background:linear-gradient(135deg,var(--deep),#264a60);display:flex;align-items:center;gap:10px;}
+.mapping-header-title{font-family:'Playfair Display',serif;font-weight:700;color:white;font-size:.9rem;}
+.mapping-header-title::before{content:'';width:7px;height:7px;background:var(--accent);border-radius:50%;display:inline-block;margin-right:8px;box-shadow:0 0 7px var(--accent);}
+table{width:100%;border-collapse:collapse;}
+thead{background:rgba(240,248,255,0.8);}
+th{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:12px 16px;text-align:left;}
+tbody tr{border-top:1px solid rgba(62,198,224,0.07);}
+tbody tr:hover{background:rgba(62,198,224,0.03);}
+td{padding:11px 16px;font-size:.84rem;color:var(--text);}
+.kw-cell{font-family:'DM Mono',monospace;font-size:.78rem;color:#5a3a90;}
+.dept-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.74rem;font-weight:700;}
+.d-cardio{background:rgba(224,92,110,0.1);color:#9a2a3a;border:1px solid rgba(224,92,110,0.2);}
+.d-neuro{background:rgba(150,100,220,0.1);color:#6a30a0;border:1px solid rgba(150,100,220,0.2);}
+.d-derma{background:rgba(67,201,160,0.1);color:#0e7060;border:1px solid rgba(67,201,160,0.2);}
+.d-peds{background:rgba(240,192,64,0.1);color:#7a4a00;border:1px solid rgba(240,192,64,0.2);}
+.d-ortho{background:rgba(62,198,224,0.1);color:#1a5060;border:1px solid rgba(62,198,224,0.2);}
+.d-gen{background:rgba(106,143,168,0.1);color:var(--silver-dark);border:1px solid rgba(106,143,168,0.2);}
+/* SQL tabs (same as t3) */
+.sql-tabs{display:flex;gap:8px;margin-bottom:0;}
+.sql-tab{padding:8px 18px;border-radius:10px 10px 0 0;font-family:'DM Mono',monospace;font-size:.75rem;font-weight:700;cursor:pointer;border:1px solid rgba(184,201,217,0.3);border-bottom:none;background:rgba(240,248,255,0.5);color:var(--muted);transition:all .2s;}
+.sql-tab.active{background:rgba(255,255,255,0.95);color:#8860cc;border-color:rgba(150,100,220,0.22);}
+.sql-tab.undeploy-tab.active{background:rgba(255,245,245,0.95);color:var(--red);border-color:rgba(224,92,110,0.22);}
+.sql-box{background:rgba(255,255,255,0.95);border:1px solid rgba(184,201,217,0.35);border-radius:0 18px 18px 18px;padding:26px 30px;margin-bottom:32px;position:relative;overflow:hidden;}
+.sql-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#b890f0,#8860cc);}
+.sql-box.undeploy-sql::before{background:linear-gradient(90deg,var(--red),#f08090);}
+.sql-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.sql-lbl{font-family:'DM Mono',monospace;font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(90,122,144,0.55);}
+.sql-tag-badge{background:rgba(150,100,220,0.08);border:1px solid rgba(150,100,220,0.2);border-radius:7px;padding:3px 9px;font-family:'DM Mono',monospace;font-size:.67rem;color:#8860cc;}
+.sql-tag-badge.danger{background:rgba(224,92,110,0.08);border-color:rgba(224,92,110,0.2);color:var(--red);}
+pre{font-family:'DM Mono',monospace;font-size:.79rem;line-height:1.85;color:#3a5a70;overflow-x:auto;}
+[data-panel]{display:none;}
+[data-panel].visible{display:block;}
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.action-card{border-radius:22px;padding:34px 30px;position:relative;overflow:hidden;}
+.action-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.deploy-card{background:linear-gradient(135deg,rgba(150,100,220,0.07),rgba(184,160,240,0.02));border:1px solid rgba(150,100,220,0.2);}
+.deploy-card::before{background:linear-gradient(90deg,#b890f0,#8860cc);}
+.undeploy-card{background:linear-gradient(135deg,rgba(224,92,110,0.07),rgba(240,128,144,0.02));border:1px solid rgba(224,92,110,0.2);}
+.undeploy-card::before{background:linear-gradient(90deg,var(--red),#f08090);}
+.action-icon{font-size:1.8rem;margin-bottom:10px;display:block;}
+.action-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:var(--deep);margin-bottom:5px;}
+.action-sub{font-size:.82rem;color:var(--muted);margin-bottom:22px;line-height:1.6;}
+.msg-success{background:rgba(67,201,160,0.09);border:1px solid rgba(67,201,160,0.28);border-radius:12px;padding:14px 18px;color:#0e7060;display:flex;align-items:center;gap:9px;margin-bottom:16px;font-weight:600;font-size:.86rem;}
+.msg-undeploy{background:rgba(224,92,110,0.07);border:1px solid rgba(224,92,110,0.22);border-radius:12px;padding:14px 18px;color:#9a1a2a;display:flex;align-items:center;gap:9px;margin-bottom:16px;font-weight:600;font-size:.86rem;}
+.msg-error{background:rgba(224,92,110,0.07);border:1px solid rgba(224,92,110,0.22);border-radius:12px;padding:14px 18px;color:var(--red);display:flex;align-items:flex-start;gap:9px;margin-bottom:16px;font-size:.84rem;}
+.deploy-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#b890f0,#8860cc);color:white;padding:13px 28px;border-radius:50px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;border:none;cursor:pointer;transition:all .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 6px 22px rgba(150,100,220,0.3);}
+.deploy-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 40px rgba(150,100,220,0.42);}
+.undeploy-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--red),#f08090);color:white;padding:13px 28px;border-radius:50px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;border:none;cursor:pointer;transition:all .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 6px 22px rgba(224,92,110,0.25);}
+.undeploy-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 40px rgba(224,92,110,0.38);}
+.confirm-wrap{display:none;margin-top:14px;padding:14px 16px;background:rgba(224,92,110,0.05);border:1px solid rgba(224,92,110,0.18);border-radius:12px;}
+.confirm-wrap.show{display:block;}
+.confirm-text{font-size:.8rem;color:rgba(160,40,58,0.8);margin-bottom:12px;line-height:1.6;}
+.confirm-btns{display:flex;gap:10px;}
+.confirm-yes{background:var(--red);color:white;padding:8px 20px;border-radius:28px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.82rem;border:none;cursor:pointer;transition:all .2s;}
+.confirm-yes:hover{background:#c94058;}
+.confirm-cancel{background:transparent;color:var(--muted);padding:8px 16px;border-radius:28px;font-family:'Nunito',sans-serif;font-weight:700;font-size:.82rem;border:1px solid rgba(184,201,217,0.4);cursor:pointer;transition:all .2s;}
+.warning-note{display:flex;align-items:flex-start;gap:8px;margin-top:16px;padding:10px 14px;background:rgba(150,100,220,0.04);border-radius:9px;border:1px solid rgba(150,100,220,0.12);font-size:.76rem;color:var(--muted);line-height:1.6;}
+.danger-note{display:flex;align-items:flex-start;gap:8px;margin-top:16px;padding:10px 14px;background:rgba(224,92,110,0.04);border-radius:9px;border:1px solid rgba(224,92,110,0.13);font-size:.76rem;color:rgba(160,40,58,0.6);line-height:1.6;}
+@media(max-width:768px){nav{padding:0 20px;}main{padding:40px 20px;}.action-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav><a class="brand" href="/">Silver Care</a><a class="back" href="/">← Back to Portal</a></nav>
+<main>
+  <div class="chip">Trigger · Task T4 · Task 14</div>
+  <h1>Auto-Classify<br/><em>Treatment Type</em><br/>on Insert / Update</h1>
+  <p class="desc">A BEFORE INSERT OR UPDATE trigger on <code>patienthistory</code> that inspects the <code>treatment</code> text and automatically writes the matching department into a new <code>treatment_type</code> column — Cardiology, Neurology, Dermatology, Pediatrics, Orthopedics, or General.</p>
+
+  <!-- Live Status -->
+  <div class="status-banner {{ 'active' if trigger_active else 'inactive' }}">
+    <div class="sdot"></div>
+    <span>
+      {% if trigger_active %}
+        Trigger <strong>trg_treatment_type</strong> is active on <strong>patienthistory</strong> table
+      {% else %}
+        Trigger <strong>trg_treatment_type</strong> is not deployed
+      {% endif %}
+    </span>
+    <span style="margin-left:auto;font-size:.72rem;font-weight:400;opacity:.55;">Live DB Status</span>
+  </div>
+
+  <!-- Keyword → Department mapping -->
+  <div class="mapping-table">
+    <div class="mapping-header"><div class="mapping-header-title">Keyword → Department Mapping</div></div>
+    <table>
+      <thead><tr><th>Keyword in treatment</th><th>Assigned treatment_type</th></tr></thead>
+      <tbody>
+        <tr><td class="kw-cell">%cardio%</td><td><span class="dept-badge d-cardio">Cardiology</span></td></tr>
+        <tr><td class="kw-cell">%neuro%</td><td><span class="dept-badge d-neuro">Neurology</span></td></tr>
+        <tr><td class="kw-cell">%skin% or %derma%</td><td><span class="dept-badge d-derma">Dermatology</span></td></tr>
+        <tr><td class="kw-cell">%pediatric%</td><td><span class="dept-badge d-peds">Pediatrics</span></td></tr>
+        <tr><td class="kw-cell">%ortho% or %joint%</td><td><span class="dept-badge d-ortho">Orthopedics</span></td></tr>
+        <tr><td class="kw-cell">(anything else)</td><td><span class="dept-badge d-gen">General</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SQL Tabs -->
+  <div class="sql-tabs">
+    <div class="sql-tab active" onclick="switchTab('deploy-sql',this)">Deploy SQL</div>
+    <div class="sql-tab undeploy-tab" onclick="switchTab('undeploy-sql',this)">Undeploy SQL</div>
+  </div>
+  <div id="deploy-sql" data-panel class="visible">
+    <div class="sql-box">
+      <div class="sql-top"><span class="sql-lbl">Deploy · PostgreSQL</span><span class="sql-tag-badge">BEFORE INSERT OR UPDATE</span></div>
+      <pre>{{ deploy_sql }}</pre>
+    </div>
+  </div>
+  <div id="undeploy-sql" data-panel>
+    <div class="sql-box undeploy-sql">
+      <div class="sql-top"><span class="sql-lbl">Undeploy · PostgreSQL</span><span class="sql-tag-badge danger">DROP TRIGGER</span></div>
+      <pre>{{ undeploy_sql }}</pre>
+    </div>
+  </div>
+
+  <!-- Action Cards -->
+  <div class="action-grid">
+    <div class="action-card deploy-card">
+      <span class="action-icon">🏷️</span>
+      <div class="action-title">Install Trigger</div>
+      <div class="action-sub">Adds the <code>treatment_type</code> column to <code>patienthistory</code>, creates the classification function, and binds the trigger on INSERT and UPDATE.</div>
+      {% if message and message[0] == 'deploy_ok' %}<div class="msg-success">✅ {{ message[1] }}</div>{% endif %}
+      {% if error and error[0] == 'deploy' %}<div class="msg-error">⚠️ {{ error[1] }}</div>{% endif %}
+      <form method="POST" action="/t4"><input type="hidden" name="action" value="deploy"/>
+        <button type="submit" class="deploy-btn">🏷️ Deploy Trigger</button>
+      </form>
+      <div class="warning-note">⚠️ <span>Safe to run multiple times — uses <code>ADD COLUMN IF NOT EXISTS</code> and <code>CREATE OR REPLACE FUNCTION</code>.</span></div>
+    </div>
+    <div class="action-card undeploy-card">
+      <span class="action-icon">🗑️</span>
+      <div class="action-title">Remove Trigger</div>
+      <div class="action-sub">Drops the trigger, function and the <code>treatment_type</code> column from <code>patienthistory</code>. Existing treatment text is unaffected.</div>
+      {% if message and message[0] == 'undeploy_ok' %}<div class="msg-undeploy">🗑️ {{ message[1] }}</div>{% endif %}
+      {% if error and error[0] == 'undeploy' %}<div class="msg-error">⚠️ {{ error[1] }}</div>{% endif %}
+      <button type="button" class="undeploy-btn" onclick="toggleConfirm()">🗑️ Undeploy Trigger</button>
+      <div class="confirm-wrap" id="confirmBox">
+        <div class="confirm-text">This will drop <code>trg_treatment_type</code>, <code>fn_treatment_type()</code> and the <code>treatment_type</code> column from <code>patienthistory</code>. Continue?</div>
+        <div class="confirm-btns">
+          <form method="POST" action="/t4" style="display:inline;"><input type="hidden" name="action" value="undeploy"/>
+            <button type="submit" class="confirm-yes">Yes, Remove</button>
+          </form>
+          <button type="button" class="confirm-cancel" onclick="toggleConfirm()">Cancel</button>
+        </div>
+      </div>
+      <div class="danger-note">⚠️ <span>This also drops the <code>treatment_type</code> column — classification data stored there will be lost.</span></div>
+    </div>
+  </div>
+</main>
+<script>
+function switchTab(id,el){
+  document.querySelectorAll('[data-panel]').forEach(p=>p.classList.remove('visible'));
+  document.querySelectorAll('.sql-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('visible');
+  el.classList.add('active');
+}
+function toggleConfirm(){document.getElementById('confirmBox').classList.toggle('show');}
+</script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CR1 — Avg Patient Age by Doctor | Silver Care</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@1,400;1,600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --silver: #b8c9d9; --silver-light: #dce8f0; --silver-dark: #6a8fa8;
+      --deep: #1a2e3b; --accent: #3ec6e0; --accent2: #7eddd4;
+      --white: #f7fbfe; --card-bg: rgba(255,255,255,0.82);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #e8f4fb 0%, #f0f8ff 40%, #daf0f5 100%);
+      min-height: 100vh; color: var(--deep);
+    }
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.75); backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(184,201,217,0.4); padding: 0 48px;
+      display: flex; align-items: center; justify-content: space-between; height: 70px;
+      box-shadow: 0 2px 20px rgba(30,70,100,0.07);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+    .nav-brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+    .brand-main { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 900; background: linear-gradient(90deg, var(--deep), var(--silver-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .brand-sub { font-size: 0.68rem; font-weight: 600; color: var(--silver-dark); letter-spacing: 0.18em; text-transform: uppercase; }
+    .nav-links { display: flex; align-items: center; gap: 6px; list-style: none; }
+    .nav-links a { text-decoration: none; font-size: 0.88rem; font-weight: 600; color: var(--deep); padding: 6px 14px; border-radius: 20px; transition: all 0.2s; }
+    .nav-links a:hover { background: rgba(62,198,224,0.12); color: var(--silver-dark); }
+    .btn-nav { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white !important; padding: 8px 20px !important; border-radius: 50px; box-shadow: 0 4px 14px rgba(62,198,224,0.35); }
+
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: 56px 32px 80px; }
+
+    /* ── HEADER ── */
+    .page-header { margin-bottom: 40px; }
+    .task-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, rgba(240,160,80,0.15), rgba(240,130,50,0.1));
+      border: 1px solid rgba(240,160,80,0.35); border-radius: 30px;
+      padding: 6px 18px; margin-bottom: 18px;
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase;
+      color: #c07828;
+    }
+    .task-badge-dot { width: 7px; height: 7px; background: #f0a050; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(240,160,80,0.6);}50%{box-shadow:0 0 0 6px rgba(240,160,80,0);} }
+    .page-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem,4vw,2.9rem); font-weight: 900; color: var(--deep); line-height: 1.1; margin-bottom: 12px; }
+    .page-title em { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--silver-dark); }
+    .page-desc { color: #5a7a90; font-size: 1rem; line-height: 1.75; max-width: 620px; }
+
+    /* ── FILTER FORM ── */
+    .filter-card {
+      background: var(--card-bg); backdrop-filter: blur(16px);
+      border: 1px solid rgba(184,201,217,0.35); border-radius: 20px;
+      padding: 30px 32px; margin-bottom: 32px;
+      box-shadow: 0 4px 24px rgba(30,70,100,0.08);
+    }
+    .filter-card h3 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--deep); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+    .filter-row { display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+    .field-group { display: flex; flex-direction: column; gap: 6px; }
+    .field-group label { font-size: 0.78rem; font-weight: 700; color: var(--silver-dark); letter-spacing: 0.06em; text-transform: uppercase; }
+    .field-group input {
+      padding: 11px 18px; border-radius: 12px;
+      border: 1.5px solid rgba(184,201,217,0.5);
+      background: rgba(255,255,255,0.85); font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem; color: var(--deep); outline: none; width: 160px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .field-group input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(62,198,224,0.15); }
+    .btn-run {
+      background: linear-gradient(135deg, #f0a050, #e07828);
+      color: white; border: none; cursor: pointer;
+      padding: 11px 28px; border-radius: 12px; font-family: 'Nunito', sans-serif;
+      font-size: 0.92rem; font-weight: 700; letter-spacing: 0.04em;
+      box-shadow: 0 4px 16px rgba(240,160,80,0.35);
+      transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .btn-run:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(240,160,80,0.48); }
+
+    /* ── SQL BLOCK ── */
+    .sql-card {
+      background: #0f1e28; border-radius: 18px; padding: 28px 32px;
+      margin-bottom: 32px; border: 1px solid rgba(62,198,224,0.15);
+      box-shadow: 0 8px 36px rgba(10,20,30,0.18);
+    }
+    .sql-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .sql-label { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(62,198,224,0.65); }
+    .sql-dots { display: flex; gap: 6px; }
+    .sql-dot { width: 10px; height: 10px; border-radius: 50%; }
+    pre {
+      font-family: 'Courier New', monospace; font-size: 0.84rem; line-height: 1.7;
+      color: #c8dce8; white-space: pre-wrap; word-break: break-word;
+    }
+    .kw  { color: #3ec6e0; font-weight: 700; }
+    .fn  { color: #f0a050; }
+    .cm  { color: #4a6a80; font-style: italic; }
+    .st  { color: #7eddd4; }
+    .nm  { color: #b890f0; }
+
+    /* ── RESULTS ── */
+    .results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+    .results-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--deep); }
+    .results-count {
+      background: linear-gradient(135deg, rgba(240,160,80,0.15), rgba(240,130,50,0.1));
+      border: 1px solid rgba(240,160,80,0.3); border-radius: 20px;
+      padding: 5px 16px; font-size: 0.78rem; font-weight: 700; color: #c07828;
+    }
+
+    .table-wrap {
+      background: var(--card-bg); backdrop-filter: blur(16px);
+      border: 1px solid rgba(184,201,217,0.35); border-radius: 20px;
+      overflow: hidden; box-shadow: 0 4px 24px rgba(30,70,100,0.08);
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: linear-gradient(135deg, rgba(240,160,80,0.1), rgba(240,130,50,0.06)); }
+    thead th {
+      padding: 14px 20px; text-align: left;
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--silver-dark); border-bottom: 1px solid rgba(184,201,217,0.3);
+    }
+    tbody tr { border-bottom: 1px solid rgba(184,201,217,0.2); transition: background 0.2s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(240,160,80,0.05); }
+    tbody td { padding: 14px 20px; font-size: 0.92rem; color: var(--deep); }
+    .rank-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(240,160,80,0.18), rgba(240,130,50,0.1));
+      border: 1px solid rgba(240,160,80,0.3);
+      font-size: 0.75rem; font-weight: 800; color: #c07828;
+    }
+    .age-pill {
+      display: inline-block; padding: 4px 12px; border-radius: 20px;
+      font-size: 0.82rem; font-weight: 700;
+      background: rgba(62,198,224,0.1); color: var(--silver-dark);
+      border: 1px solid rgba(62,198,224,0.2);
+    }
+    .age-pill.high { background: rgba(240,160,80,0.15); color: #b06018; border-color: rgba(240,160,80,0.3); }
+    .age-pill.very-high { background: rgba(224,92,110,0.12); color: #a03040; border-color: rgba(224,92,110,0.25); }
+
+    /* ── EMPTY / ERROR ── */
+    .state-card {
+      background: var(--card-bg); border-radius: 20px; padding: 52px 32px;
+      text-align: center; border: 1px solid rgba(184,201,217,0.35);
+      box-shadow: 0 4px 24px rgba(30,70,100,0.07);
+    }
+    .state-icon { font-size: 3rem; margin-bottom: 14px; display: block; }
+    .state-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--deep); margin-bottom: 8px; }
+    .state-sub { color: #6a8aa0; font-size: 0.92rem; }
+    .error-card { border-color: rgba(224,92,110,0.3); background: rgba(255,240,242,0.85); }
+    .error-card .state-title { color: #b03040; }
+
+    .back-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 32px; color: var(--silver-dark); text-decoration: none; font-size: 0.88rem; font-weight: 600; transition: color 0.2s; }
+    .back-link:hover { color: var(--accent); }
+
+    @media (max-width: 700px) { nav { padding: 0 16px; } .page-wrap { padding: 32px 16px 60px; } .filter-row { flex-direction: column; } .field-group input { width: 100%; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">
+    <svg width="44" height="44" viewBox="0 0 60 60" fill="none">
+      <circle cx="30" cy="30" r="29" fill="url(#nOG)"/><circle cx="30" cy="30" r="26" fill="url(#nIG)"/>
+      <rect x="26" y="14" width="8" height="32" rx="2.5" fill="white"/><rect x="14" y="26" width="32" height="8" rx="2.5" fill="white"/>
+      <defs>
+        <linearGradient id="nOG" x1="0" y1="0" x2="60" y2="60"><stop offset="0%" stop-color="#c8d4dc"/><stop offset="100%" stop-color="#4a6478"/></linearGradient>
+        <linearGradient id="nIG" x1="0" y1="0" x2="60" y2="60"><stop offset="0%" stop-color="#b0bec8"/><stop offset="100%" stop-color="#4a6478"/></linearGradient>
+      </defs>
+    </svg>
+    <div class="nav-brand-text"><span class="brand-main">Silver Care</span><span class="brand-sub">Hospital &amp; Medical Centre</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/database" class="btn-nav">Database ↗</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div class="task-badge"><div class="task-badge-dot"></div>Cursor · Task CR1 · Batch 1</div>
+    <h1 class="page-title">Doctors by <em>Average Patient Age</em></h1>
+    <p class="page-desc">
+      Adapted from an Oracle PL/SQL cursor procedure — iterates over every doctor whose average patient age
+      exceeds the supplied threshold, ordered from oldest cohort to youngest.
+      Set your age threshold below and run the query.
+    </p>
+  </div>
+
+  <!-- SQL -->
+  <div class="sql-card">
+    <div class="sql-card-top">
+      <span class="sql-label">PostgreSQL — Cursor Adaptation</span>
+      <div class="sql-dots">
+        <div class="sql-dot" style="background:#e06060;"></div>
+        <div class="sql-dot" style="background:#e0c060;"></div>
+        <div class="sql-dot" style="background:#60c060;"></div>
+      </div>
+    </div>
+    <pre>{% for line in sql_shown.splitlines() %}<span>{{ line }}</span>
+{% endfor %}</pre>
+  </div>
+
+  <!-- Filter -->
+  <div class="filter-card">
+    <h3>⚙️ Set Age Threshold</h3>
+    <form method="POST" action="/cr1">
+      <div class="filter-row">
+        <div class="field-group">
+          <label for="p_age">Minimum Average Age (p_age)</label>
+          <input type="number" id="p_age" name="p_age" min="0" max="120"
+                 value="{{ p_age }}" placeholder="e.g. 30" required/>
+        </div>
+        <button type="submit" class="btn-run">▶ Run Cursor</button>
+      </div>
+    </form>
+  </div>
+
+  {% if error %}
+  <div class="state-card error-card">
+    <span class="state-icon">⚠️</span>
+    <div class="state-title">Query Error</div>
+    <p class="state-sub">{{ error }}</p>
+  </div>
+  {% elif data %}
+  <div class="results-header">
+    <div class="results-title">Results — avg_age &gt; {{ p_age }}</div>
+    <div class="results-count">{{ data | length }} doctor{{ 's' if data | length != 1 else '' }} found</div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Doctor Name</th>
+          <th>Avg Patient Age</th>
+          <th>Age Group</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in data %}
+        {% set avg = row[1] | float %}
+        <tr>
+          <td><div class="rank-badge">{{ loop.index }}</div></td>
+          <td><strong>{{ row[0] }}</strong></td>
+          <td>
+            {% if avg >= 60 %}
+              <span class="age-pill very-high">{{ avg }} yrs</span>
+            {% elif avg >= 45 %}
+              <span class="age-pill high">{{ avg }} yrs</span>
+            {% else %}
+              <span class="age-pill">{{ avg }} yrs</span>
+            {% endif %}
+          </td>
+          <td style="color:#6a8aa0;font-size:0.85rem;">
+            {% if avg >= 60 %}Senior cohort
+            {% elif avg >= 45 %}Middle-aged cohort
+            {% elif avg >= 30 %}Adult cohort
+            {% else %}Young adult cohort{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="state-card">
+    <span class="state-icon">🔍</span>
+    <div class="state-title">No Doctors Found</div>
+    <p class="state-sub">No doctors have an average patient age greater than <strong>{{ p_age }}</strong>. Try a lower threshold.</p>
+  </div>
+  {% endif %}
+
+  <a href="/" class="back-link">← Back to Home</a>
+</div>
+
+</body>
+</html>

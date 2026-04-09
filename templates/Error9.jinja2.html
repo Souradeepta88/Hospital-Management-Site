@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cannot Delete — Silver Care</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --deep:#1a2e3b; --accent:#3ec6e0; --accent2:#7eddd4;
+  --danger:#ff4757; --danger2:#ff6b81; --danger-bg:rgba(255,71,87,0.08);
+  --silver-dark:#6a8fa8; --text:#1a2e3b; --muted:#5a7a90;
+}
+*{ box-sizing:border-box; margin:0; padding:0; }
+body{
+  font-family:'Nunito',sans-serif; min-height:100vh;
+  background:linear-gradient(135deg,#1a0a0e 0%,#2a1018 30%,#1a1a2e 100%);
+  color:#fff; overflow:hidden; position:relative;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+}
+
+/* animated particle grid */
+.grid-bg{
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image:
+    linear-gradient(rgba(255,71,87,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,71,87,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridShift 20s linear infinite;
+}
+@keyframes gridShift{ 0%{background-position:0 0;} 100%{background-position:60px 60px;} }
+
+/* pulsing glow orbs */
+.orb{
+  position:fixed; border-radius:50%; pointer-events:none; z-index:0;
+  filter:blur(80px); animation:orbPulse 4s ease-in-out infinite alternate;
+}
+.orb1{ width:500px;height:500px;top:-200px;right:-150px;background:rgba(255,71,87,0.12); }
+.orb2{ width:400px;height:400px;bottom:-150px;left:-100px;background:rgba(62,198,224,0.08); animation-delay:2s; }
+@keyframes orbPulse{ 0%{opacity:.6;transform:scale(1);} 100%{opacity:1;transform:scale(1.1);} }
+
+nav{
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  height:70px; display:flex; align-items:center; justify-content:space-between;
+  padding:0 48px;
+  background:rgba(26,10,14,0.7); backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,71,87,0.15);
+}
+.brand{
+  font-family:'Playfair Display',serif; font-weight:900; font-size:1.2rem;
+  background:linear-gradient(90deg,#fff,rgba(255,255,255,0.6));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  text-decoration:none;
+}
+
+.container{
+  position:relative; z-index:1; max-width:680px; width:100%;
+  padding:40px; text-align:center;
+}
+
+/* big animated X icon */
+.icon-ring{
+  width:110px; height:110px; border-radius:50%;
+  border:3px solid rgba(255,71,87,0.3);
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 32px;
+  position:relative;
+  animation:ringPulse 2s ease-in-out infinite;
+}
+@keyframes ringPulse{
+  0%,100%{ box-shadow:0 0 0 0 rgba(255,71,87,0.4), inset 0 0 0 0 rgba(255,71,87,0.1); }
+  50%{ box-shadow:0 0 0 20px rgba(255,71,87,0), inset 0 0 30px rgba(255,71,87,0.15); }
+}
+.icon-ring::before{
+  content:'';position:absolute;inset:-8px;border-radius:50%;
+  border:1.5px solid rgba(255,71,87,0.15);
+  animation:ringRotate 8s linear infinite;
+}
+.icon-ring::after{
+  content:'';position:absolute;inset:-16px;border-radius:50%;
+  border:1px dashed rgba(255,71,87,0.08);
+  animation:ringRotate 12s linear infinite reverse;
+}
+@keyframes ringRotate{ to{transform:rotate(360deg);} }
+.icon-inner{
+  width:78px; height:78px; border-radius:50%;
+  background:linear-gradient(135deg,rgba(255,71,87,0.2),rgba(255,107,129,0.1));
+  border:2px solid rgba(255,71,87,0.4);
+  display:flex; align-items:center; justify-content:center;
+  font-size:2.2rem;
+}
+
+.error-code{
+  font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.3em;
+  text-transform:uppercase; color:var(--danger); margin-bottom:16px;
+  display:flex; align-items:center; justify-content:center; gap:12px;
+}
+.error-code::before,.error-code::after{
+  content:''; flex:1; max-width:60px; height:1px;
+  background:linear-gradient(90deg,transparent,var(--danger));
+}
+.error-code::after{ background:linear-gradient(90deg,var(--danger),transparent); }
+
+h1{
+  font-family:'Playfair Display',serif; font-size:clamp(2rem,4vw,3rem);
+  font-weight:900; color:#fff; margin-bottom:12px; line-height:1.1;
+}
+h1 span{
+  font-family:'Cormorant Garamond',serif; font-style:italic;
+  background:linear-gradient(120deg,var(--danger),var(--danger2));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+
+.subtitle{ color:rgba(255,255,255,0.45); font-size:.95rem; margin-bottom:36px; }
+
+/* record badge */
+.record-badge{
+  display:inline-flex; align-items:center; gap:10px;
+  background:rgba(255,71,87,0.1); border:1.5px solid rgba(255,71,87,0.25);
+  border-radius:12px; padding:12px 20px; margin-bottom:28px;
+  font-family:'DM Mono',monospace; font-size:.88rem; color:rgba(255,255,255,0.8);
+}
+.record-badge .dot{ width:8px;height:8px;border-radius:50%;background:var(--danger);
+  box-shadow:0 0 8px var(--danger);animation:blink 1.5s infinite; }
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+/* dependency list */
+.dep-card{
+  background:rgba(255,255,255,0.04); border:1px solid rgba(255,71,87,0.15);
+  border-radius:18px; padding:24px; margin-bottom:28px; text-align:left;
+}
+.dep-title{
+  font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.15em;
+  text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:16px;
+  display:flex; align-items:center; gap:8px;
+}
+.dep-title::before{ content:''; display:block; width:18px;height:1px;background:var(--danger);opacity:.5; }
+.dep-item{
+  display:flex; align-items:center; gap:12px; padding:10px 14px;
+  border-radius:10px; background:rgba(255,71,87,0.06);
+  border:1px solid rgba(255,71,87,0.1); margin-bottom:8px;
+  font-size:.88rem; color:rgba(255,255,255,0.7);
+  animation: depIn .4s ease both;
+}
+.dep-item:nth-child(2){animation-delay:.05s;}
+.dep-item:nth-child(3){animation-delay:.1s;}
+@keyframes depIn{ from{opacity:0;transform:translateX(-10px);} to{opacity:1;transform:none;} }
+.dep-icon{ font-size:1rem; flex-shrink:0; }
+.dep-text{ font-family:'DM Mono',monospace; font-size:.82rem; }
+
+.instruction{
+  background:rgba(62,198,224,0.06); border:1px solid rgba(62,198,224,0.15);
+  border-radius:14px; padding:16px 20px; margin-bottom:28px;
+  font-size:.88rem; color:rgba(255,255,255,0.55); text-align:left;
+  display:flex; gap:12px; align-items:flex-start;
+}
+.instruction-icon{ font-size:1.1rem; flex-shrink:0; margin-top:1px; }
+
+/* action buttons */
+.actions{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
+.btn{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:12px 22px; border-radius:12px; font-family:'Nunito',sans-serif;
+  font-size:.88rem; font-weight:700; text-decoration:none;
+  transition:all .25s; cursor:pointer; border:none;
+}
+.btn-back{
+  background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.12);
+  color:rgba(255,255,255,0.7);
+}
+.btn-back:hover{ background:rgba(255,255,255,0.14); color:#fff; transform:translateY(-2px); }
+.btn-fix{
+  background:rgba(62,198,224,0.12); border:1.5px solid rgba(62,198,224,0.25);
+  color:var(--accent);
+}
+.btn-fix:hover{ background:rgba(62,198,224,0.22); transform:translateY(-2px); box-shadow:0 8px 24px rgba(62,198,224,0.15); }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<nav>
+  <a class="brand" href="/">Silver Care</a>
+</nav>
+
+<div class="container">
+  <div class="icon-ring">
+    <div class="icon-inner">🔒</div>
+  </div>
+
+  <div class="error-code">FK Constraint Violation</div>
+
+  <h1>Cannot <span>Delete</span></h1>
+  <p class="subtitle">This record is still referenced by other tables in the database.</p>
+
+  <div class="record-badge">
+    <span class="dot"></span>
+    {{ record_label }}
+    &nbsp;·&nbsp; table: <strong>{{ parent_table }}</strong>
+  </div>
+
+  <div class="dep-card">
+    <div class="dep-title">Blocking Dependencies</div>
+    {% for dep in dependencies %}
+    <div class="dep-item">
+      <span class="dep-icon">⛓</span>
+      <span class="dep-text">{{ dep }}</span>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="instruction">
+    <span class="instruction-icon">💡</span>
+    <span>Delete or reassign the dependent records listed above first, then come back to remove this record safely.</span>
+  </div>
+
+  <div class="actions">
+    <a class="btn btn-back" href="{{ back_url }}">← Back to list</a>
+    {% for url, label in fix_urls %}
+    <a class="btn btn-fix" href="{{ url }}">Go to {{ label }} →</a>
+    {% endfor %}
+  </div>
+</div>
+</body>
+</html>
