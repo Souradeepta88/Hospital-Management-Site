@@ -447,10 +447,10 @@
     <!-- Task T3 — Trigger 3 (Batch 1) -->
     <a href="/t3" class="todo-card tc-t3">
       <div class="todo-card-top"><span class="todo-tag tag-t3">Trigger</span><span class="todo-task-id">Task 13</span></div>
-      <div class="todo-icon-wrap">💰</div>
-      <div class="todo-card-title">Auto-Update Patient Total Cost</div>
-      <div class="todo-card-desc">AFTER INSERT trigger on costs — automatically increments each patient's total_cost in the patients table whenever a new billing record is added.</div>
-      <div class="todo-card-footer"><span class="todo-card-type">TRIGGER · AFTER INSERT · UPDATE patients</span><div class="todo-arrow">→</div></div>
+      <div class="todo-icon-wrap">🚫</div>
+      <div class="todo-card-title">Outpatient Admission Cost Guard</div>
+      <div class="todo-card-desc">BEFORE INSERT trigger on costs — rejects any insert where admitted=false but admission_cost &gt; 0. Outpatients cannot have a non-zero admission cost at the DB level.</div>
+      <div class="todo-card-footer"><span class="todo-card-type">TRIGGER · BEFORE INSERT · RAISE EXCEPTION</span><div class="todo-arrow">→</div></div>
       <span class="todo-number">13</span>
     </a>
 
@@ -618,7 +618,7 @@
       <a href="/t1">04 — PatientHistory Trigger</a>
       <a href="/p1">05 — Deactivate Doctor</a>
       <a href="/cr1">11 — Doctors by Avg Patient Age</a>
-      <a href="/t3">13 — Auto-Update Total Cost</a>
+      <a href="/t3">13 — Outpatient Admission Guard</a>
     </div>
     <div class="footer-col">
       <h4>New Level To-Do Tasks</h4>

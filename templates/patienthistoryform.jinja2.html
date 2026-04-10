@@ -15,24 +15,40 @@ nav{ height:70px;display:flex;align-items:center;justify-content:space-between;p
 .back{ font-family:'DM Mono',monospace;font-size:.78rem;padding:8px 20px;border-radius:999px;border:1.5px solid rgba(62,198,224,0.35);text-decoration:none;color:var(--silver-dark);background:rgba(62,198,224,0.06);transition:all .25s; }
 .back:hover{ background:rgba(62,198,224,0.14);border-color:var(--accent);color:var(--deep); }
 .container{ display:flex;justify-content:center;padding:60px 20px 80px;position:relative;z-index:1; }
-.form-card{ background:rgba(255,255,255,0.96);border:1px solid rgba(184,201,217,0.4);border-radius:28px;padding:56px;width:740px;box-shadow:0 20px 80px rgba(30,70,100,0.12),inset 0 1px 0 #fff;position:relative;overflow:hidden; }
+.form-card{ background:rgba(255,255,255,0.96);border:1px solid rgba(184,201,217,0.4);border-radius:28px;padding:56px;width:760px;box-shadow:0 20px 80px rgba(30,70,100,0.12),inset 0 1px 0 #fff;position:relative;overflow:hidden; }
 .form-card::before{ content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent));background-size:200% 100%;animation:shimmer 3s linear infinite; }
 @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
-.form-header{ display:flex;align-items:center;gap:16px;margin-bottom:28px; }
+.form-header{ display:flex;align-items:center;gap:16px;margin-bottom:24px; }
 .form-icon{ width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;box-shadow:0 8px 24px rgba(62,198,224,0.3); }
 h1{ font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--deep);letter-spacing:-0.02em; }
 h1 em{ font-family:'Cormorant Garamond',serif;font-style:italic;background:linear-gradient(120deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
 
+/* ── Trigger Status Panel ── */
+.trigger-panel{ display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px; }
+.trig-card{ display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:14px;font-size:.82rem;font-weight:600;border:1.5px solid; }
+.trig-card.on{  background:rgba(62,198,224,0.06); border-color:rgba(62,198,224,0.28); color:#1a5060; }
+.trig-card.off{ background:rgba(255,71,87,0.05);  border-color:rgba(255,71,87,0.22);  color:#8a1a28; }
+.trig-label{ font-family:'DM Mono',monospace;font-size:.64rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.65;display:block;margin-bottom:2px; }
+.trig-status{ font-size:.82rem; }
+.tdot{ width:8px;height:8px;border-radius:50%;flex-shrink:0; }
+.tdot.on{  background:var(--accent); box-shadow:0 0 6px var(--accent); animation:pulse 2s infinite; }
+.tdot.off{ background:#ff4757; }
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+.trig-link{ font-family:'DM Mono',monospace;font-size:.68rem;margin-left:auto;color:inherit;opacity:.6;text-decoration:none;white-space:nowrap; }
+.trig-link:hover{ opacity:1; }
+
+/* ── Error banner ── */
 .trigger-error{ display:flex;align-items:flex-start;gap:12px;background:#fff1f2;border:1.5px solid #fecdd3;border-left:4px solid #f43f5e;border-radius:0 14px 14px 0;padding:16px 18px;margin-bottom:24px;animation:shake .35s ease; }
 @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
 .err-title{ display:block;color:#9f1239;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px; }
 .err-msg{ color:#be123c;font-size:.88rem;line-height:1.5; }
 
-/* date-hint: base + ON variant + OFF variant */
+/* ── Date hint ── */
 .date-hint{ display:flex;align-items:center;gap:12px;border-radius:0 12px 12px 0;padding:12px 16px;margin-bottom:28px;font-size:.85rem;line-height:1.5; }
-.date-hint.on{ background:rgba(62,198,224,0.06);border:1.5px solid rgba(62,198,224,0.22);border-left:4px solid var(--accent);color:#1a5060; }
+.date-hint.on{  background:rgba(62,198,224,0.06);border:1.5px solid rgba(62,198,224,0.22);border-left:4px solid var(--accent);color:#1a5060; }
 .date-hint.off{ background:rgba(255,71,87,0.05);border:1.5px solid rgba(255,71,87,0.2);border-left:4px solid #f43f5e;color:#7a1a28; }
 
+/* ── Form grid ── */
 .form-grid{ display:grid;grid-template-columns:1fr 1fr;gap:22px; }
 .full{ grid-column:span 2; }
 .field{ display:flex;flex-direction:column;gap:8px; }
@@ -45,20 +61,21 @@ textarea{ resize:vertical;min-height:90px; }
 .field-note{ font-size:.72rem;color:var(--muted);font-family:'DM Mono',monospace; }
 .field-note.danger{ color:#f43f5e; }
 
-.submit-row{ margin-top:30px;display:flex;align-items:center;gap:12px;flex-wrap:wrap; }
+/* ── Submit row ── */
+.submit-row{ margin-top:30px;display:flex;align-items:center;gap:10px;flex-wrap:wrap; }
 button[type="submit"]{ padding:14px 32px;border:none;border-radius:14px;font-family:'Playfair Display',serif;font-weight:700;font-size:.95rem;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;cursor:pointer;transition:all .3s;box-shadow:0 6px 20px rgba(62,198,224,0.28); }
 button[type="submit"]:hover{ transform:translateY(-3px);box-shadow:0 12px 32px rgba(62,198,224,0.4); }
 button[type="reset"]{ padding:14px 22px;border-radius:14px;border:1.5px solid rgba(62,198,224,0.22);background:white;color:var(--muted);font-family:'Nunito',sans-serif;font-size:.9rem;cursor:pointer;transition:.2s; }
 button[type="reset"]:hover{ background:rgba(62,198,224,0.06);color:var(--deep); }
 
-/* trigger badge: base + ON + OFF */
-.trigger-badge{ margin-left:auto;display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:.72rem;padding:7px 14px;border-radius:999px; }
-.trigger-badge.on{ background:rgba(62,198,224,0.08);border:1px solid rgba(62,198,224,0.22);color:var(--muted); }
-.trigger-badge.off{ background:rgba(255,71,87,0.07);border:1px solid rgba(255,71,87,0.28);color:#be123c; }
-.tdot{ width:6px;height:6px;border-radius:50%; }
-.tdot.on{ background:var(--accent);animation:pulse 2s infinite; }
-.tdot.off{ background:#ff4757; }
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+/* ── Small trigger badges in submit row ── */
+.badge-row{ margin-left:auto;display:flex;gap:8px;flex-wrap:wrap; }
+.mini-badge{ display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:.68rem;padding:6px 12px;border-radius:999px;white-space:nowrap; }
+.mini-badge.on{  background:rgba(62,198,224,0.08);border:1px solid rgba(62,198,224,0.22);color:var(--muted); }
+.mini-badge.off{ background:rgba(255,71,87,0.07); border:1px solid rgba(255,71,87,0.28); color:#be123c; }
+.mdot{ width:5px;height:5px;border-radius:50%; }
+.mdot.on{  background:var(--accent);animation:pulse 2s infinite; }
+.mdot.off{ background:#ff4757; }
 </style>
 </head>
 <body>
@@ -68,60 +85,150 @@ button[type="reset"]:hover{ background:rgba(62,198,224,0.06);color:var(--deep); 
 </nav>
 <div class="container">
 <div class="form-card">
+
   <div class="form-header">
     <div class="form-icon">📋</div>
     <h1>Insert Patient <em>History</em></h1>
   </div>
 
+  <!-- ── Trigger Status Panel (T1 + T4) ── -->
+  <div class="trigger-panel">
+
+    <!-- T1 status -->
+    <div class="trig-card {{ 'on' if trigger_active else 'off' }}">
+      <span class="tdot {{ 'on' if trigger_active else 'off' }}"></span>
+      <div>
+        <span class="trig-label">T1 · Defaults</span>
+        {% if trigger_active %}
+          <span class="trig-status">Date auto-fill &amp; negative bill block <strong>active</strong></span>
+        {% else %}
+          <span class="trig-status">Date / bill guard <strong>inactive</strong></span>
+        {% endif %}
+      </div>
+      <a class="trig-link" href="/t1">Manage →</a>
+    </div>
+
+    <!-- T4 status -->
+    <div class="trig-card {{ 'on' if t4_active else 'off' }}">
+      <span class="tdot {{ 'on' if t4_active else 'off' }}"></span>
+      <div>
+        <span class="trig-label">T4 · Auto-Classify</span>
+        {% if t4_active %}
+          <span class="trig-status">Treatment type auto-set <strong>active</strong></span>
+        {% else %}
+          <span class="trig-status">Treatment type auto-set <strong>inactive</strong></span>
+        {% endif %}
+      </div>
+      <a class="trig-link" href="/t4">Manage →</a>
+    </div>
+
+  </div>
+
+  <!-- ── Error banner ── -->
   {% if trigger_error %}
   <div class="trigger-error">
     <span style="font-size:1.1rem;flex-shrink:0">🚫</span>
-    <div><span class="err-title">Trigger Blocked This Insert</span><span class="err-msg">{{ trigger_error }}</span></div>
+    <div>
+      <span class="err-title">Trigger Blocked This Insert</span>
+      <span class="err-msg">{{ trigger_error }}</span>
+    </div>
   </div>
   {% endif %}
 
+  <!-- ── T1 date hint ── -->
   {% if trigger_active %}
   <div class="date-hint on">
     <span style="font-size:1rem;flex-shrink:0">⚡</span>
-    <span><strong>Trigger active —</strong> leave <em>Visit Date</em> blank and it will auto-default to <strong>today's date</strong>. Negative bill amounts will be <strong>blocked</strong>.</span>
+    <span><strong>T1 active —</strong> leave <em>Visit Date</em> blank and it will auto-default to <strong>today's date</strong>. Negative bill amounts will be <strong>blocked</strong>.</span>
   </div>
   {% else %}
   <div class="date-hint off">
     <span style="font-size:1rem;flex-shrink:0">⚠️</span>
-    <span><strong>Trigger inactive —</strong> Visit Date will <strong>not</strong> auto-default and negative bill amounts will <strong>not</strong> be blocked. Go to <a href="/t1" style="color:#f43f5e;font-weight:700;">T1 page</a> to deploy it.</span>
+    <span><strong>T1 inactive —</strong> Visit Date will <strong>not</strong> auto-default and negative bill amounts will <strong>not</strong> be blocked. Go to <a href="/t1" style="color:#f43f5e;font-weight:700;">T1 page</a> to deploy it.</span>
   </div>
   {% endif %}
 
+  <!-- ── Form ── -->
   <form method="post" action="/patienthistoryform">
   <div class="form-grid">
-    <div class="field"><label>Patient Name</label><input type="text" name="patient_name" placeholder="e.g. Pranav" required value="{{ form.patient_name if form else '' }}"></div>
-    <div class="field"><label>Doctor Name</label><input type="text" name="doctor_name" placeholder="e.g. Tanav" required value="{{ form.doctor_name if form else '' }}"></div>
-    <div class="field"><label>Visit Date <span class="opt">(optional — defaults to today)</span></label><input type="date" name="visit_date" value="{{ form.visit_date if form else '' }}"></div>
-    <div class="field"><label>Treatment</label><input type="text" name="treatment" placeholder="e.g. tuberculosis" required value="{{ form.treatment if form else '' }}"></div>
-    <div class="field full"><label>Description</label><textarea name="description" placeholder="Describe the treatment or diagnosis…" required>{{ form.description if form else '' }}</textarea></div>
-    <div class="field"><label>Bill Amount</label><input type="number" name="BillAmount" id="billInput" placeholder="e.g. 7892" min="0" required value="{{ form.BillAmount if form else '' }}" oninput="checkBill(this)"><span class="field-note" id="billNote">Must be 0 or positive</span></div>
+
+    <div class="field">
+      <label>Patient Name</label>
+      <input type="text" name="patient_name" placeholder="e.g. Pranav" required value="{{ form.patient_name if form else '' }}">
+    </div>
+
+    <div class="field">
+      <label>Doctor Name</label>
+      <input type="text" name="doctor_name" placeholder="e.g. Tanav" required value="{{ form.doctor_name if form else '' }}">
+    </div>
+
+    <div class="field">
+      <label>Visit Date <span class="opt">(optional — defaults to today if T1 active)</span></label>
+      <input type="date" name="visit_date" value="{{ form.visit_date if form else '' }}">
+    </div>
+
+    <div class="field">
+      <label>Treatment
+        {% if t4_active %}
+          <span class="opt">· type auto-classified by T4</span>
+        {% endif %}
+      </label>
+      <input type="text" name="treatment" placeholder="e.g. skin allergy, cardiology check" required value="{{ form.treatment if form else '' }}">
+    </div>
+
+    <div class="field full">
+      <label>Description</label>
+      <textarea name="description" placeholder="Describe the treatment or diagnosis…" required>{{ form.description if form else '' }}</textarea>
+    </div>
+
+    <div class="field">
+      <label>Bill Amount</label>
+      <input type="number" name="BillAmount" id="billInput" placeholder="e.g. 7892" min="0" required
+             value="{{ form.BillAmount if form else '' }}" oninput="checkBill(this)">
+      <span class="field-note" id="billNote">Must be 0 or positive</span>
+    </div>
+
   </div>
+
   <div class="submit-row">
     <button type="submit">Submit History →</button>
     <button type="reset" onclick="resetBill()">Reset</button>
-    {% if trigger_active %}
-    <div class="trigger-badge on"><span class="tdot on"></span> Trigger ON</div>
-    {% else %}
-    <div class="trigger-badge off"><span class="tdot off"></span> Trigger OFF</div>
-    {% endif %}
+
+    <!-- Mini badges for both triggers -->
+    <div class="badge-row">
+      <span class="mini-badge {{ 'on' if trigger_active else 'off' }}">
+        <span class="mdot {{ 'on' if trigger_active else 'off' }}"></span>
+        T1 {{ 'ON' if trigger_active else 'OFF' }}
+      </span>
+      <span class="mini-badge {{ 'on' if t4_active else 'off' }}">
+        <span class="mdot {{ 'on' if t4_active else 'off' }}"></span>
+        T4 {{ 'ON' if t4_active else 'OFF' }}
+      </span>
+    </div>
   </div>
   </form>
+
 </div>
 </div>
 <script>
 function checkBill(input) {
   const note = document.getElementById("billNote");
-  if (parseInt(input.value) < 0) { input.classList.add("err-field"); note.textContent="⚠ Negative — trigger will block this insert"; note.classList.add("danger"); }
-  else { input.classList.remove("err-field"); note.textContent="Must be 0 or positive"; note.classList.remove("danger"); }
+  if (parseInt(input.value) < 0) {
+    input.classList.add("err-field");
+    note.textContent = "⚠ Negative — trigger will block this insert";
+    note.classList.add("danger");
+  } else {
+    input.classList.remove("err-field");
+    note.textContent = "Must be 0 or positive";
+    note.classList.remove("danger");
+  }
 }
 function resetBill() {
-  const i=document.getElementById("billInput"), n=document.getElementById("billNote");
-  i.classList.remove("err-field"); n.textContent="Must be 0 or positive"; n.classList.remove("danger");
+  const i = document.getElementById("billInput");
+  const n = document.getElementById("billNote");
+  i.classList.remove("err-field");
+  n.textContent = "Must be 0 or positive";
+  n.classList.remove("danger");
 }
 </script>
 </body>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>T3 — Auto Update Total Cost · Silver Care</title>
+<title>T3 — Outpatient Admission Cost Guard · Silver Care</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{ --deep:#1a2e3b;--accent:#3ec6e0;--accent2:#7eddd4;--silver-dark:#6a8fa8;--text:#1a2e3b;--muted:#5a7a90;--green:#43c9a0;--red:#e05c6e; }
@@ -19,6 +19,8 @@ main{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:60px 40px
 h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;color:var(--deep);line-height:1.1;margin-bottom:12px;}
 h1 em{font-family:'Cormorant Garamond',serif;font-style:italic;background:linear-gradient(120deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .desc{color:var(--muted);font-size:.95rem;line-height:1.75;max-width:620px;margin-bottom:40px;}
+.desc code{font-family:'DM Mono',monospace;font-size:.82rem;background:rgba(62,198,224,0.1);padding:2px 6px;border-radius:5px;}
+
 /* status banner */
 .status-banner{display:flex;align-items:center;gap:14px;padding:14px 20px;border-radius:14px;margin-bottom:36px;font-weight:700;font-size:.88rem;}
 .status-banner.active{background:rgba(67,201,160,0.08);border:1px solid rgba(67,201,160,0.3);color:#0e7060;}
@@ -27,6 +29,7 @@ h1 em{font-family:'Cormorant Garamond',serif;font-style:italic;background:linear
 .status-banner.active .sdot{background:var(--green);box-shadow:0 0 7px var(--green);animation:pulse 2s infinite;}
 .status-banner.inactive .sdot{background:var(--red);}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+
 /* how-it-works cards */
 .rules-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:36px;}
 .rule-card{background:rgba(255,255,255,0.9);border:1px solid rgba(184,201,217,0.35);border-radius:18px;padding:22px 20px;transition:all .25s;}
@@ -35,6 +38,7 @@ h1 em{font-family:'Cormorant Garamond',serif;font-style:italic;background:linear
 .rule-title{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;color:var(--deep);margin-bottom:5px;}
 .rule-desc{font-size:.8rem;color:var(--muted);line-height:1.6;}
 .rule-tag{display:inline-block;margin-top:8px;background:rgba(62,198,224,0.08);border:1px solid rgba(62,198,224,0.18);border-radius:7px;padding:2px 9px;font-family:'DM Mono',monospace;font-size:.65rem;color:var(--accent);}
+
 /* SQL tabs */
 .sql-tabs{display:flex;gap:8px;margin-bottom:0;}
 .sql-tab{padding:8px 18px;border-radius:10px 10px 0 0;font-family:'DM Mono',monospace;font-size:.75rem;font-weight:700;cursor:pointer;border:1px solid rgba(184,201,217,0.3);border-bottom:none;background:rgba(240,248,255,0.5);color:var(--muted);transition:all .2s;}
@@ -50,6 +54,25 @@ h1 em{font-family:'Cormorant Garamond',serif;font-style:italic;background:linear
 pre{font-family:'DM Mono',monospace;font-size:.79rem;line-height:1.85;color:#3a5a70;overflow-x:auto;}
 [data-panel]{display:none;}
 [data-panel].visible{display:block;}
+
+/* deploy steps */
+.deploy-steps{background:rgba(255,255,255,0.85);border:1px solid rgba(62,198,224,0.18);border-radius:16px;padding:20px 24px;margin-bottom:32px;}
+.deploy-steps-title{font-family:'Playfair Display',serif;font-size:.88rem;font-weight:700;color:var(--deep);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.step-list{display:flex;flex-direction:column;gap:10px;}
+.step-item{display:flex;align-items:flex-start;gap:12px;font-size:.82rem;color:var(--muted);line-height:1.55;}
+.step-item code{font-family:'DM Mono',monospace;font-size:.78rem;background:rgba(62,198,224,0.1);padding:1px 5px;border-radius:4px;}
+.step-num{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;flex-shrink:0;margin-top:1px;}
+
+/* behaviour comparison */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px;}
+.compare-card{border-radius:16px;padding:20px 22px;}
+.compare-card.deployed{background:rgba(67,201,160,0.06);border:1px solid rgba(67,201,160,0.25);}
+.compare-card.undeployed{background:rgba(224,92,110,0.05);border:1px solid rgba(224,92,110,0.2);}
+.compare-title{font-family:'Playfair Display',serif;font-size:.88rem;font-weight:700;color:var(--deep);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.compare-item{font-size:.8rem;color:var(--muted);padding:5px 0;border-bottom:1px solid rgba(184,201,217,0.2);line-height:1.55;}
+.compare-item:last-child{border-bottom:none;}
+.compare-item strong{color:var(--deep);}
+
 /* action grid */
 .action-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
 .action-card{border-radius:22px;padding:34px 30px;position:relative;overflow:hidden;}
@@ -61,6 +84,7 @@ pre{font-family:'DM Mono',monospace;font-size:.79rem;line-height:1.85;color:#3a5
 .action-icon{font-size:1.8rem;margin-bottom:10px;display:block;}
 .action-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:var(--deep);margin-bottom:5px;}
 .action-sub{font-size:.82rem;color:var(--muted);margin-bottom:22px;line-height:1.6;}
+.action-sub code{font-family:'DM Mono',monospace;font-size:.77rem;background:rgba(62,198,224,0.1);padding:1px 5px;border-radius:4px;}
 .msg-success{background:rgba(67,201,160,0.09);border:1px solid rgba(67,201,160,0.28);border-radius:12px;padding:14px 18px;color:#0e7060;display:flex;align-items:center;gap:9px;margin-bottom:16px;font-weight:600;font-size:.86rem;}
 .msg-undeploy{background:rgba(224,92,110,0.07);border:1px solid rgba(224,92,110,0.22);border-radius:12px;padding:14px 18px;color:#9a1a2a;display:flex;align-items:center;gap:9px;margin-bottom:16px;font-weight:600;font-size:.86rem;}
 .msg-error{background:rgba(224,92,110,0.07);border:1px solid rgba(224,92,110,0.22);border-radius:12px;padding:14px 18px;color:var(--red);display:flex;align-items:flex-start;gap:9px;margin-bottom:16px;font-size:.84rem;}
@@ -78,24 +102,38 @@ pre{font-family:'DM Mono',monospace;font-size:.79rem;line-height:1.85;color:#3a5
 .confirm-cancel:hover{border-color:var(--muted);}
 .warning-note{display:flex;align-items:flex-start;gap:8px;margin-top:16px;padding:10px 14px;background:rgba(62,198,224,0.05);border-radius:9px;border:1px solid rgba(62,198,224,0.12);font-size:.76rem;color:var(--muted);line-height:1.6;}
 .danger-note{display:flex;align-items:flex-start;gap:8px;margin-top:16px;padding:10px 14px;background:rgba(224,92,110,0.04);border-radius:9px;border:1px solid rgba(224,92,110,0.13);font-size:.76rem;color:rgba(160,40,58,0.6);line-height:1.6;}
-@media(max-width:768px){nav{padding:0 20px;}main{padding:40px 20px;}.rules-row{grid-template-columns:1fr;}.action-grid{grid-template-columns:1fr;}}
+
+/* verify section */
+.verify-box{background:rgba(255,255,255,0.85);border:1px solid rgba(184,201,217,0.3);border-radius:16px;padding:20px 24px;margin-top:28px;}
+.verify-title{font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700;color:var(--deep);margin-bottom:10px;}
+.verify-desc{font-size:.8rem;color:var(--muted);line-height:1.6;margin-bottom:12px;}
+.verify-link{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;font-weight:700;color:var(--accent);text-decoration:none;transition:opacity .2s;}
+.verify-link:hover{opacity:.75;}
+
+@media(max-width:768px){nav{padding:0 20px;}main{padding:40px 20px;}.rules-row{grid-template-columns:1fr;}.action-grid{grid-template-columns:1fr;}.compare-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 <nav><a class="brand" href="/">Silver Care</a><a class="back" href="/">← Back to Portal</a></nav>
 <main>
   <div class="chip">Trigger · Task T3 · Task 13</div>
-  <h1>Auto-Update<br/><em>Total Cost</em><br/>on Insert</h1>
-  <p class="desc">An AFTER INSERT trigger on the <code>costs</code> table that automatically keeps each patient's <code>total_cost</code> in the <code>patients</code> table up-to-date — no manual aggregation needed. Also adds and backfills the <code>total_cost</code> column on deploy.</p>
+  <h1>Outpatient<br/><em>Admission Cost</em><br/>Guard</h1>
+  <p class="desc">
+    A <code>BEFORE INSERT</code> trigger on the <code>costs</code> table that enforces a database-level rule:
+    when a patient is marked as an <strong>outpatient</strong> (<code>admitted = false</code>),
+    the <code>admission_cost</code> must be <strong>zero</strong> — it cannot be set to any positive value.
+    The costs form also disables the admission cost field visually when outpatient is selected,
+    and the display table shows <em>"Not Applicable"</em> for outpatient admission costs.
+  </p>
 
   <!-- Live Status -->
   <div class="status-banner {{ 'active' if trigger_active else 'inactive' }}">
     <div class="sdot"></div>
     <span>
       {% if trigger_active %}
-        Trigger <strong>trg_update_total_cost</strong> is active on <strong>costs</strong> table
+        Trigger <strong>trg_outpatient_admission_guard</strong> is <strong>active</strong> on the <strong>costs</strong> table
       {% else %}
-        Trigger <strong>trg_update_total_cost</strong> is not deployed
+        Trigger <strong>trg_outpatient_admission_guard</strong> is <strong>not deployed</strong> — no DB-level enforcement
       {% endif %}
     </span>
     <span style="margin-left:auto;font-size:.72rem;font-weight:400;opacity:.55;">Live DB Status</span>
@@ -104,22 +142,49 @@ pre{font-family:'DM Mono',monospace;font-size:.79rem;line-height:1.85;color:#3a5
   <!-- How it works -->
   <div class="rules-row">
     <div class="rule-card">
-      <span class="rule-icon">📥</span>
-      <div class="rule-title">Fires After Insert</div>
-      <div class="rule-desc">Every time a new row is inserted into <code>costs</code>, this trigger fires immediately after the insert completes.</div>
-      <span class="rule-tag">AFTER INSERT ON costs</span>
+      <span class="rule-icon">🚫</span>
+      <div class="rule-title">Blocks Invalid Inserts</div>
+      <div class="rule-desc">If <code>admitted = false</code> and <code>admission_cost &gt; 0</code> is attempted, the trigger raises an exception and the insert is rejected at the database level.</div>
+      <span class="rule-tag">BEFORE INSERT ON costs</span>
     </div>
     <div class="rule-card">
-      <span class="rule-icon">🔢</span>
-      <div class="rule-title">Accumulates Costs</div>
-      <div class="rule-desc">Adds the new record's admission, medicine and doctor fee to the patient's running <code>total_cost</code> in the <code>patients</code> table.</div>
-      <span class="rule-tag">UPDATE patients SET total_cost</span>
+      <span class="rule-icon">🔒</span>
+      <div class="rule-title">DB-Level Enforcement</div>
+      <div class="rule-desc">Even if someone bypasses the web form and calls the DB directly, the trigger ensures outpatients can never have a non-zero admission cost.</div>
+      <span class="rule-tag">RAISE EXCEPTION on violation</span>
     </div>
     <div class="rule-card">
-      <span class="rule-icon">🔄</span>
-      <div class="rule-title">Backfills on Deploy</div>
-      <div class="rule-desc">Deploying also runs an UPDATE to sync existing costs data into <code>total_cost</code>, so historical records are accurate from day one.</div>
-      <span class="rule-tag">Backfill on install</span>
+      <span class="rule-icon">📋</span>
+      <div class="rule-title">Display: Not Applicable</div>
+      <div class="rule-desc">The costs display table shows <em>"Not Applicable"</em> instead of ₹0 for outpatient rows, making billing records clearer and more professional.</div>
+      <span class="rule-tag">costsdisplay.jinja2.html</span>
+    </div>
+  </div>
+
+  <!-- Behaviour comparison -->
+  <div class="compare-grid">
+    <div class="compare-card deployed">
+      <div class="compare-title">✅ Trigger Deployed</div>
+      <div class="compare-item"><strong>Outpatient selected:</strong> Admission cost field is disabled in the form</div>
+      <div class="compare-item"><strong>DB insert attempt with admission_cost &gt; 0:</strong> Blocked with exception</div>
+      <div class="compare-item"><strong>Display table:</strong> Shows "Not Applicable" for outpatient admission cost</div>
+      <div class="compare-item"><strong>Admitted patients:</strong> Can enter any admission cost normally</div>
+    </div>
+    <div class="compare-card undeployed">
+      <div class="compare-title">⚠️ Trigger Not Deployed</div>
+      <div class="compare-item"><strong>Outpatient selected:</strong> Admission cost field is still disabled (UI-only)</div>
+      <div class="compare-item"><strong>DB insert attempt with admission_cost &gt; 0:</strong> Allowed through</div>
+      <div class="compare-item"><strong>Display table:</strong> Still shows "Not Applicable" (UI display logic)</div>
+      <div class="compare-item"><strong>DB-level protection:</strong> None — relies only on frontend</div>
+    </div>
+  </div>
+
+  <!-- Deploy steps explanation -->
+  <div class="deploy-steps">
+    <div class="deploy-steps-title">⚙️ What Deploy Does (2 steps)</div>
+    <div class="step-list">
+      <div class="step-item"><div class="step-num">1</div><span>Creates / replaces <code>fn_outpatient_admission_guard()</code> — a trigger function that raises an exception if <code>admitted = false</code> and <code>admission_cost &gt; 0</code>.</span></div>
+      <div class="step-item"><div class="step-num">2</div><span>Drops any old version and creates <code>trg_outpatient_admission_guard</code> bound to <code>BEFORE INSERT ON costs</code>.</span></div>
     </div>
   </div>
 
@@ -130,13 +195,13 @@ pre{font-family:'DM Mono',monospace;font-size:.79rem;line-height:1.85;color:#3a5
   </div>
   <div id="deploy-sql" data-panel class="visible">
     <div class="sql-box">
-      <div class="sql-top"><span class="sql-lbl">Deploy · PostgreSQL</span><span class="sql-tag-badge">AFTER INSERT</span></div>
+      <div class="sql-top"><span class="sql-lbl">Deploy · PostgreSQL</span><span class="sql-tag-badge">BEFORE INSERT ON costs</span></div>
       <pre>{{ deploy_sql }}</pre>
     </div>
   </div>
   <div id="undeploy-sql" data-panel>
     <div class="sql-box undeploy-sql">
-      <div class="sql-top"><span class="sql-lbl">Undeploy · PostgreSQL</span><span class="sql-tag-badge danger">DROP TRIGGER</span></div>
+      <div class="sql-top"><span class="sql-lbl">Undeploy · PostgreSQL</span><span class="sql-tag-badge danger">DROP TRIGGER + DROP FUNCTION</span></div>
       <pre>{{ undeploy_sql }}</pre>
     </div>
   </div>
@@ -146,32 +211,42 @@ pre{font-family:'DM Mono',monospace;font-size:.79rem;line-height:1.85;color:#3a5
     <div class="action-card deploy-card">
       <span class="action-icon">⚡</span>
       <div class="action-title">Install Trigger</div>
-      <div class="action-sub">Adds the <code>total_cost</code> column, backfills existing data, creates the function and binds the trigger to the <code>costs</code> table.</div>
+      <div class="action-sub">Creates <code>fn_outpatient_admission_guard()</code> and binds <code>trg_outpatient_admission_guard</code> to the <code>costs</code> table. Any insert with <code>admitted=false</code> and <code>admission_cost &gt; 0</code> will be rejected.</div>
       {% if message and message[0] == 'deploy_ok' %}<div class="msg-success">✅ {{ message[1] }}</div>{% endif %}
-      {% if error and error[0] == 'deploy' %}<div class="msg-error">⚠️ {{ error[1] }}</div>{% endif %}
+      {% if error and error[0] == 'deploy' %}<div class="msg-error">⚠️ <span>{{ error[1] }}</span></div>{% endif %}
       <form method="POST" action="/t3"><input type="hidden" name="action" value="deploy"/>
         <button type="submit" class="deploy-btn">⚡ Deploy Trigger</button>
       </form>
-      <div class="warning-note">⚠️ <span>Safe to run multiple times — uses <code>ADD COLUMN IF NOT EXISTS</code> and <code>CREATE OR REPLACE</code>.</span></div>
+      <div class="warning-note">⚠️ <span>Safe to re-run — uses <code>CREATE OR REPLACE</code> and <code>DROP TRIGGER IF EXISTS</code>.</span></div>
     </div>
     <div class="action-card undeploy-card">
       <span class="action-icon">🗑️</span>
       <div class="action-title">Remove Trigger</div>
-      <div class="action-sub">Drops the trigger, function and the <code>total_cost</code> column from <code>patients</code>. Costs data is unaffected.</div>
+      <div class="action-sub">Drops <code>trg_outpatient_admission_guard</code> and <code>fn_outpatient_admission_guard()</code>. The DB-level restriction is removed — only frontend validation remains.</div>
       {% if message and message[0] == 'undeploy_ok' %}<div class="msg-undeploy">🗑️ {{ message[1] }}</div>{% endif %}
-      {% if error and error[0] == 'undeploy' %}<div class="msg-error">⚠️ {{ error[1] }}</div>{% endif %}
+      {% if error and error[0] == 'undeploy' %}<div class="msg-error">⚠️ <span>{{ error[1] }}</span></div>{% endif %}
       <button type="button" class="undeploy-btn" onclick="toggleConfirm()">🗑️ Undeploy Trigger</button>
       <div class="confirm-wrap" id="confirmBox">
-        <div class="confirm-text">This will drop <code>trg_update_total_cost</code>, <code>fn_update_total_cost()</code> and the <code>total_cost</code> column from <code>patients</code>. Continue?</div>
+        <div class="confirm-text">This will drop <code>trg_outpatient_admission_guard</code> and <code>fn_outpatient_admission_guard()</code>. The database will no longer enforce the outpatient admission cost rule. Continue?</div>
         <div class="confirm-btns">
-          <form method="POST" action="/t3" style="display:inline;"><input type="hidden" name="action" value="undeploy"/>
+          <form method="POST" action="/t3" style="display:inline;">
+            <input type="hidden" name="action" value="undeploy"/>
             <button type="submit" class="confirm-yes">Yes, Remove</button>
           </form>
           <button type="button" class="confirm-cancel" onclick="toggleConfirm()">Cancel</button>
         </div>
       </div>
-      <div class="danger-note">⚠️ <span>This also drops the <code>total_cost</code> column — any data stored there will be lost.</span></div>
+      <div class="danger-note">⚠️ <span>After undeploying, only the frontend disables the field — a direct DB insert could still set admission_cost for outpatients.</span></div>
     </div>
+  </div>
+
+  <!-- Verify section -->
+  <div class="verify-box">
+    <div class="verify-title">🔍 Verify the Trigger is Working</div>
+    <div class="verify-desc">After deploying, go to the costs form, select "Outpatient" — the admission cost field should be disabled. Then check the costs display table to see "Not Applicable" for outpatient rows.</div>
+    <a href="/costsform" class="verify-link">💰 Open Costs Form to test →</a>
+    &nbsp;&nbsp;
+    <a href="/costsdisplay" class="verify-link">📋 View Costs Table →</a>
   </div>
 </main>
 <script>

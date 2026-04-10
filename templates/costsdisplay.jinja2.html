@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- Display costs information -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,12 +6,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --silver:#b8c9d9; --silver-light:#dce8f0; --silver-dark:#6a8fa8;
-  --deep:#1a2e3b; --accent:#3ec6e0; --accent2:#7eddd4;
-  --white:#f7fbfe; --card-bg:rgba(255,255,255,0.88);
-  --text:#1a2e3b; --muted:#5a7a90; --danger:#ff4757; --danger2:#ff6b81;
+  --silver:#b8c9d9;--silver-light:#dce8f0;--silver-dark:#6a8fa8;
+  --deep:#1a2e3b;--accent:#3ec6e0;--accent2:#7eddd4;
+  --white:#f7fbfe;--card-bg:rgba(255,255,255,0.88);
+  --text:#1a2e3b;--muted:#5a7a90;--danger:#ff4757;--danger2:#ff6b81;
 }
-*{ box-sizing:border-box; margin:0; padding:0; }
+*{ box-sizing:border-box;margin:0;padding:0; }
 body{ font-family:'Nunito',sans-serif;min-height:100vh;background:linear-gradient(135deg,#e8f4fb 0%,#f0f8ff 40%,#daf0f5 100%);color:var(--text);overflow-x:hidden;position:relative; }
 body::before{ content:'';position:fixed;top:-120px;right:-120px;width:520px;height:520px;background:radial-gradient(circle,rgba(62,198,224,0.18) 0%,transparent 70%);border-radius:50%;pointer-events:none;z-index:0; }
 body::after{ content:'';position:fixed;bottom:-100px;left:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(126,221,212,0.15) 0%,transparent 70%);border-radius:50%;pointer-events:none;z-index:0; }
@@ -27,7 +26,7 @@ nav{ position:sticky;top:0;z-index:100;height:70px;display:flex;align-items:cent
 .hero h1 em{ font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05em;background:linear-gradient(120deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
 .hero-sub{ font-size:1rem;color:var(--muted);font-weight:400;max-width:480px;line-height:1.7; }
 .stats-strip{ position:relative;z-index:1;max-width:1200px;margin:0 auto 32px;padding:0 48px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px; }
-.stat-card{ background:var(--card-bg);border:1px solid rgba(184,201,217,0.35);border-radius:18px;padding:22px 26px;backdrop-filter:blur(10px);box-shadow:0 4px 24px rgba(30,70,100,0.08);position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s; }
+.stat-card{ background:var(--card-bg);border:1px solid rgba(184,201,217,0.35);border-radius:18px;padding:22px 26px;backdrop-filter:blur(10px);box-shadow:0 4px 24px rgba(30,70,100,0.08);transition:transform .2s,box-shadow .2s; }
 .stat-card:hover{ transform:translateY(-3px);box-shadow:0 12px 36px rgba(62,198,224,0.15); }
 .stat-label{ font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px; }
 .stat-value{ font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;background:linear-gradient(120deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
@@ -51,6 +50,13 @@ tbody td{ padding:16px 24px;vertical-align:middle; }
 .patient-avatar{ width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;color:#fff;font-size:.9rem;flex-shrink:0;box-shadow:0 4px 12px rgba(62,198,224,0.3); }
 .patient-name{ font-weight:600;color:var(--text);font-size:.9rem; }
 .money{ font-family:'DM Mono',monospace;font-weight:500;color:#1a4a5a;font-size:.88rem;background:rgba(62,198,224,0.08);padding:4px 10px;border-radius:8px;border:1px solid rgba(62,198,224,0.15);display:inline-block; }
+/* ── Not Applicable chip ── */
+.na-chip{
+  font-family:'DM Mono',monospace;font-size:.78rem;font-weight:600;font-style:italic;
+  color:rgba(90,122,144,0.55);background:rgba(184,201,217,0.12);
+  padding:4px 10px;border-radius:8px;border:1px solid rgba(184,201,217,0.3);
+  display:inline-block;
+}
 .badge{ font-family:'DM Mono',monospace;padding:5px 12px;border-radius:999px;font-size:.7rem;font-weight:600;letter-spacing:.04em;display:inline-flex;align-items:center;gap:6px; }
 .badge::before{ content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0; }
 .badge-true{ background:rgba(62,198,224,0.1);color:#1a6a7a;border:1px solid rgba(62,198,224,0.25); }
@@ -102,17 +108,44 @@ footer{ position:relative;z-index:1;padding:28px 48px;text-align:center;font-fam
     </div>
     <table>
       <thead>
-        <tr><th>Patient Name</th><th>Status</th><th>Admission Cost</th><th>Medicine Cost</th><th>Doctor Fee</th><th></th></tr>
+        <tr>
+          <th>Patient Name</th>
+          <th>Status</th>
+          <th>Admission Cost</th>
+          <th>Medicine Cost</th>
+          <th>Doctor Fee</th>
+          <th></th>
+        </tr>
       </thead>
       <tbody>
         {% for row in data %}
         <tr>
-          <td><div class="patient-cell"><div class="patient-avatar">{{ row[1][0]|upper if row[1] else '?' }}</div><span class="patient-name">{{ row[1] }}</span></div></td>
-          <td>{% if row[2] %}<span class="badge badge-true">Admitted</span>{% else %}<span class="badge badge-false">Outpatient</span>{% endif %}</td>
-          <td><span class="money">₹ {{ row[3] }}</span></td>
+          <td>
+            <div class="patient-cell">
+              <div class="patient-avatar">{{ row[1][0]|upper if row[1] else '?' }}</div>
+              <span class="patient-name">{{ row[1] }}</span>
+            </div>
+          </td>
+          <td>
+            {% if row[2] %}
+              <span class="badge badge-true">Admitted</span>
+            {% else %}
+              <span class="badge badge-false">Outpatient</span>
+            {% endif %}
+          </td>
+          <td>
+            {# row[2] is the admitted boolean — show Not Applicable for outpatients #}
+            {% if row[2] %}
+              <span class="money">₹ {{ row[3] }}</span>
+            {% else %}
+              <span class="na-chip">Not Applicable</span>
+            {% endif %}
+          </td>
           <td><span class="money">₹ {{ row[4] }}</span></td>
           <td><span class="money">₹ {{ row[5] }}</span></td>
-          <td class="del-cell"><button class="del-btn" onclick="openModal({{ row[0] }}, '{{ row[1] }}', 'costs')" title="Delete">🗑</button></td>
+          <td class="del-cell">
+            <button class="del-btn" onclick="openModal({{ row[0] }}, '{{ row[1] }}', 'costs')" title="Delete">🗑</button>
+          </td>
         </tr>
         {% endfor %}
       </tbody>

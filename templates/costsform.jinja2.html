@@ -48,16 +48,14 @@ nav{
   text-decoration:none;color:var(--silver-dark);transition:all .25s;
 }
 .back-btn:hover{ background:rgba(62,198,224,0.14);border-color:var(--accent);color:var(--deep); }
-
 .container{
   display:flex;justify-content:center;
   padding:60px 20px 80px;position:relative;z-index:1;
 }
-
 .form-card{
   background:rgba(255,255,255,0.96);
   border:1px solid rgba(184,201,217,0.4);
-  border-radius:28px;padding:56px;width:600px;
+  border-radius:28px;padding:56px;width:640px;
   box-shadow:0 20px 80px rgba(30,70,100,0.12),inset 0 1px 0 rgba(255,255,255,1);
   position:relative;overflow:hidden;
 }
@@ -68,6 +66,35 @@ nav{
 }
 @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 
+/* ── T3 Trigger Status Panel ── */
+.trig-card{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 16px;border-radius:14px;font-size:.82rem;font-weight:600;
+  border:1.5px solid;margin-bottom:28px;
+}
+.trig-card.on{  background:rgba(62,198,224,0.06);border-color:rgba(62,198,224,0.28);color:#1a5060; }
+.trig-card.off{ background:rgba(255,71,87,0.05); border-color:rgba(255,71,87,0.22); color:#8a1a28; }
+.trig-label{ font-family:'DM Mono',monospace;font-size:.64rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.65;display:block;margin-bottom:2px; }
+.trig-status{ font-size:.82rem; }
+.tdot{ width:8px;height:8px;border-radius:50%;flex-shrink:0; }
+.tdot.on{  background:var(--accent);box-shadow:0 0 6px var(--accent);animation:pulse 2s infinite; }
+.tdot.off{ background:#ff4757; }
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+.trig-link{ font-family:'DM Mono',monospace;font-size:.68rem;margin-left:auto;color:inherit;opacity:.6;text-decoration:none;white-space:nowrap; }
+.trig-link:hover{ opacity:1; }
+
+/* ── Enforcement note shown when trigger is ON ── */
+.enforcement-note{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:11px 14px;border-radius:11px;
+  background:rgba(62,198,224,0.05);border:1px solid rgba(62,198,224,0.2);
+  font-size:.78rem;color:var(--muted);line-height:1.6;margin-bottom:20px;
+}
+.enforcement-note.warn{
+  background:rgba(255,71,87,0.04);border-color:rgba(255,71,87,0.18);color:#8a1a28;
+}
+.enforcement-note strong{ color:var(--deep); }
+
 .form-badge{
   display:inline-flex;align-items:center;gap:8px;
   font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.1em;
@@ -76,7 +103,6 @@ nav{
   padding:6px 14px;border-radius:999px;margin-bottom:20px;
 }
 .form-badge::before{ content:'';width:6px;height:6px;background:var(--accent);border-radius:50%; }
-
 h1{
   font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:900;
   color:var(--deep);letter-spacing:-0.02em;line-height:1.1;margin-bottom:36px;
@@ -86,15 +112,14 @@ h1 em{
   background:linear-gradient(120deg,var(--accent),var(--accent2));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
-
 .form-grid{ display:grid;grid-template-columns:1fr 1fr;gap:24px; }
 .full{ grid-column:span 2; }
 .field{ display:flex;flex-direction:column;gap:8px; }
-
 label{
   font-family:'DM Mono',monospace;font-size:.68rem;letter-spacing:.1em;
   color:var(--muted);text-transform:uppercase;font-weight:500;
 }
+label .opt{ font-size:.64rem;color:#e05c6e;margin-left:4px; }
 input,select,textarea{
   padding:13px 16px;border-radius:12px;
   border:1.5px solid rgba(62,198,224,0.22);
@@ -106,13 +131,28 @@ input:focus,select:focus,textarea:focus{
   border-color:var(--accent);background:#fff;
   box-shadow:0 0 0 4px rgba(62,198,224,0.1);
 }
-.input-prefix{ position:relative; }
-.input-prefix::before{
-  content:'₹';position:absolute;left:14px;top:50%;transform:translateY(-50%);
-  font-family:'DM Mono',monospace;font-size:.85rem;color:var(--muted);pointer-events:none;z-index:1;
+input:disabled{
+  background:rgba(200,215,225,0.2);
+  border-color:rgba(184,201,217,0.3);
+  color:rgba(90,122,144,0.4);
+  cursor:not-allowed;
 }
-.input-prefix input{ padding-left:30px; }
-
+.input-wrap{ position:relative; }
+.prefix{
+  position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  font-family:'DM Mono',monospace;font-size:.85rem;color:var(--muted);
+  pointer-events:none;z-index:1;transition:opacity .2s;
+}
+.prefix.faded{ opacity:.25; }
+.input-wrap input{ padding-left:30px; }
+.na-badge{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  font-family:'DM Mono',monospace;font-size:.68rem;font-weight:700;
+  color:rgba(90,122,144,0.5);background:rgba(184,201,217,0.2);
+  padding:3px 9px;border-radius:6px;pointer-events:none;display:none;
+}
+.field-note{ font-size:.72rem;font-family:'DM Mono',monospace;color:var(--muted); }
+.field-note.na-note{ color:#e05c6e; }
 .total-box{
   margin-top:24px;padding:20px 22px;border-radius:16px;
   background:linear-gradient(135deg,rgba(62,198,224,0.06),rgba(126,221,212,0.08));
@@ -128,16 +168,33 @@ input:focus,select:focus,textarea:focus{
   background:linear-gradient(120deg,var(--accent),var(--accent2));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
-.total-amount span{ font-size:.9rem;font-family:'DM Mono',monospace;margin-right:4px; }
-
-button{
-  margin-top:30px;width:100%;padding:16px;border:none;border-radius:14px;
-  font-family:'Playfair Display',serif;font-weight:700;font-size:1.05rem;
+.total-amount .sym{ font-size:.9rem;font-family:'DM Mono',monospace;margin-right:4px; }
+.submit-row{ margin-top:30px;display:flex;align-items:center;gap:10px;flex-wrap:wrap; }
+button[type="submit"]{
+  padding:14px 32px;border:none;border-radius:14px;
+  font-family:'Playfair Display',serif;font-weight:700;font-size:.95rem;
   background:linear-gradient(135deg,var(--accent),var(--accent2));
   color:white;cursor:pointer;transition:all .3s;
-  box-shadow:0 6px 24px rgba(62,198,224,0.35);letter-spacing:.02em;
+  box-shadow:0 6px 20px rgba(62,198,224,0.28);
 }
-button:hover{ transform:translateY(-3px);box-shadow:0 16px 40px rgba(62,198,224,0.45); }
+button[type="submit"]:hover{ transform:translateY(-3px);box-shadow:0 12px 32px rgba(62,198,224,0.4); }
+button[type="reset"]{
+  padding:14px 22px;border-radius:14px;
+  border:1.5px solid rgba(62,198,224,0.22);
+  background:white;color:var(--muted);
+  font-family:'Nunito',sans-serif;font-size:.9rem;cursor:pointer;transition:.2s;
+}
+button[type="reset"]:hover{ background:rgba(62,198,224,0.06);color:var(--deep); }
+.mini-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'DM Mono',monospace;font-size:.68rem;
+  padding:6px 12px;border-radius:999px;white-space:nowrap;margin-left:auto;
+}
+.mini-badge.on{  background:rgba(62,198,224,0.08);border:1px solid rgba(62,198,224,0.22);color:var(--muted); }
+.mini-badge.off{ background:rgba(255,71,87,0.07); border:1px solid rgba(255,71,87,0.28);color:#be123c; }
+.mdot{ width:5px;height:5px;border-radius:50%; }
+.mdot.on{  background:var(--accent);animation:pulse 2s infinite; }
+.mdot.off{ background:#ff4757; }
 </style>
 </head>
 <body>
@@ -145,69 +202,154 @@ button:hover{ transform:translateY(-3px);box-shadow:0 16px 40px rgba(62,198,224,
   <a class="brand" href="/">Silver Care</a>
   <a class="back-btn" href="/">← Back to Main Menu</a>
 </nav>
-
 <div class="container">
 <div class="form-card">
+
+  <!-- ── T3 Trigger Status ── -->
+  <div class="trig-card {{ 'on' if t3_active else 'off' }}">
+    <span class="tdot {{ 'on' if t3_active else 'off' }}"></span>
+    <div>
+      <span class="trig-label">T3 · Outpatient Admission Guard</span>
+      {% if t3_active %}
+        <span class="trig-status">DB trigger <strong>active</strong> — outpatients cannot have admission cost</span>
+      {% else %}
+        <span class="trig-status">DB trigger <strong>inactive</strong> — no DB-level enforcement</span>
+      {% endif %}
+    </div>
+    <a class="trig-link" href="/t3">Manage →</a>
+  </div>
+
+  <!-- Enforcement note -->
+  {% if t3_active %}
+  <div class="enforcement-note">
+    🔒 <span><strong>DB Guard Active:</strong> Selecting "Outpatient" disables the admission cost field. Any attempt to insert a non-zero admission cost for an outpatient will be rejected by the database trigger.</span>
+  </div>
+  {% else %}
+  <div class="enforcement-note warn">
+    ⚠️ <span><strong>DB Guard Inactive:</strong> The outpatient admission cost guard trigger is not deployed. Only frontend validation is in effect. <a href="/t3" style="color:inherit;font-weight:700;">Deploy trigger →</a></span>
+  </div>
+  {% endif %}
+
   <div class="form-badge">Billing Entry</div>
   <h1>Enter <em>Costs</em><br>Information</h1>
 
   <form method="POST" action="/costsform">
   <div class="form-grid">
+
     <div class="field">
       <label>Patient Name</label>
       <input type="text" name="patient_name" placeholder="Full name" required>
     </div>
+
     <div class="field">
       <label>Admitted</label>
-      <select name="admitted" required>
+      <select name="admitted" id="admitted_select" required onchange="handleAdmitted(this)">
         <option value="true">Yes — Admitted</option>
         <option value="false">No — Outpatient</option>
       </select>
     </div>
+
     <div class="field">
-      <label>Admission Cost (₹)</label>
-      <div class="input-prefix">
-        <input type="number" id="admission_cost" name="admission_cost" placeholder="0" required>
+      <label>Admission Cost (₹) <span class="opt" id="adm_opt"></span></label>
+      <div class="input-wrap">
+        <span class="prefix" id="adm_prefix">₹</span>
+        <input type="number" id="admission_cost" name="admission_cost"
+               placeholder="0" required min="0" oninput="updateTotal()">
+        <span class="na-badge" id="na_badge">N/A</span>
       </div>
+      <span class="field-note" id="adm_note">Required when admitted</span>
     </div>
+
     <div class="field">
       <label>Medicine Cost (₹)</label>
-      <div class="input-prefix">
-        <input type="number" id="medicine_cost" name="medicine_cost" placeholder="0" required>
+      <div class="input-wrap">
+        <span class="prefix">₹</span>
+        <input type="number" id="medicine_cost" name="medicine_cost"
+               placeholder="0" required min="0" oninput="updateTotal()">
       </div>
     </div>
+
     <div class="field">
       <label>Doctor Fee (₹)</label>
-      <div class="input-prefix">
-        <input type="number" id="doctor_fee" name="doctor_fee" placeholder="0" required>
+      <div class="input-wrap">
+        <span class="prefix">₹</span>
+        <input type="number" id="doctor_fee" name="doctor_fee"
+               placeholder="0" required min="0" oninput="updateTotal()">
       </div>
     </div>
+
     <div class="field">
       <label>Date</label>
       <input type="date">
     </div>
+
     <div class="field full">
       <label>Additional Notes</label>
       <textarea rows="3" placeholder="Optional comments..."></textarea>
     </div>
+
   </div>
+
   <div class="total-box">
     <span class="total-label">Estimated Total</span>
-    <div class="total-amount"><span>₹</span><span id="total">0</span></div>
+    <div class="total-amount"><span class="sym">₹</span><span id="total">0</span></div>
   </div>
-  <button type="submit">Submit Billing Record →</button>
-  </form>
-</div>
-</div>
 
+  <div class="submit-row">
+    <button type="submit">Submit Billing Record →</button>
+    <button type="reset" onclick="resetForm()">Reset</button>
+    <span class="mini-badge {{ 'on' if t3_active else 'off' }}">
+      <span class="mdot {{ 'on' if t3_active else 'off' }}"></span>
+      T3 {{ 'ON' if t3_active else 'OFF' }}
+    </span>
+  </div>
+  </form>
+
+</div>
+</div>
 <script>
-function updateTotal(){
-  let a=parseFloat(document.getElementById("admission_cost").value)||0;
-  let b=parseFloat(document.getElementById("medicine_cost").value)||0;
-  let c=parseFloat(document.getElementById("doctor_fee").value)||0;
-  document.getElementById("total").innerText=(a+b+c).toLocaleString('en-IN');
+function handleAdmitted(sel) {
+  const isOut   = sel.value === 'false';
+  const inp     = document.getElementById('admission_cost');
+  const badge   = document.getElementById('na_badge');
+  const note    = document.getElementById('adm_note');
+  const opt     = document.getElementById('adm_opt');
+  const prefix  = document.getElementById('adm_prefix');
+
+  if (isOut) {
+    inp.disabled = true;
+    inp.value    = 0;
+    badge.style.display  = 'inline-block';
+    note.textContent     = 'Not applicable for outpatients — auto-set to 0';
+    note.classList.add('na-note');
+    opt.textContent      = '· disabled';
+    prefix.classList.add('faded');
+  } else {
+    inp.disabled = false;
+    inp.value    = '';
+    badge.style.display  = 'none';
+    note.textContent     = 'Required when admitted';
+    note.classList.remove('na-note');
+    opt.textContent      = '';
+    prefix.classList.remove('faded');
+  }
+  updateTotal();
 }
-document.querySelectorAll("input").forEach(i=>{ i.addEventListener("input",updateTotal); });
+
+function updateTotal() {
+  const a = parseFloat(document.getElementById('admission_cost').value) || 0;
+  const b = parseFloat(document.getElementById('medicine_cost').value)  || 0;
+  const c = parseFloat(document.getElementById('doctor_fee').value)     || 0;
+  document.getElementById('total').innerText = (a + b + c).toLocaleString('en-IN');
+}
+
+function resetForm() {
+  setTimeout(() => {
+    handleAdmitted(document.getElementById('admitted_select'));
+  }, 10);
+}
+
+handleAdmitted(document.getElementById('admitted_select'));
 </script>
 </body>
 </html>
